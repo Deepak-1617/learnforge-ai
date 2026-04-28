@@ -111,7 +111,7 @@
  * Complete version with Compare & Contrast feature
  */
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = 'https://learnforge-ai.onrender.com/api';
 
 // State
 let currentFileId = null;
