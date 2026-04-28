@@ -1,0 +1,61 @@
+# Photosynthesis: How Plants Make Food
+
+## Introduction
+
+Photosynthesis is the process by which green plants, algae, and some bacteria convert light energy into chemical energy stored in glucose. This fundamental process is essential for life on Earth as it provides the oxygen we breathe and serves as the foundation of most food chains.
+
+## The Photosynthesis Equation
+
+The overall chemical equation for photosynthesis is:
+
+6CO₂ + 6H₂O + Light Energy → C₆H₁₂O₆ + 6O₂
+
+In words: Carbon dioxide + Water + Light energy produces Glucose + Oxygen
+
+## Where Does Photosynthesis Occur?
+
+Photosynthesis takes place in chloroplasts, specialized organelles found in plant cells. Chloroplasts contain chlorophyll, the green pigment that captures light energy. The majority of photosynthesis occurs in the mesophyll cells of leaves.
+
+## Two Stages of Photosynthesis
+
+### Stage 1: Light-Dependent Reactions
+
+The light-dependent reactions occur in the thylakoid membranes of the chloroplasts. During this stage:
+
+1. Chlorophyll absorbs light energy
+2. Water molecules are split (photolysis), releasing oxygen as a byproduct
+3. Energy carriers ATP and NADPH are produced
+4. Oxygen is released into the atmosphere
+
+### Stage 2: Light-Independent Reactions (Calvin Cycle)
+
+The light-independent reactions, also known as the Calvin Cycle, occur in the stroma of the chloroplasts. During this stage:
+
+1. Carbon dioxide from the atmosphere is fixed
+2. ATP and NADPH from the light reactions provide energy
+3. Glucose is synthesized from carbon dioxide
+4. ADP and NADP+ are regenerated for the light reactions
+
+## Factors Affecting Photosynthesis
+
+Several environmental factors influence the rate of photosynthesis:
+
+1. **Light Intensity**: Higher light intensity increases the rate up to a saturation point
+2. **Carbon Dioxide Concentration**: More CO₂ generally increases the rate
+3. **Temperature**: Optimal temperature range is 25-35°C; too hot or cold slows the process
+4. **Water Availability**: Lack of water causes stomata to close, limiting CO₂ intake
+5. **Chlorophyll Content**: More chlorophyll means more light can be captured
+
+## Importance of Photosynthesis
+
+Photosynthesis is crucial for life on Earth because:
+
+- It produces oxygen essential for aerobic organisms
+- It removes carbon dioxide from the atmosphere
+- It forms the base of food chains and webs
+- It stores solar energy in chemical form
+- It contributed to the formation of fossil fuels over geological time
+
+## Conclusion
+
+Photosynthesis is one of the most important biochemical processes on Earth. Without it, life as we know it would not exist. Understanding this process helps us appreciate the vital role plants play in maintaining the balance of our ecosystem.

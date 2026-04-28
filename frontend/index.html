@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnForge AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+<div class="bg-grid"></div>
+    <div class="app">
+
+        <!-- NAVBAR -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <span class="nav-logo">⚡</span>
+                <span class="nav-title">LearnForge AI</span>
+                <span class="nav-badge">BETA</span>
+            </div>
+            <div class="nav-right">
+                <div class="ai-pill" id="status-bar">
+                    <div class="ai-dot" id="status-dot"></div>
+                    <span id="ai-status">Connecting...</span>
+                </div>
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <span id="theme-icon">🌙</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- HERO -->
+        <section class="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+            <div class="hero-tag">✨ Powered by Groq AI</div>
+            <h1 class="hero-title">
+                Transform Any Document<br>
+                <span class="gradient-text">Into Pure Knowledge</span>
+            </h1>
+            <p class="hero-sub">Upload a PDF, DOCX, or TXT file and get instant quizzes, flashcards, learning tricks and summaries.</p>
+        </section>
+
+        <!-- MAIN -->
+        <main class="main">
+
+            <!-- STEP 1: UPLOAD -->
+            <div class="glass-card upload-card" id="upload-card">
+                <div class="card-label">STEP 1</div>
+                <h2 class="card-title">Upload Your Document</h2>
+                <div class="drop-zone" id="drop-zone">
+                    <input type="file" id="file-input" accept=".pdf,.docx,.txt" hidden>
+                    <div class="drop-icon">📂</div>
+                    <p class="drop-title">Drop your file here</p>
+                    <p class="drop-sub">or</p>
+                    <button class="btn-upload" onclick="document.getElementById('file-input').click()">
+                        Browse Files
+                    </button>
+                    <p class="drop-hint">PDF • DOCX • TXT</p>
+                </div>
+                <div class="file-info-bar hidden" id="file-info-bar">
+                    <div class="file-icon">📄</div>
+                    <div class="file-details">
+                        <span class="file-name-text" id="file-name">No file</span>
+                        <span class="file-chars" id="char-count"></span>
+                    </div>
+                    <div class="file-check">✅</div>
+                </div>
+            </div>
+
+            <!-- PREVIEW -->
+            <div class="glass-card preview-card hidden" id="preview-section">
+                <div class="preview-header" onclick="togglePreview()">
+                    <span>👁️ File Preview</span>
+                    <span id="preview-toggle-icon">▼</span>
+                </div>
+                <div id="preview-body">
+                    <div id="file-preview" class="preview-text"></div>
+                </div>
+            </div>
+
+            <!-- STEP 2: GENERATE -->
+            <div class="glass-card generate-card hidden" id="generate-section">
+                <div class="card-label">STEP 2</div>
+                <h2 class="card-title">Configure & Generate</h2>
+
+                <div class="config-row">
+                    <span class="config-label">🎯 Difficulty</span>
+                    <div class="pill-group">
+                        <button class="pill" onclick="setDifficulty('easy',this)">🟢 Easy</button>
+                        <button class="pill active" onclick="setDifficulty('medium',this)">🟡 Medium</button>
+                        <button class="pill" onclick="setDifficulty('hard',this)">🔴 Hard</button>
+                    </div>
+                </div>
+
+                <div class="config-row">
+                    <span class="config-label">📦 Content</span>
+                    <div class="toggle-grid">
+                        <label class="toggle-item">
+                            <input type="checkbox" id="opt-quiz" checked>
+                            <div class="toggle-box">
+                                <span class="toggle-icon">📝</span>
+                                <span>Quiz</span>
+                            </div>
+                        </label>
+                        <label class="toggle-item">
+                            <input type="checkbox" id="opt-flashcards" checked>
+                            <div class="toggle-box">
+                                <span class="toggle-icon">🃏</span>
+                                <span>Flashcards</span>
+                            </div>
+                        </label>
+                        <label class="toggle-item">
+                            <input type="checkbox" id="opt-tricks" checked>
+                            <div class="toggle-box">
+                                <span class="toggle-icon">💡</span>
+                                <span>Tricks</span>
+                            </div>
+                        </label>
+                        <label class="toggle-item">
+                            <input type="checkbox" id="opt-summary" checked>
+                            <div class="toggle-box">
+                                <span class="toggle-icon">📋</span>
+                                <span>Summary</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <button class="btn-generate" id="generate-btn">
+                    <span class="btn-generate-icon">✨</span>
+                    Generate My Study Kit
+                </button>
+
+                <!-- PROGRESS -->
+                <div class="progress-panel hidden" id="generate-progress">
+                    <div class="progress-top">
+                        <span class="progress-label" id="progress-label">🧠 Starting up...</span>
+                        <span class="progress-pct" id="gen-percent">0%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="gen-progress-fill"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <div class="p-step" id="gstep-quiz">
+                            <div class="p-step-dot">📝</div>
+                            <div class="p-step-name">Quiz</div>
+                            <div class="p-step-status" id="pstatus-quiz">Waiting</div>
+                        </div>
+                        <div class="p-step" id="gstep-flashcards">
+                            <div class="p-step-dot">🃏</div>
+                            <div class="p-step-name">Flashcards</div>
+                            <div class="p-step-status" id="pstatus-flashcards">Waiting</div>
+                        </div>
+                        <div class="p-step" id="gstep-tricks">
+                            <div class="p-step-dot">💡</div>
+                            <div class="p-step-name">Tricks</div>
+                            <div class="p-step-status" id="pstatus-tricks">Waiting</div>
+                        </div>
+                        <div class="p-step" id="gstep-summary">
+                            <div class="p-step-dot">📋</div>
+                            <div class="p-step-name">Summary</div>
+                            <div class="p-step-status" id="pstatus-summary">Waiting</div>
+                        </div>
+                        <div class="p-step" id="gstep-compare">
+                            <div class="p-step-dot">⚖️</div>
+                            <div class="p-step-name">Compare</div>
+                            <div class="p-step-status" id="pstatus-compare">Waiting</div>
+                        </div>
+                    </div>
+                    <div class="fun-msg" id="fun-message">🤖 AI is warming up...</div>
+                </div>
+            </div>
+
+            <!-- RESULTS -->
+            <div class="results-wrapper hidden" id="results-section">
+
+                <!-- Stats -->
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-val" id="stat-questions">0</div>
+                        <div class="stat-lbl">Questions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val" id="stat-flashcards">0</div>
+                        <div class="stat-lbl">Flashcards</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val" id="stat-tricks">0</div>
+                        <div class="stat-lbl">Tricks</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val" id="stat-compare">0</div>
+                        <div class="stat-lbl">Comparisons</div>
+                    </div>
+                    <div class="stat-card score-card">
+                        <div class="stat-val" id="stat-score">—</div>
+                        <div class="stat-lbl">Quiz Score</div>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tab-bar">
+                    <button class="tab active" id="tab-summary" onclick="switchTab('summary')">📋 Summary</button>
+                    <button class="tab" id="tab-quiz" onclick="switchTab('quiz')">📝 Quiz</button>
+                    <button class="tab" id="tab-flashcards" onclick="switchTab('flashcards')">🃏 Flashcards</button>
+                    <button class="tab" id="tab-tricks" onclick="switchTab('tricks')">💡 Tricks</button>
+                    <button class="tab" id="tab-compare" onclick="switchTab('compare')">⚖️ Compare</button>
+                </div>
+
+                <!-- Summary Panel -->
+                <div class="tab-panel active" id="panel-summary">
+                    <div class="glass-card">
+                        <div class="panel-header">
+                            <h3>📋 Summary</h3>
+                            <button class="icon-btn" onclick="copySection('summary-content')">📋 Copy</button>
+                        </div>
+                        <div id="summary-content"></div>
+                    </div>
+                </div>
+
+                <!-- Quiz Panel -->
+                <div class="tab-panel" id="panel-quiz">
+                    <div class="glass-card">
+                        <div class="panel-header">
+                            <h3>📝 Quiz</h3>
+                            <div class="panel-actions">
+                                <span class="score-pill" id="score-badge">0 / 0</span>
+                                <button class="icon-btn" id="show-answers-btn" onclick="toggleAnswers()">Show Answers</button>
+                            </div>
+                        </div>
+                        <div id="quiz-container"></div>
+                    </div>
+                </div>
+
+                <!-- Flashcards Panel -->
+                <div class="tab-panel" id="panel-flashcards">
+                    <div class="glass-card">
+                        <div class="panel-header">
+                            <h3>🃏 Flashcards</h3>
+                            <span class="count-pill" id="flashcard-count"></span>
+                        </div>
+                        <div id="flashcards-container"></div>
+                    </div>
+                </div>
+
+                <!-- Tricks Panel -->
+                <div class="tab-panel" id="panel-tricks">
+                    <div class="glass-card">
+                        <div class="panel-header">
+                            <h3>💡 Learning Tricks</h3>
+                        </div>
+                        <div id="tricks-container"></div>
+                    </div>
+                </div>
+
+                <!-- Compare Panel -->
+                <div class="tab-panel" id="panel-compare">
+                    <div class="glass-card">
+                        <div class="panel-header">
+                            <h3>⚖️ Compare & Contrast</h3>
+                        </div>
+                        <div id="compare-container"></div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- END RESULTS -->
+
+            <!-- ERROR -->
+            <div class="error-banner hidden" id="error-display">
+                <span class="error-icon">🚨</span>
+                <div class="error-body">
+                    <strong>Something went wrong</strong>
+                    <p id="error-message"></p>
+                </div>
+                <button class="error-close" onclick="hideError()">✕</button>
+            </div>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            ⚡ LearnForge AI &copy; 2026 &nbsp;|&nbsp; Built with FastAPI + Groq AI &nbsp;|&nbsp; Made with ❤️
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
