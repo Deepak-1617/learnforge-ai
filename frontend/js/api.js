@@ -3,10 +3,10 @@
    ============================================ */
 
    const API = {
-    // Base URL - automatically detects if on Render or localhost
+    // Base URL - points to Render backend
     baseURL: window.location.hostname === 'localhost' 
         ? 'http://localhost:8000/api'
-        : 'https://learnforge-ai-j5tx.onrender.com',
+        : 'https://learnforge-ai-j5tx.onrender.com/api',
 
     // Check AI provider status
     async checkAIStatus() {
