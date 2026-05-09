@@ -18,12 +18,15 @@ app = FastAPI(
 )
 
 # CORS
+from fastapi.middleware.cors import CORSMiddleware
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:8000",
         "http://127.0.0.1:8000",
-        "https://learnforge-ai.vercel.app"  # ← Your actual Vercel URL
+        "https://learnforge-ai.vercel.app",
+        "https://*.vercel.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
