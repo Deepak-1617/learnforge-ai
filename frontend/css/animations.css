@@ -1,0 +1,408 @@
+/* ============================================
+   ANIMATIONS & TRANSITIONS
+   ============================================ */
+
+/* ===== FADE IN ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ===== FADE IN UP ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== SLIDE IN UP ===== */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== SLIDE IN RIGHT ===== */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ===== SCALE IN ===== */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ===== ROTATE IN ===== */
+@keyframes rotateIn {
+    from {
+        opacity: 0;
+        transform: rotate(-180deg) scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+/* ===== AOS (Animate On Scroll) Manual Implementation ===== */
+[data-aos] {
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-aos].aos-animate {
+    opacity: 1;
+}
+
+[data-aos="fade-up"] {
+    transform: translateY(30px);
+}
+
+[data-aos="fade-up"].aos-animate {
+    transform: translateY(0);
+}
+
+[data-aos="fade-left"] {
+    transform: translateX(-30px);
+}
+
+[data-aos="fade-left"].aos-animate {
+    transform: translateX(0);
+}
+
+[data-aos="fade-right"] {
+    transform: translateX(30px);
+}
+
+[data-aos="fade-right"].aos-animate {
+    transform: translateX(0);
+}
+
+[data-aos="zoom-in"] {
+    transform: scale(0.8);
+}
+
+[data-aos="zoom-in"].aos-animate {
+    transform: scale(1);
+}
+
+/* ===== DELAY UTILITIES ===== */
+[data-aos-delay="100"] { transition-delay: 0.1s; }
+[data-aos-delay="200"] { transition-delay: 0.2s; }
+[data-aos-delay="300"] { transition-delay: 0.3s; }
+[data-aos-delay="400"] { transition-delay: 0.4s; }
+[data-aos-delay="500"] { transition-delay: 0.5s; }
+
+/* ===== SHIMMER EFFECT ===== */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.shimmer {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* ===== GLOW PULSE ===== */
+@keyframes glowPulse {
+    0%, 100% {
+        box-shadow: 0 0 20px var(--primary-glow);
+    }
+    50% {
+        box-shadow: 0 0 40px var(--primary-glow), 0 0 60px var(--primary-glow);
+    }
+}
+
+.glow-pulse {
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+/* ===== BOUNCE ===== */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.bounce {
+    animation: bounce 1s ease-in-out infinite;
+}
+
+/* ===== SHAKE ===== */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+.shake {
+    animation: shake 0.3s ease-in-out;
+}
+
+/* ===== RIPPLE EFFECT ===== */
+@keyframes ripple {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    animation: ripple 0.6s ease-out;
+    pointer-events: none;
+}
+
+/* ===== TYPEWRITER EFFECT ===== */
+@keyframes typewriter {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink-caret {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: var(--primary);
+    }
+}
+
+.typewriter {
+    overflow: hidden;
+    border-right: 2px solid var(--primary);
+    white-space: nowrap;
+    animation: 
+        typewriter 3s steps(40, end),
+        blink-caret 0.75s step-end infinite;
+}
+
+/* ===== PARTICLE BURST ===== */
+@keyframes particleBurst {
+    0% {
+        transform: translate(0, 0) scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(1);
+        opacity: 0;
+    }
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--primary);
+    animation: particleBurst 1s ease-out forwards;
+}
+
+/* ===== LOADING SPINNER ===== */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner {
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* ===== PROGRESS BAR ===== */
+@keyframes progressBar {
+    from {
+        width: 0%;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+.progress-bar {
+    height: 4px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-full);
+    animation: progressBar 2s ease-out forwards;
+    box-shadow: var(--glow-primary);
+}
+
+/* ===== GLOW BORDER ===== */
+@keyframes glowBorder {
+    0% {
+        border-color: var(--primary);
+        box-shadow: 0 0 5px var(--primary-glow);
+    }
+    50% {
+        border-color: var(--accent);
+        box-shadow: 0 0 20px var(--primary-glow), 0 0 30px rgba(131, 56, 236, 0.5);
+    }
+    100% {
+        border-color: var(--primary);
+        box-shadow: 0 0 5px var(--primary-glow);
+    }
+}
+
+.glow-border {
+    animation: glowBorder 3s ease-in-out infinite;
+}
+
+/* ===== FLOATING ANIMATION ===== */
+@keyframes floating {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.floating {
+    animation: floating 3s ease-in-out infinite;
+}
+
+/* ===== CARD FLIP ===== */
+.flip-card {
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+
+/* ===== TILT ON HOVER ===== */
+.tilt-hover {
+    transition: transform 0.3s ease;
+}
+
+.tilt-hover:hover {
+    transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
+}
+
+/* ===== MAGNETIC BUTTON ===== */
+.magnetic-btn {
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+/* ===== SUCCESS CHECKMARK ===== */
+@keyframes checkmark {
+    0% {
+        stroke-dashoffset: 100;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.checkmark {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: checkmark 0.5s ease-out forwards;
+}
+
+/* ===== CONFETTI ===== */
+@keyframes confetti {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.confetti-piece {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: var(--primary);
+    animation: confetti 3s ease-out forwards;
+    pointer-events: none;
+}

@@ -1,0 +1,251 @@
+/* ============================================
+   RESPONSIVE DESIGN
+   Mobile-first approach
+   ============================================ */
+
+/* ===== TABLET (768px and below) ===== */
+@media (max-width: 768px) {
+    /* Typography */
+    .hero-title {
+        font-size: clamp(32px, 6vw, 48px);
+    }
+
+    .hero-subtitle {
+        font-size: 16px;
+    }
+
+    .section-title {
+        font-size: 24px;
+    }
+
+    /* Spacing */
+    .app-container {
+        padding: var(--spacing-sm);
+    }
+
+    .hero-section {
+        padding: var(--spacing-xl) 0;
+    }
+
+    .upload-section,
+    .result-card {
+        padding: var(--spacing-md);
+    }
+
+    /* Navigation */
+    .nav-content {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .logo-text {
+        font-size: 20px;
+    }
+
+    /* Hero */
+    .hero-3d-elements {
+        display: none;
+    }
+
+    .cta-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Upload Zone */
+    .upload-zone {
+        padding: var(--spacing-xl) var(--spacing-md);
+    }
+
+    .upload-icon-container {
+        width: 80px;
+        height: 80px;
+    }
+
+    /* Results Grid */
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Flashcards */
+    .flashcard-container {
+        grid-template-columns: 1fr;
+    }
+
+    /* File Preview */
+    .file-preview-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .btn-remove {
+        align-self: flex-end;
+    }
+
+    /* Footer */
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    /* Neural Core */
+    .neural-core {
+        width: 100px;
+        height: 100px;
+    }
+
+    .core-center {
+        width: 40px;
+        height: 40px;
+    }
+
+    .core-center svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Result Icons */
+    .result-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .result-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* ===== MOBILE (480px and below) ===== */
+@media (max-width: 480px) {
+    /* Even smaller adjustments */
+    .hero-title {
+        font-size: 28px;
+    }
+
+    .hero-subtitle {
+        font-size: 14px;
+    }
+
+    .section-title {
+        font-size: 20px;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+
+    .upload-section,
+    .result-card {
+        padding: var(--spacing-sm);
+    }
+
+    .upload-zone {
+        padding: var(--spacing-lg) var(--spacing-sm);
+    }
+
+    .cta-button,
+    .btn-primary {
+        font-size: 16px;
+        padding: 16px;
+    }
+
+    /* Reduce blur on mobile for performance */
+    .glass-panel {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* Disable 3D effects on very small screens */
+    .floating-card,
+    .orb {
+        display: none;
+    }
+
+    #bg-canvas {
+        display: none;
+    }
+
+    /* Simpler animations for performance */
+    * {
+        animation-duration: 0.3s !important;
+    }
+}
+
+/* ===== LARGE DESKTOP (1440px and above) ===== */
+@media (min-width: 1440px) {
+    .app-container {
+        max-width: 1600px;
+    }
+
+    .hero-title {
+        font-size: 80px;
+    }
+
+    .hero-subtitle {
+        font-size: 22px;
+    }
+
+    .section-title {
+        font-size: 36px;
+    }
+}
+
+/* ===== TOUCH DEVICES ===== */
+@media (hover: none) and (pointer: coarse) {
+    /* Remove hover effects on touch devices */
+    .glass-panel:hover,
+    .upload-zone:hover,
+    .quiz-option:hover,
+    .flashcard:hover,
+    .trick-item:hover,
+    .summary-point:hover {
+        transform: none;
+    }
+
+    /* Larger touch targets */
+    .btn-outline,
+    .btn-primary,
+    .cta-button {
+        min-height: 48px;
+    }
+
+    /* Disable cursor glow on touch */
+    .cursor-glow {
+        display: none;
+    }
+
+    /* Reduce particle density */
+    #particles-canvas {
+        opacity: 0.2;
+    }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .orb,
+    .floating-card,
+    .cursor-glow,
+    #particles-canvas {
+        display: none;
+    }
+}
+
+/* ===== HIGH CONTRAST MODE ===== */
+@media (prefers-contrast: high) {
+    :root {
+        --glass-border: rgba(255, 255, 255, 0.3);
+        --text-secondary: rgba(255, 255, 255, 0.9);
+        --text-muted: rgba(255, 255, 255, 0.7);
+    }
+
+    .glass-panel {
+        border-width: 2px;
+    }
+}

@@ -5,9 +5,9 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load .env from backend folder
-dotenv_path = Path(__file__).parent.parent / ".env"
-load_dotenv(dotenv_path=dotenv_path, override=True)
+# Load .env from backend folder (resolve so cwd does not matter)
+dotenv_path = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(dotenv_path=dotenv_path, override=True, encoding="utf-8-sig")
 
 from app.routes import upload, generate, content
 from app.services.ai_engine import get_ai_engine
