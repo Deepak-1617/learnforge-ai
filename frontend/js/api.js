@@ -6,7 +6,7 @@
     // Base URL - automatically detects if on Render or localhost
     baseURL: window.location.hostname === 'localhost' 
         ? 'http://localhost:8000/api'
-        : '/api',
+        : 'https://learnforge-ai-j5tx.onrender.com',
 
     // Check AI provider status
     async checkAIStatus() {

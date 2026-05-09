@@ -3,32 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LearnForge AI - Neural Learning System</title>
+    <title>LearnForge AI - Transform Documents Into Neural Learning</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- CSS -->
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/homepage.css">
     <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/responsive.css">
     
     <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
-    <!-- GSAP -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 </head>
-<body>
+<body class="homepage-body">
 
-    <!-- 3D Background Container -->
+    <!-- 3D Background -->
     <div id="background-container">
         <canvas id="bg-canvas"></canvas>
-        <canvas id="particles-canvas"></canvas>
         <div class="gradient-orbs">
             <div class="orb orb-1"></div>
             <div class="orb orb-2"></div>
@@ -36,15 +30,266 @@
         </div>
     </div>
 
-    <!-- Cursor Follower -->
+    <!-- Cursor Glow -->
     <div class="cursor-glow" id="cursor-glow"></div>
 
-    <!-- Main App Container -->
-    <div id="app" class="app-container">
+    <!-- Navigation -->
+    <nav class="homepage-nav">
+        <div class="nav-container">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2"/>
+                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </div>
+                <span class="logo-text">
+                    <span class="logo-main">LearnForge</span>
+                    <span class="logo-badge">AI</span>
+                </span>
+            </div>
+            <a href="app.html" class="nav-cta">
+                <span>Launch App</span>
+                <span class="nav-arrow">→</span>
+            </a>
+        </div>
+    </nav>
 
-        <!-- Navigation -->
-        <nav class="nav-bar glass-panel">
-            <div class="nav-content">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <!-- Floating 3D Elements -->
+            <div class="hero-floating">
+                <div class="float-card" style="--delay: 0s; top: 10%; left: 5%;">
+                    <div class="card-glow"></div>
+                    <span class="card-emoji">🧠</span>
+                </div>
+                <div class="float-card" style="--delay: 0.5s; top: 20%; right: 10%;">
+                    <div class="card-glow"></div>
+                    <span class="card-emoji">⚡</span>
+                </div>
+                <div class="float-card" style="--delay: 1s; bottom: 30%; left: 8%;">
+                    <div class="card-glow"></div>
+                    <span class="card-emoji">📚</span>
+                </div>
+                <div class="float-card" style="--delay: 1.5s; bottom: 20%; right: 15%;">
+                    <div class="card-glow"></div>
+                    <span class="card-emoji">🎯</span>
+                </div>
+            </div>
+
+            <!-- Hero Content -->
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>Powered by Groq AI • Ultra-Fast Neural Processing</span>
+                </div>
+                
+                <h1 class="hero-title">
+                    <span class="title-line">Transform Any Document Into</span>
+                    <span class="title-gradient">Interactive Learning</span>
+                    <span class="title-line">Experiences</span>
+                </h1>
+
+                <p class="hero-subtitle">
+                    Upload PDFs, DOCX, or TXT files and watch AI instantly generate quizzes, 
+                    flashcards, memory tricks, and intelligent summaries. 
+                    <strong>No sign-up required. Completely free.</strong>
+                </p>
+
+                <div class="hero-cta-group">
+                    <a href="app.html" class="btn-primary-hero">
+                        <div class="btn-content">
+                            <span class="btn-icon">🚀</span>
+                            <span class="btn-text">Start Learning Now</span>
+                        </div>
+                        <div class="btn-shine"></div>
+                    </a>
+                    <a href="#features" class="btn-secondary-hero">
+                        <span>See How It Works</span>
+                        <span class="btn-arrow">↓</span>
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">10MB</div>
+                        <div class="stat-label">Max File Size</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">File Formats</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">∞</div>
+                        <div class="stat-label">Free Usage</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-accent">Neural-Powered</span> Learning Tools
+                </h2>
+                <p class="section-subtitle">
+                    AI analyzes your documents and generates interactive content in seconds
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <!-- Feature 1: Quiz Generator -->
+                <div class="feature-card">
+                    <div class="feature-icon quiz-gradient">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M9 11L12 14L22 4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M21 12V19C21 20.1 20.1 21 19 21H5C3.9 21 3 20.1 3 19V5C3.9 3 4.9 3 5 3H16" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">AI Quiz Generator</h3>
+                    <p class="feature-description">
+                        Automatically generate multiple-choice questions with answers and explanations. 
+                        Test your knowledge instantly.
+                    </p>
+                    <ul class="feature-list">
+                        <li>✓ Auto-grading system</li>
+                        <li>✓ Detailed explanations</li>
+                        <li>✓ Progress tracking</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 2: Flashcards -->
+                <div class="feature-card">
+                    <div class="feature-icon flashcard-gradient">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M3 9H21M9 21V9" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Smart Flashcards</h3>
+                    <p class="feature-description">
+                        3D flip cards with key concepts and definitions. Perfect for memorization 
+                        and quick review sessions.
+                    </p>
+                    <ul class="feature-list">
+                        <li>✓ 3D flip animations</li>
+                        <li>✓ Swipe navigation</li>
+                        <li>✓ Mobile-friendly</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 3: Memory Tricks -->
+                <div class="feature-card">
+                    <div class="feature-icon tricks-gradient">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Memory Tricks</h3>
+                    <p class="feature-description">
+                        AI-powered mnemonics, acronyms, and memory techniques to help you 
+                        retain information longer.
+                    </p>
+                    <ul class="feature-list">
+                        <li>✓ Custom mnemonics</li>
+                        <li>✓ Visual associations</li>
+                        <li>✓ Proven techniques</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 4: AI Summary -->
+                <div class="feature-card">
+                    <div class="feature-icon summary-gradient">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z" stroke="currentColor" stroke-width="2"/>
+                            <path d="M14 2V8H20M16 13H8M16 17H8M10 9H8" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Intelligent Summaries</h3>
+                    <p class="feature-description">
+                        Get concise, well-structured summaries with key takeaways and 
+                        important highlights extracted by AI.
+                    </p>
+                    <ul class="feature-list">
+                        <li>✓ Key point extraction</li>
+                        <li>✓ Structured format</li>
+                        <li>✓ Typewriter effect</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="how-container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    How It <span class="title-accent">Works</span>
+                </h2>
+                <p class="section-subtitle">Three simple steps to supercharge your learning</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <div class="step-icon">📄</div>
+                    <h3 class="step-title">Upload Document</h3>
+                    <p class="step-description">
+                        Drag and drop any PDF, DOCX, or TXT file. 
+                        AI scans and extracts the content instantly.
+                    </p>
+                </div>
+
+                <div class="step-arrow">→</div>
+
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <div class="step-icon">⚡</div>
+                    <h3 class="step-title">AI Processing</h3>
+                    <p class="step-description">
+                        Neural engine analyzes your document and generates 
+                        quizzes, flashcards, tricks, and summaries.
+                    </p>
+                </div>
+
+                <div class="step-arrow">→</div>
+
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <div class="step-icon">🎓</div>
+                    <h3 class="step-title">Start Learning</h3>
+                    <p class="step-description">
+                        Interact with AI-generated content. Test yourself, 
+                        review flashcards, and master the material.
+                    </p>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <a href="app.html" class="btn-primary-hero">
+                    <div class="btn-content">
+                        <span class="btn-icon">✨</span>
+                        <span class="btn-text">Try It Now - It's Free</span>
+                    </div>
+                    <div class="btn-shine"></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="homepage-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
                 <div class="logo-container">
                     <div class="logo-icon">
                         <svg viewBox="0 0 24 24" fill="none">
@@ -58,264 +303,94 @@
                         <span class="logo-badge">AI</span>
                     </span>
                 </div>
-                <div class="nav-status">
-                    <div class="ai-status" id="ai-status">
-                        <div class="status-dot pulse"></div>
-                        <span id="status-text">Initializing Neural Network...</span>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Hero Section -->
-        <section class="hero-section" id="hero">
-            <div class="hero-content">
-                <div class="hero-badge" data-aos="fade-up">
-                    <span class="badge-pulse"></span>
-                    <span>Powered by Gemini AI Neural Engine</span>
-                </div>
-                <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
-                    <span class="title-line">Transform Documents Into</span>
-                    <span class="title-gradient">Neural Learning Experiences</span>
-                </h1>
-                <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
-                    Upload any PDF, DOCX, or TXT file and watch AI generate interactive quizzes, 
-                    flashcards, memory tricks, and intelligent summaries in real-time.
-                </p>
-                <button class="cta-button" data-aos="fade-up" data-aos-delay="300" onclick="scrollToUpload()">
-                    <span class="btn-text">Start Neural Processing</span>
-                    <span class="btn-icon">→</span>
-                    <span class="btn-glow"></span>
-                </button>
-            </div>
-            
-            <!-- Floating 3D Elements -->
-            <div class="hero-3d-elements">
-                <div class="floating-card" style="--delay: 0s;">🧠</div>
-                <div class="floating-card" style="--delay: 0.5s;">⚡</div>
-                <div class="floating-card" style="--delay: 1s;">🎯</div>
-                <div class="floating-card" style="--delay: 1.5s;">🚀</div>
-            </div>
-        </section>
-
-        <!-- Upload Section -->
-        <section class="upload-section glass-panel" id="upload-section" data-aos="fade-up">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <span class="title-icon">📄</span>
-                    Neural Document Upload
-                </h2>
-                <p class="section-subtitle">
-                    Supported: PDF, DOCX, TXT • Max 10MB • AI-powered extraction
-                </p>
+                <p class="footer-tagline">Transform documents into interactive learning experiences</p>
             </div>
 
-            <!-- Upload Zone -->
-            <div class="upload-zone" id="upload-zone">
-                <div class="upload-zone-content">
-                    <div class="upload-icon-container">
-                        <div class="upload-scan-line"></div>
-                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none">
-                            <path d="M21 15V19C21 20.1 20.1 21 19 21H5C3.9 21 3 20.1 3 19V15" stroke="currentColor" stroke-width="2"/>
-                            <path d="M17 8L12 3L7 8" stroke="currentColor" stroke-width="2"/>
-                            <path d="M12 3V15" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <h3 class="upload-title">Drop Your Document Here</h3>
-                    <p class="upload-text">or click to browse files</p>
-                    <input type="file" id="file-input" accept=".pdf,.docx,.txt" hidden>
-                    <button class="btn-outline" id="browse-btn">
-                        <span>Browse Files</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- File Preview Panel -->
-            <div class="file-preview-panel hidden" id="file-preview">
-                <div class="file-preview-header">
-                    <div class="file-icon-large">📄</div>
-                    <div class="file-info">
-                        <h4 id="file-name" class="file-name">Document.pdf</h4>
-                        <p id="file-meta" class="file-meta">2.5 MB • Uploaded just now</p>
-                    </div>
-                    <button class="btn-remove" id="remove-file">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="file-preview-content">
-                    <h5 class="preview-label">Document Preview</h5>
-                    <div class="preview-text-container">
-                        <p id="preview-text" class="preview-text">Loading preview...</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Generate Button -->
-            <button class="btn-primary hidden" id="generate-btn">
-                <div class="btn-primary-content">
-                    <span class="btn-icon">✨</span>
-                    <span class="btn-text">Activate Neural Processing</span>
-                    <div class="btn-particles"></div>
-                </div>
-                <div class="btn-shine"></div>
-            </button>
-
-            <!-- AI Processing Loader -->
-            <div class="ai-loader hidden" id="ai-loader">
-                <div class="neural-core">
-                    <div class="core-ring core-ring-1"></div>
-                    <div class="core-ring core-ring-2"></div>
-                    <div class="core-ring core-ring-3"></div>
-                    <div class="core-center">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </div>
-                </div>
-                <h3 class="loader-title">Neural Processing Active</h3>
-                <p class="loader-subtitle">AI is analyzing your document...</p>
-                <div class="processing-steps">
-                    <div class="step active" id="step-1">
-                        <div class="step-dot"></div>
-                        <span>Extracting Knowledge</span>
-                    </div>
-                    <div class="step" id="step-2">
-                        <div class="step-dot"></div>
-                        <span>Generating Insights</span>
-                    </div>
-                    <div class="step" id="step-3">
-                        <div class="step-dot"></div>
-                        <span>Finalizing Results</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Results Section -->
-        <section class="results-section hidden" id="results-section">
-            <div class="results-header" data-aos="fade-up">
-                <h2 class="section-title">
-                    <span class="title-icon">🎯</span>
-                    Neural Learning Results
-                </h2>
-                <p class="section-subtitle">AI-generated insights from your document</p>
-            </div>
-
-            <!-- Results Grid -->
-            <div class="results-grid">
-                
-                <!-- Quiz Card -->
-                <div class="result-card glass-panel" id="quiz-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="result-card-header">
-                        <div class="result-icon quiz-icon">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M9 11L12 14L22 4" stroke="currentColor" stroke-width="2"/>
-                                <path d="M21 12V19C21 20.1 20.1 21 19 21H5C3.9 21 3 20.1 3 19V5C3.9 3 4.9 3 5 3H16" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="result-header-text">
-                            <h3 class="result-title">AI Quiz Generator</h3>
-                            <p class="result-count" id="quiz-count">0 questions</p>
-                        </div>
-                    </div>
-                    <div class="result-content" id="quiz-content">
-                        <!-- Quiz items will be injected here -->
-                    </div>
-                </div>
-
-                <!-- Flashcards Card -->
-                <div class="result-card glass-panel" id="flashcards-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="result-card-header">
-                        <div class="result-icon flashcard-icon">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
-                                <path d="M3 9H21M9 21V9" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="result-header-text">
-                            <h3 class="result-title">Smart Flashcards</h3>
-                            <p class="result-count" id="flashcard-count">0 cards</p>
-                        </div>
-                    </div>
-                    <div class="result-content flashcard-container" id="flashcard-content">
-                        <!-- Flashcards will be injected here -->
-                    </div>
-                </div>
-
-                <!-- Memory Tricks Card -->
-                <div class="result-card glass-panel" id="tricks-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="result-card-header">
-                        <div class="result-icon tricks-icon">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="result-header-text">
-                            <h3 class="result-title">Memory Tricks</h3>
-                            <p class="result-count" id="tricks-count">0 tricks</p>
-                        </div>
-                    </div>
-                    <div class="result-content" id="tricks-content">
-                        <!-- Tricks will be injected here -->
-                    </div>
-                </div>
-
-                <!-- Summary Card -->
-                <div class="result-card glass-panel full-width" id="summary-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="result-card-header">
-                        <div class="result-icon summary-icon">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z" stroke="currentColor" stroke-width="2"/>
-                                <path d="M14 2V8H20M16 13H8M16 17H8M10 9H8" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="result-header-text">
-                            <h3 class="result-title">AI Summary</h3>
-                            <p class="result-count" id="summary-word-count">0 words</p>
-                        </div>
-                    </div>
-                    <div class="result-content" id="summary-content">
-                        <!-- Summary will be injected here -->
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="footer-content">
+            <div class="footer-bottom">
                 <p class="footer-text">
-                    Built with ❤️ using <span class="highlight">Gemini AI</span> • 
-                    <a href="#" class="footer-link">Documentation</a> • 
-                    <a href="#" class="footer-link">GitHub</a>
+                    Built with ❤️ using <span class="highlight">Groq AI</span> • 
+                    Completely Free • No Sign-up Required
                 </p>
-                <div class="footer-badge">
-                    <span class="pulse-dot"></span>
-                    Neural Engine Online
+                <div class="footer-links">
+                    <a href="app.html">Launch App</a>
+                    <span>•</span>
+                    <a href="#features">Features</a>
+                    <span>•</span>
+                    <a href="#how-it-works">How It Works</a>
                 </div>
             </div>
-        </footer>
-
-    </div>
+        </div>
+    </footer>
 
     <!-- Scripts -->
-    <script src="js/utils/dom.js"></script>
-    <script src="js/utils/helpers.js"></script>
-    <script src="js/state.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/effects/background3d.js"></script>
-    <script src="js/effects/particles.js"></script>
-    <script src="js/effects/interactions.js"></script>
-    <script src="js/effects/loadingEffects.js"></script>
-    <script src="js/components/FileUpload.js"></script>
-    <script src="js/components/QuizCard.js"></script>
-    <script src="js/components/FlashCard.js"></script>
-    <script src="js/components/TrickCard.js"></script>
-    <script src="js/components/SummaryPanel.js"></script>
-    <script src="js/app.js"></script>
+    <script>
+        // Simple 3D background
+        function initBackground() {
+            const canvas = document.getElementById('bg-canvas');
+            if (!canvas || !window.THREE) return;
 
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            camera.position.z = 5;
+
+            const geometry = new THREE.IcosahedronGeometry(2, 3);
+            const material = new THREE.MeshNormalMaterial({ wireframe: true, transparent: true, opacity: 0.3 });
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            let mouseX = 0, mouseY = 0;
+            document.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+                mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                mesh.rotation.x += 0.001;
+                mesh.rotation.y += 0.002;
+                mesh.position.x += (mouseX * 0.5 - mesh.position.x) * 0.05;
+                mesh.position.y += (mouseY * 0.5 - mesh.position.y) * 0.05;
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        // Cursor glow
+        function initCursorGlow() {
+            const glow = document.getElementById('cursor-glow');
+            document.addEventListener('mousemove', (e) => {
+                glow.style.left = e.clientX + 'px';
+                glow.style.top = e.clientY + 'px';
+                glow.style.opacity = '1';
+            });
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Init on load
+        window.addEventListener('DOMContentLoaded', () => {
+            initBackground();
+            initCursorGlow();
+        });
+    </script>
 </body>
 </html>
