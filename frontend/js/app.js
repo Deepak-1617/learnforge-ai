@@ -166,7 +166,7 @@
 
 // Global scroll to upload function
 function scrollToUpload() {
-    DOM.scrollTo('upload-section', 80);
+    DOM.scrollTo('upload-panel', 80);
 }
 
 // Start the app when DOM is ready

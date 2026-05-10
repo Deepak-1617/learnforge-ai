@@ -5,68 +5,83 @@
 
 /* ===== CSS VARIABLES ===== */
 :root {
-    /* Colors - Cyberpunk Palette */
-    --primary: #00f0ff;
-    --primary-glow: rgba(0, 240, 255, 0.5);
-    --secondary: #ff006e;
-    --accent: #8338ec;
-    --success: #06ffa5;
-    --warning: #ffbe0b;
-    
+    /* Cognixar Color System */
+    --primary: #00F0FF;
+    --primary-glow: rgba(0, 240, 255, 0.4);
+    --secondary: #8338EC;
+    --accent: #FF006E;
+    --success: #06FFA5;
+    --warning: #FFB800;
+
     /* Backgrounds */
-    --bg-primary: #0a0e27;
-    --bg-secondary: #141b3d;
+    --bg-primary: #0A0E1A;
+    --bg-secondary: #0F1528;
     --bg-surface: rgba(255, 255, 255, 0.03);
-    --bg-surface-hover: rgba(255, 255, 255, 0.08);
-    
-    /* Glass Effect */
-    --glass-bg: rgba(20, 27, 61, 0.4);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    --blur: blur(12px);
-    
+    --bg-surface-hover: rgba(255, 255, 255, 0.07);
+
+    /* Glass */
+    --glass-bg: rgba(15, 21, 40, 0.6);
+    --glass-border: rgba(0, 240, 255, 0.1);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --blur: blur(16px);
+
     /* Text */
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.7);
-    --text-muted: rgba(255, 255, 255, 0.5);
-    
+    --text-muted: rgba(255, 255, 255, 0.4);
+
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, #00f0ff 0%, #8338ec 100%);
-    --gradient-secondary: linear-gradient(135deg, #ff006e 0%, #ffbe0b 100%);
-    --gradient-success: linear-gradient(135deg, #06ffa5 0%, #00f0ff 100%);
-    
+    --gradient-primary: linear-gradient(135deg, #00F0FF 0%, #8338EC 100%);
+    --gradient-secondary: linear-gradient(135deg, #FF006E 0%, #FFB800 100%);
+    --gradient-success: linear-gradient(135deg, #06FFA5 0%, #00F0FF 100%);
+
     /* Shadows */
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
-    --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.5);
-    
-    /* Glow Effects */
-    --glow-primary: 0 0 20px var(--primary-glow);
-    --glow-secondary: 0 0 20px rgba(255, 0, 110, 0.5);
-    --glow-success: 0 0 20px rgba(6, 255, 165, 0.5);
-    
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.6);
+
+    /* Glow */
+    --glow-primary: 0 0 20px rgba(0, 240, 255, 0.4);
+    --glow-secondary: 0 0 20px rgba(131, 56, 236, 0.4);
+    --glow-success: 0 0 20px rgba(6, 255, 165, 0.4);
+
     /* Spacing */
     --spacing-xs: 8px;
     --spacing-sm: 16px;
     --spacing-md: 24px;
     --spacing-lg: 32px;
     --spacing-xl: 48px;
-    --spacing-2xl: 64px;
-    
+    --spacing-2xl: 80px;
+
     /* Border Radius */
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
     --radius-xl: 24px;
     --radius-full: 9999px;
-    
+
     /* Transitions */
     --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Light Mode */
+[data-theme="light"] {
+    --primary: #4f46e5;
+    --primary-glow: rgba(79, 70, 229, 0.4);
+    --bg-primary: #f0f4ff;
+    --bg-secondary: #e8eeff;
+    --bg-surface: rgba(255, 255, 255, 0.8);
+    --bg-surface-hover: rgba(255, 255, 255, 1);
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(79, 70, 229, 0.15);
+    --text-primary: #0f172a;
+    --text-secondary: rgba(15, 23, 42, 0.7);
+    --text-muted: rgba(15, 23, 42, 0.4);
+    --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #8338EC 100%);
+}
 /* ===== GLOBAL RESET ===== */
 *,
 *::before,

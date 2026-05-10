@@ -213,7 +213,7 @@
         DOM.hide('results-section');
 
         // Scroll to top
-        DOM.scrollTo('upload-section', 80);
+        DOM.scrollTo('upload-panel', 80);
     },
 
     // Start content generation

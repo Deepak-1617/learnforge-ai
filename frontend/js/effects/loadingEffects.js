@@ -9,7 +9,7 @@
         uploadZone.classList.add('uploading');
 
         // Create scanning effect
-        const scanLine = uploadZone.querySelector('.upload-scan-line');
+        const scanLine = uploadZone.querySelector('.upload-scan');
         if (scanLine) {
             scanLine.style.animation = 'scan-line 1s linear infinite';
         }

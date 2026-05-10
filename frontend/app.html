@@ -1,321 +1,3060 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LearnForge AI - Neural Learning System</title>
-    
-    <!-- Fonts -->
+    <title>Cognixar — Neural Learning System</title>
+    <meta name="description" content="AI-powered document learning platform">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    
-    <!-- Three.js -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
-    <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+    /* ============================================
+       COGNIXAR APP - ULTRA PREMIUM UI
+    ============================================ */
+
+    :root {
+        --cyan: #00F0FF;
+        --cyan-dim: rgba(0,240,255,0.15);
+        --purple: #8338EC;
+        --pink: #FF006E;
+        --green: #06FFA5;
+        --gold: #FFB800;
+        --bg: #030712;
+        --bg2: #0A0F1E;
+        --bg3: #0D1428;
+        --surface: rgba(255,255,255,0.02);
+        --surface2: rgba(255,255,255,0.04);
+        --surface3: rgba(255,255,255,0.06);
+        --border: rgba(0,240,255,0.08);
+        --border2: rgba(0,240,255,0.15);
+        --border3: rgba(0,240,255,0.3);
+        --text: #FFFFFF;
+        --text2: rgba(255,255,255,0.6);
+        --text3: rgba(255,255,255,0.3);
+        --gradient: linear-gradient(135deg, #00F0FF 0%, #8338EC 100%);
+        --gradient2: linear-gradient(135deg, #FF006E 0%, #FFB800 100%);
+        --gradient3: linear-gradient(135deg, #06FFA5 0%, #00F0FF 100%);
+        --glow: 0 0 30px rgba(0,240,255,0.3);
+        --glow2: 0 0 30px rgba(131,56,236,0.3);
+        --font: 'Inter', sans-serif;
+        --display: 'Space Grotesk', sans-serif;
+        --mono: 'JetBrains Mono', monospace;
+        --radius: 16px;
+        --radius2: 24px;
+    }
+
+    [data-theme="light"] {
+        --bg: #F0F4FF;
+        --bg2: #E8EEFF;
+        --bg3: #DDE5FF;
+        --surface: rgba(255,255,255,0.7);
+        --surface2: rgba(255,255,255,0.85);
+        --surface3: rgba(255,255,255,0.95);
+        --border: rgba(79,70,229,0.08);
+        --border2: rgba(79,70,229,0.15);
+        --border3: rgba(79,70,229,0.3);
+        --text: #0F172A;
+        --text2: rgba(15,23,42,0.6);
+        --text3: rgba(15,23,42,0.3);
+        --cyan: #4f46e5;
+        --cyan-dim: rgba(79,70,229,0.1);
+        --gradient: linear-gradient(135deg, #4f46e5 0%, #8338EC 100%);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; overflow-x:hidden; }
+
+    body {
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+        min-height: 100vh;
+        cursor: none;
+    }
+
+    /* ===== CANVAS ===== */
+    #app-canvas {
+        position: fixed;
+        top:0; left:0;
+        width:100%; height:100%;
+        z-index: 0;
+        opacity: 0.5;
+    }
+
+    /* ===== MESH GRADIENTS ===== */
+    .mesh-bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .mesh {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.25;
+        animation: meshMove 30s ease-in-out infinite;
+    }
+
+    .mesh-1 {
+        width:600px; height:600px;
+        background: radial-gradient(circle, rgba(0,240,255,0.4) 0%, transparent 70%);
+        top:-200px; right:-200px;
+        animation-delay: 0s;
+    }
+
+    .mesh-2 {
+        width:500px; height:500px;
+        background: radial-gradient(circle, rgba(131,56,236,0.5) 0%, transparent 70%);
+        bottom:-150px; left:-150px;
+        animation-delay: 10s;
+    }
+
+    .mesh-3 {
+        width:300px; height:300px;
+        background: radial-gradient(circle, rgba(255,0,110,0.3) 0%, transparent 70%);
+        top:40%; left:30%;
+        animation-delay: 20s;
+    }
+
+    @keyframes meshMove {
+        0%,100% { transform:translate(0,0) scale(1); }
+        33% { transform:translate(60px,-60px) scale(1.1); }
+        66% { transform:translate(-40px,40px) scale(0.9); }
+    }
+
+    /* ===== GRID ===== */
+    .grid-bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background-image:
+            linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none;
+    }
+
+    /* ===== SCAN LINE ===== */
+    .scanline {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 3px;
+        background: linear-gradient(90deg, transparent, rgba(0,240,255,0.5), transparent);
+        box-shadow: 0 0 20px rgba(0,240,255,0.3);
+        animation: scanDown 8s linear infinite;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    @keyframes scanDown {
+        0% { top: 0; opacity: 1; }
+        90% { opacity: 1; }
+        100% { top: 100vh; opacity: 0; }
+    }
+
+    /* ===== CUSTOM CURSOR ===== */
+    .cursor-dot {
+        position: fixed;
+        width: 8px; height: 8px;
+        background: var(--cyan);
+        border-radius: 50%;
+        z-index: 10001;
+        pointer-events: none;
+        transform: translate(-50%,-50%);
+        box-shadow: 0 0 10px var(--cyan);
+        transition: transform 0.1s;
+    }
+
+    .cursor-ring {
+        position: fixed;
+        width: 40px; height: 40px;
+        border: 1px solid rgba(0,240,255,0.5);
+        border-radius: 50%;
+        z-index: 10000;
+        pointer-events: none;
+        transform: translate(-50%,-50%);
+        transition: all 0.12s ease-out;
+    }
+
+    body.hovering .cursor-ring {
+        width: 60px; height: 60px;
+        border-color: var(--pink);
+        background: rgba(255,0,110,0.05);
+    }
+
+    /* ===== PAGE WRAPPER ===== */
+    .app-page {
+        position: relative;
+        z-index: 10;
+        min-height: 100vh;
+    }
+
+    /* ===== NAVIGATION ===== */
+    .app-nav {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        height: 68px;
+        background: rgba(3,7,18,0.8);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border2);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        padding: 0 32px;
+    }
+
+    [data-theme="light"] .app-nav {
+        background: rgba(240,244,255,0.85);
+    }
+
+    .app-nav-inner {
+        width: 100%;
+        max-width: 1600px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    /* Logo */
+    .app-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: var(--text);
+    }
+
+    .app-logo-icon {
+        width: 36px; height: 36px;
+        background: var(--gradient);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--glow);
+        position: relative;
+    }
+
+    .app-logo-icon svg {
+        width: 20px; height: 20px;
+        color: white;
+    }
+
+    .logo-ring {
+        position: absolute;
+        inset: -4px;
+        border-radius: 14px;
+        border: 1px solid var(--cyan);
+        opacity: 0;
+        animation: logoPing 3s ease-in-out infinite;
+    }
+
+    @keyframes logoPing {
+        0%,100% { opacity:0; transform:scale(1); }
+        50% { opacity:0.4; transform:scale(1.1); }
+    }
+
+    .app-logo-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .app-logo-name {
+        font-family: var(--display);
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .app-logo-sub {
+        font-size: 9px;
+        font-family: var(--mono);
+        color: var(--text3);
+        letter-spacing: 2px;
+    }
+
+    /* Nav Center */
+    .app-nav-center {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+    }
+
+    /* AI Status */
+    .ai-status-badge {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 16px;
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        border-radius: 100px;
+        font-size: 13px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .ai-status-badge.online {
+        border-color: rgba(6,255,165,0.3);
+        background: rgba(6,255,165,0.05);
+    }
+
+    .ai-status-badge.offline {
+        border-color: rgba(255,0,110,0.3);
+        background: rgba(255,0,110,0.05);
+    }
+
+    .status-light {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: var(--text3);
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .status-light.online {
+        background: var(--green);
+        box-shadow: 0 0 8px var(--green);
+        animation: statusPulse 2s infinite;
+    }
+
+    .status-light.offline {
+        background: var(--pink);
+        box-shadow: 0 0 8px var(--pink);
+    }
+
+    @keyframes statusPulse {
+        0%,100% { opacity:1; transform:scale(1); }
+        50% { opacity:0.5; transform:scale(1.4); }
+    }
+
+    .status-ring-outer {
+        position: absolute;
+        inset: -4px;
+        border: 1px solid var(--green);
+        border-radius: 50%;
+        opacity: 0;
+        animation: ringFade 2s infinite;
+    }
+
+    @keyframes ringFade {
+        0% { opacity:0.8; transform:scale(1); }
+        100% { opacity:0; transform:scale(2.5); }
+    }
+
+    #status-text {
+        font-size: 12px;
+        font-family: var(--mono);
+        color: var(--text2);
+    }
+
+    /* Nav Right */
+    .app-nav-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .theme-btn {
+        width: 36px; height: 36px;
+        border: 1px solid var(--border2);
+        background: var(--surface);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text2);
+        transition: all 0.2s;
+        cursor: none;
+    }
+
+    .theme-btn:hover {
+        border-color: var(--cyan);
+        color: var(--cyan);
+    }
+
+    .theme-btn svg { width:16px; height:16px; }
+    [data-theme="dark"] .icon-sun { display:block; }
+    [data-theme="dark"] .icon-moon { display:none; }
+    [data-theme="light"] .icon-sun { display:none; }
+    [data-theme="light"] .icon-moon { display:block; }
+
+    .home-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 18px;
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        border-radius: 10px;
+        color: var(--text2);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .home-btn:hover {
+        border-color: var(--border3);
+        color: var(--text);
+    }
+
+    /* ===== MAIN LAYOUT ===== */
+    .app-main {
+        padding-top: 68px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* ===== HERO AREA ===== */
+    .app-hero {
+        padding: 60px 32px 40px;
+        text-align: center;
+        position: relative;
+    }
+
+    .app-hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 16px;
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        border-radius: 100px;
+        font-size: 11px;
+        font-family: var(--mono);
+        color: var(--text2);
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+
+    .hero-dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: var(--cyan);
+        box-shadow: 0 0 8px var(--cyan);
+        animation: statusPulse 2s infinite;
+    }
+
+    .app-hero-title {
+        font-family: var(--display);
+        font-size: clamp(32px, 5vw, 60px);
+        font-weight: 900;
+        letter-spacing: -2px;
+        line-height: 1.05;
+        margin-bottom: 16px;
+    }
+
+    .app-hero-title .gradient {
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .app-hero-sub {
+        font-size: 16px;
+        color: var(--text2);
+        max-width: 500px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    /* ===== WORKSPACE LAYOUT ===== */
+    .workspace {
+        flex: 1;
+        padding: 0 32px 60px;
+        max-width: 1600px;
+        margin: 0 auto;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 420px 1fr;
+        gap: 24px;
+        align-items: start;
+    }
+
+    /* ===== LEFT PANEL ===== */
+    .left-panel {
+        position: sticky;
+        top: 88px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* ===== GLASS PANEL BASE ===== */
+    .glass-panel {
+        background: rgba(13,20,40,0.6);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border2);
+        border-radius: var(--radius2);
+        overflow: hidden;
+        position: relative;
+        transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    [data-theme="light"] .glass-panel {
+        background: rgba(255,255,255,0.7);
+    }
+
+    .glass-panel::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+        opacity: 0.3;
+    }
+
+    .glass-panel:hover {
+        border-color: var(--border3);
+        box-shadow: 0 16px 60px rgba(0,0,0,0.4), var(--glow);
+    }
+
+    /* Panel Header */
+    .panel-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .panel-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--display);
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .panel-icon {
+        width: 32px; height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+    }
+
+    .panel-icon.cyan { background: rgba(0,240,255,0.1); border: 1px solid rgba(0,240,255,0.2); }
+    .panel-icon.purple { background: rgba(131,56,236,0.1); border: 1px solid rgba(131,56,236,0.2); }
+
+    .panel-tag {
+        font-size: 10px;
+        font-family: var(--mono);
+        color: var(--text3);
+        letter-spacing: 1px;
+        padding: 4px 10px;
+        background: var(--surface);
+        border-radius: 100px;
+        border: 1px solid var(--border);
+    }
+
+    /* Panel Body */
+    .panel-body {
+        padding: 24px;
+    }
+
+    /* ===== UPLOAD PANEL ===== */
+    /* Upload Zone */
+    .upload-zone {
+        border: 2px dashed var(--border2);
+        border-radius: var(--radius);
+        padding: 40px 20px;
+        text-align: center;
+        position: relative;
+        cursor: none;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .upload-zone::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: var(--gradient);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .upload-zone:hover,
+    .upload-zone.drag-over {
+        border-color: var(--cyan);
+        box-shadow: 0 0 30px rgba(0,240,255,0.15);
+    }
+
+    .upload-zone:hover::before,
+    .upload-zone.drag-over::before {
+        opacity: 0.04;
+    }
+
+    .upload-zone.drag-over {
+        transform: scale(1.02);
+        border-style: solid;
+    }
+
+    /* Upload Scan Effect */
+    .upload-scan {
+        position: absolute;
+        top: -100%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            to bottom,
+            transparent 0%,
+            rgba(0,240,255,0.05) 40%,
+            rgba(0,240,255,0.1) 50%,
+            rgba(0,240,255,0.05) 60%,
+            transparent 100%
+        );
+        animation: uploadScan 3s ease-in-out infinite;
+        pointer-events: none;
+    }
+
+    @keyframes uploadScan {
+        0% { top: -100%; }
+        100% { top: 100%; }
+    }
+
+    .upload-icon-wrap {
+        position: relative;
+        width: 72px; height: 72px;
+        margin: 0 auto;
+    }
+
+    .upload-icon-bg {
+        width: 72px; height: 72px;
+        border-radius: 20px;
+        background: rgba(0,240,255,0.08);
+        border: 1px solid rgba(0,240,255,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        position: relative;
+        z-index: 1;
+        transition: all 0.3s ease;
+    }
+
+    .upload-zone:hover .upload-icon-bg {
+        background: rgba(0,240,255,0.12);
+        box-shadow: 0 0 30px rgba(0,240,255,0.2);
+    }
+
+    .upload-icon-ring {
+        position: absolute;
+        inset: -8px;
+        border: 1px solid rgba(0,240,255,0.2);
+        border-radius: 28px;
+        animation: iconRing 3s ease-in-out infinite;
+    }
+
+    @keyframes iconRing {
+        0%,100% { opacity:0.3; transform:scale(1); }
+        50% { opacity:0.6; transform:scale(1.05); }
+    }
+
+    .upload-title {
+        font-family: var(--display);
+        font-size: 18px;
+        font-weight: 700;
+        position: relative;
+        z-index: 1;
+    }
+
+    .upload-subtitle {
+        font-size: 13px;
+        color: var(--text3);
+        position: relative;
+        z-index: 1;
+    }
+
+    .upload-formats {
+        display: flex;
+        gap: 8px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .format-badge {
+        padding: 4px 10px;
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        border-radius: 100px;
+        font-size: 11px;
+        font-family: var(--mono);
+        color: var(--cyan);
+        font-weight: 600;
+    }
+
+    #file-input { display: none; }
+
+    .browse-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 24px;
+        background: transparent;
+        border: 1px solid var(--border2);
+        border-radius: 10px;
+        color: var(--text2);
+        font-size: 13px;
+        font-weight: 600;
+        font-family: var(--font);
+        cursor: none;
+        transition: all 0.2s;
+        position: relative;
+        z-index: 1;
+    }
+
+    .browse-btn:hover {
+        border-color: var(--cyan);
+        color: var(--cyan);
+        background: var(--cyan-dim);
+    }
+
+    /* File Preview */
+    .file-preview {
+        display: none;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .file-preview.show { display: flex; }
+
+    .file-info-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px;
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        border-radius: var(--radius);
+    }
+
+    .file-type-icon {
+        width: 48px; height: 48px;
+        border-radius: 12px;
+        background: var(--gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        flex-shrink: 0;
+        box-shadow: var(--glow);
+    }
+
+    .file-details {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .file-name {
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 4px;
+    }
+
+    .file-meta {
+        font-size: 11px;
+        color: var(--text3);
+        font-family: var(--mono);
+    }
+
+    .file-remove {
+        width: 32px; height: 32px;
+        border: 1px solid var(--border2);
+        background: transparent;
+        border-radius: 8px;
+        color: var(--text3);
+        cursor: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+    }
+
+    .file-remove:hover {
+        background: rgba(255,0,110,0.1);
+        border-color: var(--pink);
+        color: var(--pink);
+        transform: rotate(90deg);
+    }
+
+    .file-remove svg { width:14px; height:14px; }
+
+    /* File Preview Text */
+    .preview-box {
+        padding: 14px 16px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        max-height: 120px;
+        overflow-y: auto;
+    }
+
+    .preview-label {
+        font-size: 10px;
+        font-family: var(--mono);
+        color: var(--text3);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .preview-text {
+        font-size: 12px;
+        color: var(--text2);
+        line-height: 1.6;
+        font-family: var(--mono);
+    }
+
+    /* ===== GENERATE BUTTON ===== */
+    .generate-btn {
+        display: none;
+        width: 100%;
+        padding: 18px 24px;
+        background: var(--gradient);
+        border: none;
+        border-radius: var(--radius);
+        color: white;
+        font-family: var(--display);
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        cursor: none;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 30px rgba(0,240,255,0.25);
+        margin-top: 8px;
+    }
+
+    .generate-btn.show { display: block; }
+
+    .generate-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 50px rgba(0,240,255,0.4);
+    }
+
+    .generate-btn-inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .generate-btn-shine {
+        position: absolute;
+        top:0; left:-100%;
+        width:100%; height:100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: btnShine 4s infinite 2s;
+    }
+
+    @keyframes btnShine {
+        0% { left:-100%; }
+        30%,100% { left:100%; }
+    }
+
+    /* ===== AI PROCESSING LOADER ===== */
+    .ai-loader {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 32px;
+        text-align: center;
+    }
+
+    .ai-loader.show { display: flex; }
+
+    /* Neural Core Animation */
+    .neural-core {
+        position: relative;
+        width: 120px; height: 120px;
+    }
+
+    .core-orbit {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        border: 1px solid transparent;
+    }
+
+    .orbit-1 {
+        border-color: rgba(0,240,255,0.4);
+        animation: orbit1 3s linear infinite;
+    }
+
+    .orbit-2 {
+        inset: 15px;
+        border-color: rgba(131,56,236,0.4);
+        animation: orbit2 2s linear infinite reverse;
+    }
+
+    .orbit-3 {
+        inset: 30px;
+        border-color: rgba(255,0,110,0.4);
+        animation: orbit3 4s linear infinite;
+    }
+
+    @keyframes orbit1 { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+    @keyframes orbit2 { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+    @keyframes orbit3 { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+
+    .orbit-1::before,
+    .orbit-2::before,
+    .orbit-3::before {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 6px; height: 6px;
+        border-radius: 50%;
+    }
+
+    .orbit-1::before { background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+    .orbit-2::before { background: var(--purple); box-shadow: 0 0 10px var(--purple); }
+    .orbit-3::before { background: var(--pink); box-shadow: 0 0 10px var(--pink); }
+
+    .core-center {
+        position: absolute;
+        top:50%; left:50%;
+        transform: translate(-50%,-50%);
+        width: 40px; height: 40px;
+        background: var(--gradient);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 30px rgba(0,240,255,0.5);
+        animation: corePulse 2s ease-in-out infinite;
+    }
+
+    .core-center svg { width:20px; height:20px; color:white; }
+
+    @keyframes corePulse {
+        0%,100% { transform:translate(-50%,-50%) scale(1); box-shadow:0 0 30px rgba(0,240,255,0.5); }
+        50% { transform:translate(-50%,-50%) scale(1.1); box-shadow:0 0 50px rgba(0,240,255,0.8); }
+    }
+
+    .loader-title {
+        font-family: var(--display);
+        font-size: 18px;
+        font-weight: 700;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .loader-sub {
+        font-size: 13px;
+        color: var(--text2);
+        font-family: var(--mono);
+    }
+
+    /* Processing Steps */
+    .processing-steps {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .proc-step {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-size: 12px;
+        font-family: var(--mono);
+        color: var(--text3);
+        transition: all 0.3s ease;
+    }
+
+    .proc-step.active {
+        border-color: rgba(0,240,255,0.3);
+        color: var(--text);
+        background: rgba(0,240,255,0.05);
+    }
+
+    .proc-step.done {
+        border-color: rgba(6,255,165,0.3);
+        color: var(--green);
+        background: rgba(6,255,165,0.05);
+    }
+
+    .proc-dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: var(--border2);
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+    }
+
+    .proc-step.active .proc-dot {
+        background: var(--cyan);
+        box-shadow: 0 0 8px var(--cyan);
+        animation: statusPulse 1s infinite;
+    }
+
+    .proc-step.done .proc-dot {
+        background: var(--green);
+        box-shadow: 0 0 8px var(--green);
+    }
+
+    /* ===== TIPS PANEL ===== */
+    .tips-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .tip-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 12px;
+        color: var(--text2);
+        line-height: 1.5;
+    }
+
+    .tip-icon {
+        font-size: 14px;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+    /* ===== RIGHT PANEL ===== */
+    .right-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 40px;
+        text-align: center;
+        min-height: 500px;
+    }
+
+    .empty-visual {
+        position: relative;
+        width: 160px; height: 160px;
+        margin-bottom: 32px;
+    }
+
+    .empty-orb {
+        width: 100%; height: 100%;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(0,240,255,0.15) 0%, transparent 70%);
+        animation: orbPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes orbPulse {
+        0%,100% { transform:scale(1); opacity:0.5; }
+        50% { transform:scale(1.2); opacity:1; }
+    }
+
+    .empty-icon {
+        position: absolute;
+        top:50%; left:50%;
+        transform:translate(-50%,-50%);
+        font-size: 64px;
+    }
+
+    .empty-rings {
+        position: absolute;
+        inset: 0;
+    }
+
+    .empty-ring {
+        position: absolute;
+        inset: 0;
+        border: 1px solid rgba(0,240,255,0.15);
+        border-radius: 50%;
+        animation: emptyRingPulse 4s ease-in-out infinite;
+    }
+
+    .empty-ring:nth-child(2) {
+        inset: -20px;
+        animation-delay: 1s;
+    }
+
+    .empty-ring:nth-child(3) {
+        inset: -40px;
+        animation-delay: 2s;
+    }
+
+    @keyframes emptyRingPulse {
+        0%,100% { opacity:0.3; transform:scale(1); }
+        50% { opacity:0.6; transform:scale(1.02); }
+    }
+
+    .empty-title {
+        font-family: var(--display);
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .empty-desc {
+        font-size: 15px;
+        color: var(--text2);
+        line-height: 1.6;
+        max-width: 400px;
+        margin-bottom: 32px;
+    }
+
+    .empty-steps {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .empty-step {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: var(--text2);
+        padding: 10px 16px;
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        border-radius: 100px;
+    }
+
+    .empty-step-num {
+        width: 22px; height: 22px;
+        border-radius: 50%;
+        background: var(--gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        color: white;
+    }
+
+    /* ===== RESULTS TABS ===== */
+    .results-tabs {
+        display: flex;
+        gap: 8px;
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border);
+        overflow-x: auto;
+    }
+
+    .tab-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text2);
+        font-size: 13px;
+        font-weight: 600;
+        font-family: var(--font);
+        cursor: none;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+        border-color: var(--border2);
+        color: var(--text);
+    }
+
+    .tab-btn.active {
+        background: var(--cyan-dim);
+        border-color: rgba(0,240,255,0.3);
+        color: var(--cyan);
+    }
+
+    .tab-count {
+        padding: 2px 8px;
+        background: var(--surface2);
+        border-radius: 100px;
+        font-size: 11px;
+        font-family: var(--mono);
+    }
+
+    .tab-btn.active .tab-count {
+        background: rgba(0,240,255,0.2);
+        color: var(--cyan);
+    }
+
+    /* ===== RESULTS CONTENT ===== */
+    .results-content {
+        padding: 24px;
+    }
+
+    .result-section { display: none; }
+    .result-section.active { display: block; }
+
+    /* ===== QUIZ ITEMS ===== */
+    .quiz-items {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .quiz-item {
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        border-radius: var(--radius);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .quiz-item:hover {
+        border-color: var(--border3);
+    }
+
+    .quiz-item-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .quiz-q-num {
+        font-size: 11px;
+        font-family: var(--mono);
+        color: var(--cyan);
+        letter-spacing: 1px;
+        padding: 4px 10px;
+        background: var(--cyan-dim);
+        border: 1px solid rgba(0,240,255,0.2);
+        border-radius: 100px;
+    }
+
+    .quiz-q-status { font-size: 18px; }
+
+    .quiz-question {
+        padding: 16px 20px;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    .quiz-options {
+        padding: 0 20px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .quiz-opt {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-size: 14px;
+        cursor: none;
+        transition: all 0.2s;
+    }
+
+    .quiz-opt:hover {
+        border-color: var(--border2);
+        background: var(--surface2);
+    }
+
+    .quiz-opt.correct {
+        border-color: rgba(6,255,165,0.4);
+        background: rgba(6,255,165,0.08);
+        color: var(--green);
+    }
+
+    .quiz-opt.wrong {
+        border-color: rgba(255,0,110,0.4);
+        background: rgba(255,0,110,0.08);
+        color: var(--pink);
+    }
+
+    .opt-label {
+        width: 28px; height: 28px;
+        border-radius: 8px;
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        font-family: var(--mono);
+        flex-shrink: 0;
+    }
+
+    .quiz-opt.correct .opt-label {
+        background: rgba(6,255,165,0.2);
+        border-color: rgba(6,255,165,0.4);
+    }
+
+    .quiz-opt.wrong .opt-label {
+        background: rgba(255,0,110,0.2);
+        border-color: rgba(255,0,110,0.4);
+    }
+
+    .quiz-explanation {
+        margin: 0 20px 16px;
+        padding: 12px 16px;
+        background: rgba(6,255,165,0.06);
+        border-left: 3px solid var(--green);
+        border-radius: 0 10px 10px 0;
+        font-size: 13px;
+        color: var(--text2);
+        line-height: 1.6;
+        display: none;
+    }
+
+    /* ===== SCORE TRACKER ===== */
+    .score-tracker {
+        padding: 20px;
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        border-radius: var(--radius);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .score-circle {
+        width: 60px; height: 60px;
+        border-radius: 50%;
+        background: var(--gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--display);
+        font-size: 18px;
+        font-weight: 800;
+        color: white;
+        flex-shrink: 0;
+        box-shadow: var(--glow);
+    }
+
+    .score-info { flex: 1; }
+
+    .score-label {
+        font-size: 12px;
+        color: var(--text3);
+        margin-bottom: 8px;
+        font-family: var(--mono);
+    }
+
+    .score-bar-wrap {
+        height: 6px;
+        background: var(--surface);
+        border-radius: 100px;
+        overflow: hidden;
+    }
+
+    .score-bar {
+        height: 100%;
+        background: var(--gradient);
+        border-radius: 100px;
+        transition: width 0.8s ease;
+        box-shadow: var(--glow);
+    }
+
+    /* ===== FLASHCARDS ===== */
+    .flashcard-viewer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .fc-stage {
+        width: 100%;
+        max-width: 600px;
+        perspective: 1000px;
+    }
+
+    .fc-card {
+        width: 100%;
+        min-height: 280px;
+        cursor: none;
+        position: relative;
+    }
+
+    .fc-card-inner {
+        width: 100%;
+        min-height: 280px;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .fc-card-inner.flipped {
+        transform: rotateY(180deg);
+    }
+
+    .fc-front, .fc-back {
+        position: absolute;
+        top:0; left:0;
+        width: 100%;
+        min-height: 280px;
+        padding: 40px;
+        border-radius: var(--radius2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+
+    .fc-front {
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+    }
+
+    .fc-back {
+        background: linear-gradient(135deg, rgba(0,240,255,0.08) 0%, rgba(131,56,236,0.08) 100%);
+        border: 1px solid rgba(0,240,255,0.25);
+        transform: rotateY(180deg);
+    }
+
+    .fc-label {
+        font-size: 10px;
+        font-family: var(--mono);
+        color: var(--cyan);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+    }
+
+    .fc-text {
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.4;
+        font-family: var(--display);
+    }
+
+    .fc-back .fc-text {
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--text2);
+    }
+
+    .fc-hint {
+        margin-top: 20px;
+        font-size: 11px;
+        color: var(--text3);
+        font-family: var(--mono);
+    }
+
+    .fc-nav {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .fc-nav-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 20px;
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        border-radius: 10px;
+        color: var(--text2);
+        font-size: 13px;
+        font-weight: 600;
+        font-family: var(--font);
+        cursor: none;
+        transition: all 0.2s;
+    }
+
+    .fc-nav-btn:hover {
+        border-color: var(--border3);
+        color: var(--text);
+    }
+
+    .fc-nav-btn:disabled {
+        opacity: 0.4;
+        pointer-events: none;
+    }
+
+    .fc-counter {
+        font-family: var(--mono);
+        font-size: 14px;
+        color: var(--text2);
+        min-width: 60px;
+        text-align: center;
+    }
+
+    .fc-dots {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 300px;
+    }
+
+    .fc-dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: var(--border2);
+        cursor: none;
+        transition: all 0.2s;
+    }
+
+    .fc-dot.active {
+        background: var(--cyan);
+        box-shadow: 0 0 8px var(--cyan);
+        transform: scale(1.3);
+    }
+
+    /* ===== TRICKS ===== */
+    .tricks-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .trick-card {
+        padding: 24px;
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        border-radius: var(--radius);
+        border-left: 3px solid var(--purple);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .trick-card:nth-child(odd) { border-left-color: var(--cyan); }
+    .trick-card:nth-child(3n) { border-left-color: var(--pink); }
+
+    .trick-card:hover {
+        transform: translateX(4px);
+        box-shadow: -4px 0 20px rgba(131,56,236,0.2);
+    }
+
+    .trick-card-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        margin-bottom: 16px;
+    }
+
+    .trick-icon-wrap {
+        width: 40px; height: 40px;
+        border-radius: 10px;
+        background: rgba(131,56,236,0.1);
+        border: 1px solid rgba(131,56,236,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+    }
+
+    .trick-concept {
+        font-family: var(--display);
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .trick-type {
+        font-size: 10px;
+        font-family: var(--mono);
+        color: var(--purple);
+        letter-spacing: 1px;
+        padding: 3px 8px;
+        background: rgba(131,56,236,0.1);
+        border: 1px solid rgba(131,56,236,0.2);
+        border-radius: 100px;
+    }
+
+    .trick-method {
+        font-size: 14px;
+        color: var(--text2);
+        line-height: 1.7;
+    }
+
+    /* ===== SUMMARY ===== */
+    .summary-box {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .summary-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-family: var(--mono);
+        color: var(--cyan);
+        letter-spacing: 2px;
+        margin-bottom: 12px;
+    }
+
+    .summary-label-dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: var(--cyan);
+        box-shadow: 0 0 8px var(--cyan);
+        animation: statusPulse 2s infinite;
+    }
+
+    .summary-text-box {
+        padding: 24px;
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        border-radius: var(--radius);
+        font-size: 15px;
+        line-height: 1.9;
+        color: var(--text2);
+        position: relative;
+    }
+
+    .summary-cursor {
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        background: var(--cyan);
+        margin-left: 2px;
+        vertical-align: text-bottom;
+        animation: cursorBlink 1s step-end infinite;
+    }
+
+    @keyframes cursorBlink {
+        0%,100% { opacity:1; }
+        50% { opacity:0; }
+    }
+
+    .key-points-box {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .key-points-title {
+        font-family: var(--display);
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .key-point {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 16px;
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        border-radius: var(--radius);
+        transition: all 0.3s ease;
+    }
+
+    .key-point:hover {
+        border-color: var(--border3);
+        transform: translateX(4px);
+    }
+
+    .key-point-num {
+        width: 28px; height: 28px;
+        border-radius: 8px;
+        background: var(--gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+        color: white;
+        flex-shrink: 0;
+        box-shadow: var(--glow);
+    }
+
+    .key-point-text {
+        font-size: 14px;
+        color: var(--text2);
+        line-height: 1.6;
+    }
+
+    /* ===== TOAST NOTIFICATIONS ===== */
+    .toast-container {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .toast {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 20px;
+        border-radius: var(--radius);
+        backdrop-filter: blur(12px);
+        font-size: 14px;
+        font-weight: 500;
+        animation: toastIn 0.4s ease-out;
+        max-width: 380px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    @keyframes toastIn {
+        from { opacity:0; transform:translateX(100px); }
+        to { opacity:1; transform:translateX(0); }
+    }
+
+    .toast.success {
+        background: rgba(6,255,165,0.1);
+        border: 1px solid rgba(6,255,165,0.3);
+        color: var(--green);
+    }
+
+    .toast.error {
+        background: rgba(255,0,110,0.1);
+        border: 1px solid rgba(255,0,110,0.3);
+        color: var(--pink);
+    }
+
+    .toast.info {
+        background: rgba(0,240,255,0.1);
+        border: 1px solid rgba(0,240,255,0.3);
+        color: var(--cyan);
+    }
+
+    .toast-close {
+        margin-left: auto;
+        background: none;
+        border: none;
+        color: inherit;
+        cursor: none;
+        opacity: 0.6;
+        font-size: 16px;
+        line-height: 1;
+        flex-shrink: 0;
+    }
+
+    /* ===== ACHIEVEMENT POPUP ===== */
+    .achievement-popup {
+        position: fixed;
+        top: 88px;
+        right: -400px;
+        width: 320px;
+        padding: 20px;
+        background: rgba(13,20,40,0.95);
+        border: 1px solid rgba(0,240,255,0.3);
+        border-radius: var(--radius2);
+        backdrop-filter: blur(20px);
+        box-shadow: 0 0 40px rgba(0,240,255,0.2), 0 16px 60px rgba(0,0,0,0.5);
+        z-index: 9998;
+        transition: right 0.5s cubic-bezier(0.4,0,0.2,1);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .achievement-popup.show { right: 24px; }
+
+    .achievement-icon-big { font-size: 40px; }
+
+    .achievement-info { flex: 1; }
+
+    .achievement-label {
+        font-size: 10px;
+        font-family: var(--mono);
+        color: var(--cyan);
+        letter-spacing: 2px;
+        margin-bottom: 4px;
+    }
+
+    .achievement-name {
+        font-family: var(--display);
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .achievement-desc {
+        font-size: 12px;
+        color: var(--text2);
+    }
+
+    /* ===== CONFETTI ===== */
+    .confetti-piece {
+        position: fixed;
+        width: 8px; height: 8px;
+        border-radius: 2px;
+        pointer-events: none;
+        z-index: 10002;
+        animation: confettiFall 3s ease-out forwards;
+    }
+
+    @keyframes confettiFall {
+        0% { transform:translateY(-20px) rotate(0deg); opacity:1; }
+        100% { transform:translateY(100vh) rotate(720deg); opacity:0; }
+    }
+
+    /* ===== FOOTER ===== */
+    .app-footer {
+        padding: 24px 32px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        background: rgba(0,0,0,0.2);
+    }
+
+    .footer-left {
+        font-size: 12px;
+        color: var(--text3);
+        font-family: var(--mono);
+    }
+
+    .footer-left span { color: var(--cyan); }
+
+    .footer-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: var(--green);
+        font-family: var(--mono);
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width:6px; height:6px; }
+    ::-webkit-scrollbar-track { background:var(--bg); }
+    ::-webkit-scrollbar-thumb { background:rgba(0,240,255,0.2); border-radius:3px; }
+    ::-webkit-scrollbar-thumb:hover { background:rgba(0,240,255,0.4); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1200px) {
+        .workspace { grid-template-columns: 380px 1fr; }
+    }
+
+    @media (max-width: 1024px) {
+        .workspace {
+            grid-template-columns: 1fr;
+            padding: 0 20px 60px;
+        }
+        .left-panel { position: static; }
+        .app-hero { padding: 40px 20px 20px; }
+    }
+
+    @media (max-width: 768px) {
+        .app-nav-center { display: none; }
+        .workspace { padding: 0 16px 60px; }
+        .hero-stats { grid-template-columns: repeat(2,1fr); }
+        .features-grid { grid-template-columns: 1fr; }
+        body { cursor: auto; }
+        .cursor-dot, .cursor-ring { display: none; }
+        .fc-nav-btn { padding: 10px 14px; font-size: 12px; }
+    }
+    </style>
 </head>
 <body>
 
-    <!-- 3D Background Container -->
-    <div id="background-container">
-        <canvas id="bg-canvas"></canvas>
-        <canvas id="particles-canvas"></canvas>
-        <div class="gradient-orbs">
-            <div class="orb orb-1"></div>
-            <div class="orb orb-2"></div>
-            <div class="orb orb-3"></div>
+    <!-- ====== BACKGROUNDS ====== -->
+    <canvas id="app-canvas"></canvas>
+    <div class="mesh-bg">
+        <div class="mesh mesh-1"></div>
+        <div class="mesh mesh-2"></div>
+        <div class="mesh mesh-3"></div>
+    </div>
+    <div class="grid-bg"></div>
+    <div class="scanline"></div>
+
+    <!-- ====== CURSOR ====== -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+
+    <!-- ====== TOASTS ====== -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- ====== ACHIEVEMENT POPUP ====== -->
+    <div class="achievement-popup" id="achievement-popup">
+        <div class="achievement-icon-big" id="ach-icon">🏆</div>
+        <div class="achievement-info">
+            <div class="achievement-label">ACHIEVEMENT UNLOCKED</div>
+            <div class="achievement-name" id="ach-name">First Upload</div>
+            <div class="achievement-desc" id="ach-desc">Uploaded first document</div>
         </div>
     </div>
 
-    <!-- Cursor Follower -->
-    <div class="cursor-glow" id="cursor-glow"></div>
+    <!-- ====== PAGE ====== -->
+    <div class="app-page">
 
-    <!-- Main App Container -->
-    <div id="app" class="app-container">
+        <!-- ====== NAVIGATION ====== -->
+        <nav class="app-nav">
+            <div class="app-nav-inner">
 
-        <!-- Navigation -->
-        <nav class="nav-bar glass-panel">
-            <div class="nav-content">
-                <div class="logo-container">
-                    <div class="logo-icon">
+                <!-- Logo -->
+                <a href="index.html" class="app-logo">
+                    <div class="app-logo-icon">
                         <svg viewBox="0 0 24 24" fill="none">
                             <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"/>
                             <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2"/>
                             <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2"/>
                         </svg>
+                        <div class="logo-ring"></div>
                     </div>
-                    <span class="logo-text">
-                        <span class="logo-main">LearnForge</span>
-                        <span class="logo-badge">AI</span>
-                    </span>
-                </div>
-                <div class="nav-status">
-                    <div class="ai-status" id="ai-status">
-                        <div class="status-dot pulse"></div>
-                        <span id="status-text">Initializing Neural Network...</span>
+                    <div class="app-logo-text">
+                        <span class="app-logo-name">COGNIXAR</span>
+                        <span class="app-logo-sub">NEURAL OS v2.0</span>
+                    </div>
+                </a>
+
+                <!-- Center: AI Status -->
+                <div class="app-nav-center">
+                    <div class="ai-status-badge" id="ai-status-badge">
+                        <div class="status-light" id="status-light">
+                            <div class="status-ring-outer"></div>
+                        </div>
+                        <span id="status-text">Connecting to Neural Engine...</span>
                     </div>
                 </div>
+
+                <!-- Right -->
+                <div class="app-nav-right">
+                    <button class="theme-btn" id="theme-btn">
+                        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2"/>
+                        </svg>
+                        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                    </button>
+                    <a href="index.html" class="home-btn">← Home</a>
+                </div>
+
             </div>
         </nav>
 
-        <!-- Hero Section -->
-        <section class="hero-section" id="hero">
-            <div class="hero-content">
-                <div class="hero-badge" data-aos="fade-up">
-                    <span class="badge-pulse"></span>
-                    <span>Powered by Gemini AI Neural Engine</span>
+        <!-- ====== MAIN ====== -->
+        <main class="app-main">
+
+            <!-- Hero -->
+            <div class="app-hero">
+                <div class="app-hero-badge">
+                    <span class="hero-dot"></span>
+                    NEURAL DOCUMENT PROCESSOR
                 </div>
-                <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
-                    <span class="title-line">Transform Documents Into</span>
-                    <span class="title-gradient">Neural Learning Experiences</span>
+                <h1 class="app-hero-title">
+                    Upload. Process. <span class="gradient">Master.</span>
                 </h1>
-                <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
-                    Upload any PDF, DOCX, or TXT file and watch AI generate interactive quizzes, 
-                    flashcards, memory tricks, and intelligent summaries in real-time.
-                </p>
-                <button class="cta-button" data-aos="fade-up" data-aos-delay="300" onclick="scrollToUpload()">
-                    <span class="btn-text">Start Neural Processing</span>
-                    <span class="btn-icon">→</span>
-                    <span class="btn-glow"></span>
-                </button>
-            </div>
-            
-            <!-- Floating 3D Elements -->
-            <div class="hero-3d-elements">
-                <div class="floating-card" style="--delay: 0s;">🧠</div>
-                <div class="floating-card" style="--delay: 0.5s;">⚡</div>
-                <div class="floating-card" style="--delay: 1s;">🎯</div>
-                <div class="floating-card" style="--delay: 1.5s;">🚀</div>
-            </div>
-        </section>
-
-        <!-- Upload Section -->
-        <section class="upload-section glass-panel" id="upload-section" data-aos="fade-up">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <span class="title-icon">📄</span>
-                    Neural Document Upload
-                </h2>
-                <p class="section-subtitle">
-                    Supported: PDF, DOCX, TXT • Max 10MB • AI-powered extraction
+                <p class="app-hero-sub">
+                    Drop any document and let Cognixar's neural engine 
+                    transform it into interactive learning content
                 </p>
             </div>
 
-            <!-- Upload Zone -->
-            <div class="upload-zone" id="upload-zone">
-                <div class="upload-zone-content">
-                    <div class="upload-icon-container">
-                        <div class="upload-scan-line"></div>
-                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none">
-                            <path d="M21 15V19C21 20.1 20.1 21 19 21H5C3.9 21 3 20.1 3 19V15" stroke="currentColor" stroke-width="2"/>
-                            <path d="M17 8L12 3L7 8" stroke="currentColor" stroke-width="2"/>
-                            <path d="M12 3V15" stroke="currentColor" stroke-width="2"/>
-                        </svg>
+            <!-- Workspace -->
+            <div class="workspace">
+
+                <!-- ====== LEFT PANEL ====== -->
+                <div class="left-panel">
+
+                    <!-- Upload Panel -->
+                    <div class="glass-panel" id="upload-panel">
+                        <div class="panel-header">
+                            <div class="panel-title">
+                                <div class="panel-icon cyan">📄</div>
+                                Document Upload
+                            </div>
+                            <span class="panel-tag">STEP 01</span>
+                        </div>
+
+                        <div class="panel-body">
+                            <!-- Upload Zone -->
+                            <div class="upload-zone" id="upload-zone">
+                                <div class="upload-scan"></div>
+
+                                <div class="upload-icon-wrap">
+                                    <div class="upload-icon-bg">⬆️</div>
+                                    <div class="upload-icon-ring"></div>
+                                </div>
+
+                                <div class="upload-title">Drop Document Here</div>
+                                <div class="upload-subtitle">or click to browse files</div>
+
+                                <div class="upload-formats">
+                                    <span class="format-badge">PDF</span>
+                                    <span class="format-badge">DOCX</span>
+                                    <span class="format-badge">TXT</span>
+                                </div>
+
+                                <input type="file" id="file-input" accept=".pdf,.docx,.txt">
+
+                                <button class="browse-btn" id="browse-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
+                                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                                    </svg>
+                                    Browse Files
+                                </button>
+                            </div>
+
+                            <!-- File Preview (Hidden initially) -->
+                            <div class="file-preview" id="file-preview">
+                                <div class="file-info-row">
+                                    <div class="file-type-icon" id="file-type-icon">📄</div>
+                                    <div class="file-details">
+                                        <div class="file-name" id="file-name">document.pdf</div>
+                                        <div class="file-meta" id="file-meta">Ready to process</div>
+                                    </div>
+                                    <button class="file-remove" id="file-remove">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M18 6L6 18M6 6l12 12"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="preview-box">
+                                    <div class="preview-label">CONTENT PREVIEW</div>
+                                    <div class="preview-text" id="preview-text">Loading...</div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                    <h3 class="upload-title">Drop Your Document Here</h3>
-                    <p class="upload-text">or click to browse files</p>
-                    <input type="file" id="file-input" accept=".pdf,.docx,.txt" hidden>
-                    <button class="btn-outline" id="browse-btn">
-                        <span>Browse Files</span>
+
+                    <!-- Generate Button -->
+                    <button class="generate-btn" id="generate-btn">
+                        <div class="generate-btn-inner">
+                            <span>✨</span>
+                            <span>ACTIVATE NEURAL ENGINE</span>
+                        </div>
+                        <div class="generate-btn-shine"></div>
                     </button>
+
+                    <!-- AI Loader -->
+                    <div class="glass-panel" id="ai-loader" style="display:none;">
+                        <div class="panel-body">
+                            <div class="ai-loader show">
+                                <!-- Neural Core -->
+                                <div class="neural-core">
+                                    <div class="core-orbit orbit-1"></div>
+                                    <div class="core-orbit orbit-2"></div>
+                                    <div class="core-orbit orbit-3"></div>
+                                    <div class="core-center">
+                                        <svg viewBox="0 0 24 24" fill="none">
+                                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="loader-title">Neural Processing Active</div>
+                                <div class="loader-sub">AI is analyzing your document...</div>
+
+                                <!-- Steps -->
+                                <div class="processing-steps">
+                                    <div class="proc-step active" id="proc-1">
+                                        <div class="proc-dot"></div>
+                                        <span>Extracting Document Knowledge</span>
+                                    </div>
+                                    <div class="proc-step" id="proc-2">
+                                        <div class="proc-dot"></div>
+                                        <span>Generating Quiz Questions</span>
+                                    </div>
+                                    <div class="proc-step" id="proc-3">
+                                        <div class="proc-dot"></div>
+                                        <span>Creating Flashcards</span>
+                                    </div>
+                                    <div class="proc-step" id="proc-4">
+                                        <div class="proc-dot"></div>
+                                        <span>Building Memory Tricks</span>
+                                    </div>
+                                    <div class="proc-step" id="proc-5">
+                                        <div class="proc-dot"></div>
+                                        <span>Writing AI Summary</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tips Panel -->
+                    <div class="glass-panel">
+                        <div class="panel-header">
+                            <div class="panel-title">
+                                <div class="panel-icon purple">💡</div>
+                                Pro Tips
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="tips-list">
+                                <div class="tip-item">
+                                    <span class="tip-icon">📌</span>
+                                    <span>Use clear, well-structured PDFs for best results</span>
+                                </div>
+                                <div class="tip-item">
+                                    <span class="tip-icon">⚡</span>
+                                    <span>Powered by Groq AI - ultra-fast processing</span>
+                                </div>
+                                <div class="tip-item">
+                                    <span class="tip-icon">🧠</span>
+                                    <span>Quiz yourself daily for better retention</span>
+                                </div>
+                                <div class="tip-item">
+                                    <span class="tip-icon">🎯</span>
+                                    <span>Use memory tricks before sleeping for best recall</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+
+                <!-- ====== RIGHT PANEL ====== -->
+                <div class="right-panel">
+
+                    <!-- Empty State -->
+                    <div class="glass-panel" id="empty-state">
+                        <div class="empty-state">
+                            <div class="empty-visual">
+                                <div class="empty-orb"></div>
+                                <div class="empty-rings">
+                                    <div class="empty-ring"></div>
+                                    <div class="empty-ring"></div>
+                                    <div class="empty-ring"></div>
+                                </div>
+                                <div class="empty-icon">🧠</div>
+                            </div>
+
+                            <h2 class="empty-title">Neural Engine Ready</h2>
+                            <p class="empty-desc">
+                                Upload a document to activate Cognixar's neural engine. 
+                                AI will generate quizzes, flashcards, memory tricks and summaries instantly.
+                            </p>
+
+                            <div class="empty-steps">
+                                <div class="empty-step">
+                                    <div class="empty-step-num">1</div>
+                                    <span>Upload Document</span>
+                                </div>
+                                <div class="empty-step">
+                                    <div class="empty-step-num">2</div>
+                                    <span>Activate AI</span>
+                                </div>
+                                <div class="empty-step">
+                                    <div class="empty-step-num">3</div>
+                                    <span>Start Learning</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Panel (Hidden initially) -->
+                    <div class="glass-panel" id="results-panel" style="display:none;">
+
+                        <!-- Tabs -->
+                        <div class="results-tabs">
+                            <button class="tab-btn active" data-tab="quiz" onclick="switchTab('quiz', this)">
+                                <span>🧠</span>
+                                <span>Quiz</span>
+                                <span class="tab-count" id="quiz-count">0</span>
+                            </button>
+                            <button class="tab-btn" data-tab="flashcards" onclick="switchTab('flashcards', this)">
+                                <span>🃏</span>
+                                <span>Flashcards</span>
+                                <span class="tab-count" id="fc-count">0</span>
+                            </button>
+                            <button class="tab-btn" data-tab="tricks" onclick="switchTab('tricks', this)">
+                                <span>💡</span>
+                                <span>Memory Tricks</span>
+                                <span class="tab-count" id="tricks-count">0</span>
+                            </button>
+                            <button class="tab-btn" data-tab="summary" onclick="switchTab('summary', this)">
+                                <span>📝</span>
+                                <span>Summary</span>
+                                <span class="tab-count" id="summary-count">—</span>
+                            </button>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="results-content">
+
+                            <!-- Quiz Section -->
+                            <div class="result-section active" id="section-quiz">
+                                <!-- Score Tracker -->
+                                <div class="score-tracker" id="score-tracker">
+                                    <div class="score-circle" id="score-display">0/0</div>
+                                    <div class="score-info">
+                                        <div class="score-label">QUIZ SCORE</div>
+                                        <div class="score-bar-wrap">
+                                            <div class="score-bar" id="score-bar" style="width:0%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="quiz-items" id="quiz-items">
+                                    <!-- Quiz items injected here -->
+                                </div>
+                            </div>
+
+                            <!-- Flashcards Section -->
+                            <div class="result-section" id="section-flashcards">
+                                <div class="flashcard-viewer" id="flashcard-viewer">
+                                    <!-- Flashcards injected here -->
+                                </div>
+                            </div>
+
+                            <!-- Tricks Section -->
+                            <div class="result-section" id="section-tricks">
+                                <div class="tricks-grid" id="tricks-grid">
+                                    <!-- Tricks injected here -->
+                                </div>
+                            </div>
+
+                            <!-- Summary Section -->
+                            <div class="result-section" id="section-summary">
+                                <div class="summary-box" id="summary-box">
+                                    <!-- Summary injected here -->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
 
-            <!-- File Preview Panel -->
-            <div class="file-preview-panel hidden" id="file-preview">
-                <div class="file-preview-header">
-                    <div class="file-icon-large">📄</div>
-                    <div class="file-info">
-                        <h4 id="file-name" class="file-name">Document.pdf</h4>
-                        <p id="file-meta" class="file-meta">2.5 MB • Uploaded just now</p>
-                    </div>
-                    <button class="btn-remove" id="remove-file">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="file-preview-content">
-                    <h5 class="preview-label">Document Preview</h5>
-                    <div class="preview-text-container">
-                        <p id="preview-text" class="preview-text">Loading preview...</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Generate Button -->
-            <button class="btn-primary hidden" id="generate-btn">
-                <div class="btn-primary-content">
-                    <span class="btn-icon">✨</span>
-                    <span class="btn-text">Activate Neural Processing</span>
-                    <div class="btn-particles"></div>
-                </div>
-                <div class="btn-shine"></div>
-            </button>
-
-            <!-- AI Processing Loader -->
-            <div class="ai-loader hidden" id="ai-loader">
-                <div class="neural-core">
-                    <div class="core-ring core-ring-1"></div>
-                    <div class="core-ring core-ring-2"></div>
-                    <div class="core-ring core-ring-3"></div>
-                    <div class="core-center">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </div>
-                </div>
-                <h3 class="loader-title">Neural Processing Active</h3>
-                <p class="loader-subtitle">AI is analyzing your document...</p>
-                <div class="processing-steps">
-                    <div class="step active" id="step-1">
-                        <div class="step-dot"></div>
-                        <span>Extracting Knowledge</span>
-                    </div>
-                    <div class="step" id="step-2">
-                        <div class="step-dot"></div>
-                        <span>Generating Insights</span>
-                    </div>
-                    <div class="step" id="step-3">
-                        <div class="step-dot"></div>
-                        <span>Finalizing Results</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Results Section -->
-        <section class="results-section hidden" id="results-section">
-            <div class="results-header" data-aos="fade-up">
-                <h2 class="section-title">
-                    <span class="title-icon">🎯</span>
-                    Neural Learning Results
-                </h2>
-                <p class="section-subtitle">AI-generated insights from your document</p>
-            </div>
-
-            <!-- Results Grid -->
-            <div class="results-grid">
-                
-                <!-- Quiz Card -->
-                <div class="result-card glass-panel" id="quiz-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="result-card-header">
-                        <div class="result-icon quiz-icon">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M9 11L12 14L22 4" stroke="currentColor" stroke-width="2"/>
-                                <path d="M21 12V19C21 20.1 20.1 21 19 21H5C3.9 21 3 20.1 3 19V5C3.9 3 4.9 3 5 3H16" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="result-header-text">
-                            <h3 class="result-title">AI Quiz Generator</h3>
-                            <p class="result-count" id="quiz-count">0 questions</p>
-                        </div>
-                    </div>
-                    <div class="result-content" id="quiz-content">
-                        <!-- Quiz items will be injected here -->
-                    </div>
-                </div>
-
-                <!-- Flashcards Card -->
-                <div class="result-card glass-panel" id="flashcards-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="result-card-header">
-                        <div class="result-icon flashcard-icon">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
-                                <path d="M3 9H21M9 21V9" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="result-header-text">
-                            <h3 class="result-title">Smart Flashcards</h3>
-                            <p class="result-count" id="flashcard-count">0 cards</p>
-                        </div>
-                    </div>
-                    <div class="result-content flashcard-container" id="flashcard-content">
-                        <!-- Flashcards will be injected here -->
-                    </div>
-                </div>
-
-                <!-- Memory Tricks Card -->
-                <div class="result-card glass-panel" id="tricks-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="result-card-header">
-                        <div class="result-icon tricks-icon">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="result-header-text">
-                            <h3 class="result-title">Memory Tricks</h3>
-                            <p class="result-count" id="tricks-count">0 tricks</p>
-                        </div>
-                    </div>
-                    <div class="result-content" id="tricks-content">
-                        <!-- Tricks will be injected here -->
-                    </div>
-                </div>
-
-                <!-- Summary Card -->
-                <div class="result-card glass-panel full-width" id="summary-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="result-card-header">
-                        <div class="result-icon summary-icon">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z" stroke="currentColor" stroke-width="2"/>
-                                <path d="M14 2V8H20M16 13H8M16 17H8M10 9H8" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="result-header-text">
-                            <h3 class="result-title">AI Summary</h3>
-                            <p class="result-count" id="summary-word-count">0 words</p>
-                        </div>
-                    </div>
-                    <div class="result-content" id="summary-content">
-                        <!-- Summary will be injected here -->
-                    </div>
-                </div>
-
-            </div>
-        </section>
+        </main>
 
         <!-- Footer -->
-        <footer class="footer">
-            <div class="footer-content">
-                <p class="footer-text">
-                    Built with ❤️ using <span class="highlight">Gemini AI</span> • 
-                    <a href="#" class="footer-link">Documentation</a> • 
-                    <a href="#" class="footer-link">GitHub</a>
-                </p>
-                <div class="footer-badge">
-                    <span class="pulse-dot"></span>
-                    Neural Engine Online
-                </div>
+        <footer class="app-footer">
+            <div class="footer-left">
+                © 2025 <span>COGNIXAR</span> • NEURAL OS v2.0 • Powered by <span>GROQ AI</span>
+            </div>
+            <div class="footer-right">
+                <div class="status-light online"></div>
+                ALL SYSTEMS OPERATIONAL
             </div>
         </footer>
 
     </div>
 
-    <!-- Scripts -->
-    <script src="js/utils/dom.js"></script>
-    <script src="js/utils/helpers.js"></script>
-    <script src="js/state.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/effects/background3d.js"></script>
-    <script src="js/effects/particles.js"></script>
-    <script src="js/effects/interactions.js"></script>
-    <script src="js/effects/loadingEffects.js"></script>
-    <script src="js/components/FileUpload.js"></script>
-    <script src="js/components/QuizCard.js"></script>
-    <script src="js/components/FlashCard.js"></script>
-    <script src="js/components/TrickCard.js"></script>
-    <script src="js/components/SummaryPanel.js"></script>
-    <script src="js/app.js"></script>
+    <!-- ============================================
+         APP JAVASCRIPT
+    ============================================ -->
+    <script>
+    /* ===== CONFIGURATION ===== */
+    const CONFIG = {
+        API_BASE: window.location.hostname === 'localhost'
+            ? 'http://localhost:8000/api'
+            : 'https://learnforge-ai-j5tx.onrender.com/api'
+    };
+
+    /* ===== STATE ===== */
+    const State = {
+        fileId: null,
+        fileName: null,
+        aiAvailable: false,
+        isGenerating: false,
+        results: {},
+        quiz: { score: 0, total: 0, answered: 0 },
+        flashcards: { cards: [], current: 0, flipped: false }
+    };
+
+    /* ===== 3D BACKGROUND ===== */
+    function initBackground() {
+        const canvas = document.getElementById('app-canvas');
+        if (!canvas || !window.THREE) return;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        camera.position.z = 8;
+
+        // Wireframe sphere
+        const geo = new THREE.IcosahedronGeometry(3, 4);
+        const mat = new THREE.MeshNormalMaterial({ wireframe: true, transparent: true, opacity: 0.3 });
+        const mesh = new THREE.Mesh(geo, mat);
+        scene.add(mesh);
+
+        // Torus rings
+        const t1 = new THREE.Mesh(
+            new THREE.TorusGeometry(5, 0.01, 16, 200),
+            new THREE.MeshBasicMaterial({ color: 0x00F0FF, transparent: true, opacity: 0.1 })
+        );
+        t1.rotation.x = Math.PI / 3;
+        scene.add(t1);
+
+        // Stars
+        const sGeo = new THREE.BufferGeometry();
+        const sPos = new Float32Array(2000 * 3);
+        for (let i = 0; i < 6000; i++) sPos[i] = (Math.random() - 0.5) * 25;
+        sGeo.setAttribute('position', new THREE.BufferAttribute(sPos, 3));
+        scene.add(new THREE.Points(sGeo, new THREE.PointsMaterial({
+            size: 0.01, color: 0xffffff, transparent: true, opacity: 0.4
+        })));
+
+        let mx = 0, my = 0;
+        document.addEventListener('mousemove', e => {
+            mx = (e.clientX / window.innerWidth) * 2 - 1;
+            my = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        (function animate() {
+            requestAnimationFrame(animate);
+            mesh.rotation.x += 0.0008;
+            mesh.rotation.y += 0.001;
+            mesh.position.x += (mx * 0.5 - mesh.position.x) * 0.03;
+            mesh.position.y += (my * 0.3 - mesh.position.y) * 0.03;
+            t1.rotation.z += 0.002;
+            renderer.render(scene, camera);
+        })();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    }
+
+    /* ===== CUSTOM CURSOR ===== */
+    function initCursor() {
+        const dot = document.getElementById('cursor-dot');
+        const ring = document.getElementById('cursor-ring');
+        if (!dot || !ring) return;
+
+        let dx = 0, dy = 0, rx = 0, ry = 0, tx = 0, ty = 0;
+
+        document.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
+
+        const hover = () => document.body.classList.add('hovering');
+        const unhover = () => document.body.classList.remove('hovering');
+
+        document.querySelectorAll('a, button, .upload-zone, .quiz-opt, .fc-card, .tab-btn, .fc-nav-btn, .fc-dot').forEach(el => {
+            el.addEventListener('mouseenter', hover);
+            el.addEventListener('mouseleave', unhover);
+        });
+
+        (function updateCursor() {
+            dx += (tx - dx) * 0.2;
+            dy += (ty - dy) * 0.2;
+            rx += (tx - rx) * 0.1;
+            ry += (ty - ry) * 0.1;
+
+            dot.style.left = dx + 'px';
+            dot.style.top = dy + 'px';
+            ring.style.left = rx + 'px';
+            ring.style.top = ry + 'px';
+
+            requestAnimationFrame(updateCursor);
+        })();
+    }
+
+    /* ===== THEME ===== */
+    function initTheme() {
+        const saved = localStorage.getItem('cognixar_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', saved);
+
+        document.getElementById('theme-btn')?.addEventListener('click', () => {
+            const curr = document.documentElement.getAttribute('data-theme');
+            const next = curr === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('cognixar_theme', next);
+        });
+    }
+
+    /* ===== API CALLS ===== */
+    async function checkAIStatus() {
+        try {
+            const res = await fetch(`${CONFIG.API_BASE}/providers`);
+            const data = await res.json();
+
+            const badge = document.getElementById('ai-status-badge');
+            const light = document.getElementById('status-light');
+            const text = document.getElementById('status-text');
+
+            if (data.available) {
+                State.aiAvailable = true;
+                badge.className = 'ai-status-badge online';
+                light.className = 'status-light online';
+                text.textContent = `✓ ${data.current?.toUpperCase()} (${data.model}) READY`;
+            } else {
+                badge.className = 'ai-status-badge offline';
+                light.className = 'status-light offline';
+                text.textContent = '⚠ AI OFFLINE — Check Backend';
+            }
+        } catch {
+            const text = document.getElementById('status-text');
+            if (text) text.textContent = '⚠ BACKEND UNREACHABLE';
+        }
+    }
+
+    async function uploadFile(file) {
+        const fd = new FormData();
+        fd.append('file', file);
+
+        const res = await fetch(`${CONFIG.API_BASE}/upload`, { method: 'POST', body: fd });
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.detail || 'Upload failed');
+        }
+        return res.json();
+    }
+
+    async function generateContent(fileId) {
+        const res = await fetch(`${CONFIG.API_BASE}/generate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ file_id: fileId, content_type: 'all' })
+        });
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.detail || 'Generation failed');
+        }
+        return res.json();
+    }
+
+    /* ===== FILE UPLOAD ===== */
+    function initFileUpload() {
+        const zone = document.getElementById('upload-zone');
+        const input = document.getElementById('file-input');
+        const browseBtn = document.getElementById('browse-btn');
+        const removeBtn = document.getElementById('file-remove');
+        const generateBtn = document.getElementById('generate-btn');
+
+        browseBtn?.addEventListener('click', e => { e.stopPropagation(); input?.click(); });
+        zone?.addEventListener('click', () => input?.click());
+
+        input?.addEventListener('change', e => {
+            const file = e.target.files?.[0];
+            if (file) handleFile(file);
+        });
+
+        zone?.addEventListener('dragenter', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+        zone?.addEventListener('dragover', e => { e.preventDefault(); });
+        zone?.addEventListener('dragleave', e => { e.preventDefault(); zone.classList.remove('drag-over'); });
+        zone?.addEventListener('drop', e => {
+            e.preventDefault();
+            zone.classList.remove('drag-over');
+            const file = e.dataTransfer?.files?.[0];
+            if (file) handleFile(file);
+        });
+
+        removeBtn?.addEventListener('click', clearFile);
+
+        generateBtn?.addEventListener('click', () => {
+            if (State.fileId) startGeneration();
+        });
+    }
+
+    async function handleFile(file) {
+        const allowed = ['.pdf', '.docx', '.txt'];
+        const ext = '.' + file.name.split('.').pop().toLowerCase();
+
+        if (!allowed.includes(ext)) {
+            showToast('Invalid file type. Use PDF, DOCX, or TXT', 'error');
+            return;
+        }
+
+        if (file.size > 10 * 1024 * 1024) {
+            showToast('File too large. Max 10MB', 'error');
+            return;
+        }
+
+        // Show uploading state
+        showToast('Uploading document...', 'info');
+
+        try {
+            const data = await uploadFile(file);
+
+            State.fileId = data.file_id;
+            State.fileName = file.name;
+
+            showFilePreview(file, data);
+            showToast('Document uploaded successfully!', 'success');
+
+            // Achievement
+            const uploads = parseInt(localStorage.getItem('cx_uploads') || '0') + 1;
+            localStorage.setItem('cx_uploads', uploads);
+            if (uploads === 1) {
+                setTimeout(() => showAchievement('📄', 'First Upload', 'Uploaded your first document'), 1000);
+            }
+
+        } catch (err) {
+            showToast(err.message || 'Upload failed', 'error');
+        }
+    }
+
+    function showFilePreview(file, data) {
+        // Hide upload zone, show preview
+        document.getElementById('upload-zone').style.display = 'none';
+        const preview = document.getElementById('file-preview');
+        preview.classList.add('show');
+
+        // Set file icon based on type
+        const ext = file.name.split('.').pop().toLowerCase();
+        const icons = { pdf: '📕', docx: '📘', doc: '📘', txt: '📄' };
+        document.getElementById('file-type-icon').textContent = icons[ext] || '📄';
+        document.getElementById('file-name').textContent = file.name;
+        document.getElementById('file-meta').textContent =
+            `${formatFileSize(file.size)} • ${data.char_count?.toLocaleString()} chars`;
+
+        // Typewriter preview
+        typewriter(document.getElementById('preview-text'), data.preview || 'No preview available', 15);
+
+        // Show generate button
+        const genBtn = document.getElementById('generate-btn');
+        genBtn.classList.add('show');
+
+        // Scroll to generate
+        setTimeout(() => genBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 500);
+    }
+
+    function clearFile() {
+        State.fileId = null;
+        State.fileName = null;
+
+        document.getElementById('upload-zone').style.display = '';
+        document.getElementById('file-preview').classList.remove('show');
+        document.getElementById('generate-btn').classList.remove('show');
+        document.getElementById('file-input').value = '';
+        document.getElementById('results-panel').style.display = 'none';
+        document.getElementById('empty-state').style.display = '';
+
+        showToast('Document cleared', 'info');
+    }
+
+    /* ===== GENERATION ===== */
+    async function startGeneration() {
+        if (State.isGenerating) return;
+        if (!State.aiAvailable) {
+            showToast('AI is offline. Check backend connection.', 'error');
+            return;
+        }
+
+        State.isGenerating = true;
+
+        // Show loader
+        document.getElementById('generate-btn').style.display = 'none';
+        document.getElementById('ai-loader').style.display = '';
+        document.getElementById('empty-state').style.display = 'none';
+        document.getElementById('results-panel').style.display = 'none';
+
+        // Animate steps
+        animateProcessingSteps();
+
+        try {
+            const data = await generateContent(State.fileId);
+
+            State.results = data;
+
+            // Render results
+            if (data.quizzes) renderQuiz(data.quizzes);
+            if (data.flashcards) renderFlashcards(data.flashcards);
+            if (data.tricks) renderTricks(data.tricks);
+            if (data.summary) renderSummary(data.summary);
+
+            // Show results
+            document.getElementById('ai-loader').style.display = 'none';
+            document.getElementById('results-panel').style.display = '';
+            document.getElementById('generate-btn').style.display = '';
+            document.getElementById('generate-btn').classList.add('show');
+
+            // Confetti!
+            spawnConfetti();
+            showToast('Neural processing complete! 🎉', 'success');
+
+            // Achievement
+            const gens = parseInt(localStorage.getItem('cx_gens') || '0') + 1;
+            localStorage.setItem('cx_gens', gens);
+            if (gens === 1) {
+                setTimeout(() => showAchievement('⚡', 'First Generation', 'Generated your first learning content!'), 1500);
+            }
+
+        } catch (err) {
+            document.getElementById('ai-loader').style.display = 'none';
+            document.getElementById('generate-btn').style.display = '';
+            document.getElementById('generate-btn').classList.add('show');
+            document.getElementById('empty-state').style.display = '';
+            showToast(err.message || 'Generation failed. Try again.', 'error');
+        }
+
+        State.isGenerating = false;
+    }
+
+    async function animateProcessingSteps() {
+        const steps = ['proc-1', 'proc-2', 'proc-3', 'proc-4', 'proc-5'];
+        for (let i = 0; i < steps.length; i++) {
+            await wait(6000);
+            const el = document.getElementById(steps[i]);
+            if (el) {
+                el.classList.remove('active');
+                el.classList.add('done');
+            }
+            if (i < steps.length - 1) {
+                const next = document.getElementById(steps[i + 1]);
+                if (next) next.classList.add('active');
+            }
+        }
+    }
+
+    /* ===== RENDER QUIZ ===== */
+    function renderQuiz(data) {
+        let questions = data.questions || data.quiz || (Array.isArray(data) ? data : []);
+
+        State.quiz = { score: 0, total: questions.length, answered: 0 };
+
+        document.getElementById('quiz-count').textContent = questions.length;
+        document.getElementById('score-display').textContent = `0/${questions.length}`;
+
+        const container = document.getElementById('quiz-items');
+        container.innerHTML = questions.map((q, i) => renderQuizItem(q, i)).join('');
+
+        // Bind clicks
+        container.querySelectorAll('.quiz-opt').forEach(opt => {
+            opt.addEventListener('click', () => handleQuizAnswer(opt));
+        });
+    }
+
+    function renderQuizItem(q, i) {
+        const question = q.question || q.q || `Question ${i + 1}`;
+        const options = q.options || q.choices || [];
+        const answer = q.answer || q.correct_answer || q.correct || '';
+        const explanation = q.explanation || '';
+
+        return `
+            <div class="quiz-item" data-index="${i}" data-answer="${escapeHtml(answer)}">
+                <div class="quiz-item-header">
+                    <span class="quiz-q-num">Q${i + 1}</span>
+                    <span class="quiz-q-status" id="qs-${i}"></span>
+                </div>
+                <div class="quiz-question">${escapeHtml(question)}</div>
+                <div class="quiz-options">
+                    ${options.map((opt, j) => `
+                        <div class="quiz-opt" data-opt="${escapeHtml(opt)}" data-qi="${i}">
+                            <span class="opt-label">${String.fromCharCode(65+j)}</span>
+                            <span>${escapeHtml(opt)}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                ${explanation ? `<div class="quiz-explanation" id="qe-${i}">${escapeHtml(explanation)}</div>` : ''}
+            </div>
+        `;
+    }
+
+    function handleQuizAnswer(optEl) {
+        const qi = optEl.dataset.qi;
+        const item = document.querySelector(`.quiz-item[data-index="${qi}"]`);
+        if (!item || item.classList.contains('answered')) return;
+
+        item.classList.add('answered');
+
+        const selected = optEl.dataset.opt;
+        const correct = item.dataset.answer;
+        const isCorrect = checkAnswer(selected, correct);
+
+        // Mark options
+        item.querySelectorAll('.quiz-opt').forEach(opt => {
+            opt.style.pointerEvents = 'none';
+            if (checkAnswer(opt.dataset.opt, correct)) opt.classList.add('correct');
+        });
+
+        if (!isCorrect) optEl.classList.add('wrong');
+
+        // Show explanation
+        const exp = document.getElementById(`qe-${qi}`);
+        if (exp) exp.style.display = 'block';
+
+        // Status icon
+        const status = document.getElementById(`qs-${qi}`);
+        if (status) status.textContent = isCorrect ? '✓' : '✗';
+
+        // Update score
+        State.quiz.answered++;
+        if (isCorrect) State.quiz.score++;
+        updateScore();
+
+        // Particles
+        if (isCorrect) spawnMiniConfetti(optEl);
+
+        // Completion
+        if (State.quiz.answered === State.quiz.total) {
+            setTimeout(() => {
+                spawnConfetti();
+                showToast(`Quiz complete! Score: ${State.quiz.score}/${State.quiz.total} 🎉`, 'success');
+
+                if (State.quiz.score === State.quiz.total) {
+                    setTimeout(() => showAchievement('🏆', 'Perfect Score!', 'Got 100% on a quiz!'), 1000);
+                }
+            }, 500);
+        }
+    }
+
+    function updateScore() {
+        const pct = State.quiz.total > 0 ? (State.quiz.score / State.quiz.total) * 100 : 0;
+        document.getElementById('score-display').textContent = `${State.quiz.score}/${State.quiz.total}`;
+        document.getElementById('score-bar').style.width = pct + '%';
+        document.getElementById('score-bar').style.background =
+            pct >= 70 ? 'linear-gradient(90deg, #06FFA5, #00F0FF)' :
+            pct >= 40 ? 'linear-gradient(90deg, #FFB800, #FF006E)' :
+            'linear-gradient(90deg, #FF006E, #8338EC)';
+    }
+
+    /* ===== RENDER FLASHCARDS ===== */
+    function renderFlashcards(data) {
+        let cards = data.flashcards || data.cards || (Array.isArray(data) ? data : []);
+        State.flashcards = { cards, current: 0, flipped: false };
+
+        document.getElementById('fc-count').textContent = cards.length;
+
+        renderFlashcardView();
+    }
+
+    function renderFlashcardView() {
+        const { cards, current } = State.flashcards;
+        const viewer = document.getElementById('flashcard-viewer');
+
+        if (!cards.length) {
+            viewer.innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;">No flashcards generated</div>';
+            return;
+        }
+
+        const card = cards[current];
+        const front = card.front || card.question || card.term || '';
+        const back = card.back || card.answer || card.definition || '';
+
+        viewer.innerHTML = `
+            <div class="fc-stage">
+                <div class="fc-card" onclick="flipCard()">
+                    <div class="fc-card-inner" id="fc-inner">
+                        <div class="fc-front">
+                            <div class="fc-label">QUESTION</div>
+                            <div class="fc-text">${escapeHtml(front)}</div>
+                            <div class="fc-hint">Click to reveal answer</div>
+                        </div>
+                        <div class="fc-back">
+                            <div class="fc-label">ANSWER</div>
+                            <div class="fc-text">${escapeHtml(back)}</div>
+                            <div class="fc-hint">Click to see question</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fc-nav">
+                <button class="fc-nav-btn" onclick="prevCard()" ${current === 0 ? 'disabled' : ''}>← Prev</button>
+                <div class="fc-counter">${current + 1} / ${cards.length}</div>
+                <button class="fc-nav-btn" onclick="nextCard()" ${current === cards.length - 1 ? 'disabled' : ''}>Next →</button>
+            </div>
+
+            <div class="fc-dots">
+                ${cards.map((_, i) => `
+                    <div class="fc-dot ${i === current ? 'active' : ''}" onclick="goToCard(${i})"></div>
+                `).join('')}
+            </div>
+
+            <div style="font-size:11px;color:var(--text3);font-family:var(--mono);">
+                SPACE to flip • ← → to navigate
+            </div>
+        `;
+    }
+
+    function flipCard() {
+        State.flashcards.flipped = !State.flashcards.flipped;
+        document.getElementById('fc-inner')?.classList.toggle('flipped', State.flashcards.flipped);
+    }
+
+    function nextCard() {
+        if (State.flashcards.current < State.flashcards.cards.length - 1) {
+            State.flashcards.current++;
+            State.flashcards.flipped = false;
+            renderFlashcardView();
+        }
+    }
+
+    function prevCard() {
+        if (State.flashcards.current > 0) {
+            State.flashcards.current--;
+            State.flashcards.flipped = false;
+            renderFlashcardView();
+        }
+    }
+
+    function goToCard(i) {
+        State.flashcards.current = i;
+        State.flashcards.flipped = false;
+        renderFlashcardView();
+    }
+
+    /* ===== RENDER TRICKS ===== */
+    function renderTricks(data) {
+        let tricks = data.tricks || data.memory_tricks || (Array.isArray(data) ? data : []);
+        document.getElementById('tricks-count').textContent = tricks.length;
+
+        const container = document.getElementById('tricks-grid');
+        container.innerHTML = tricks.map((t, i) => {
+            const concept = t.concept || t.title || t.topic || `Trick ${i+1}`;
+            const method = t.trick || t.method || t.mnemonic || t.description || '';
+            const type = t.type || 'Memory Trick';
+            const icons = { acronym:'🔤', visualization:'👁️', story:'📖', rhyme:'🎵', mnemonic:'🧠', general:'💡' };
+            const icon = icons[type?.toLowerCase()] || '💡';
+
+            return `
+                <div class="trick-card">
+                    <div class="trick-card-header">
+                        <div class="trick-icon-wrap">${icon}</div>
+                        <div>
+                            <div class="trick-concept">${escapeHtml(concept)}</div>
+                            <span class="trick-type">${escapeHtml(type)}</span>
+                        </div>
+                    </div>
+                    <div class="trick-method">${escapeHtml(method)}</div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    /* ===== RENDER SUMMARY ===== */
+    function renderSummary(data) {
+        const summary = typeof data === 'string' ? data : (data.summary || '');
+        const points = typeof data === 'object' ? (data.key_points || []) : [];
+
+        document.getElementById('summary-count').textContent = summary.split(' ').length + 'w';
+
+        const container = document.getElementById('summary-box');
+        container.innerHTML = `
+            ${summary ? `
+                <div>
+                    <div class="summary-label">
+                        <div class="summary-label-dot"></div>
+                        AI GENERATED SUMMARY
+                    </div>
+                    <div class="summary-text-box">
+                        <span id="summary-text-content"></span>
+                        <span class="summary-cursor"></span>
+                    </div>
+                </div>
+            ` : ''}
+
+            ${points.length ? `
+                <div>
+                    <h3 class="key-points-title">🎯 Key Takeaways</h3>
+                    <div class="key-points-box">
+                        ${points.map((p, i) => `
+                            <div class="key-point">
+                                <div class="key-point-num">${i+1}</div>
+                                <div class="key-point-text">${escapeHtml(typeof p === 'string' ? p : JSON.stringify(p))}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : ''}
+        `;
+
+        if (summary) {
+            typewriter(document.getElementById('summary-text-content'), summary, 20);
+        }
+    }
+
+    /* ===== TAB SWITCHING ===== */
+    function switchTab(tab, btn) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.result-section').forEach(s => s.classList.remove('active'));
+
+        btn.classList.add('active');
+        document.getElementById(`section-${tab}`)?.classList.add('active');
+    }
+
+    /* ===== KEYBOARD SHORTCUTS ===== */
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight') nextCard();
+        if (e.key === 'ArrowLeft') prevCard();
+        if (e.key === ' ' && document.getElementById('section-flashcards')?.classList.contains('active')) {
+            e.preventDefault();
+            flipCard();
+        }
+    });
+
+    /* ===== UTILITY FUNCTIONS ===== */
+    function showToast(msg, type = 'info') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `
+            <span>${type === 'success' ? '✓' : type === 'error' ? '✗' : 'ℹ'}</span>
+            <span>${msg}</span>
+            <button class="toast-close" onclick="this.parentElement.remove()">✕</button>
+        `;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(100px)';
+            toast.style.transition = 'all 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+
+    function showAchievement(icon, name, desc) {
+        const popup = document.getElementById('achievement-popup');
+        document.getElementById('ach-icon').textContent = icon;
+        document.getElementById('ach-name').textContent = name;
+        document.getElementById('ach-desc').textContent = desc;
+        popup.classList.add('show');
+        setTimeout(() => popup.classList.remove('show'), 4000);
+    }
+
+    function spawnConfetti() {
+        const colors = ['#00F0FF', '#8338EC', '#FF006E', '#06FFA5', '#FFB800'];
+        for (let i = 0; i < 60; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti-piece';
+            el.style.cssText = `
+                left: ${Math.random() * 100}vw;
+                top: -10px;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                animation-delay: ${Math.random() * 2}s;
+                animation-duration: ${2 + Math.random() * 2}s;
+                transform: rotate(${Math.random() * 360}deg);
+            `;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 5000);
+        }
+    }
+
+    function spawnMiniConfetti(el) {
+        const rect = el.getBoundingClientRect();
+        const colors = ['#00F0FF', '#8338EC', '#06FFA5'];
+        for (let i = 0; i < 15; i++) {
+            const piece = document.createElement('div');
+            piece.style.cssText = `
+                position: fixed;
+                width: 5px; height: 5px;
+                border-radius: 50%;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                left: ${rect.left + rect.width/2}px;
+                top: ${rect.top}px;
+                pointer-events: none;
+                z-index: 9999;
+                animation: confettiFall 1s ease-out forwards;
+                animation-delay: ${Math.random() * 0.3}s;
+            `;
+            document.body.appendChild(piece);
+            setTimeout(() => piece.remove(), 1500);
+        }
+    }
+
+    function typewriter(el, text, speed = 30) {
+        if (!el) return;
+        el.textContent = '';
+        let i = 0;
+        const timer = setInterval(() => {
+            if (i < text.length) {
+                el.textContent += text[i++];
+            } else {
+                clearInterval(timer);
+            }
+        }, speed);
+    }
+
+    function checkAnswer(selected, correct) {
+        const norm = s => String(s || '').toLowerCase().trim().replace(/[^a-z0-9]/g, '');
+        const s = norm(selected), c = norm(correct);
+        return s === c || c.includes(s) || s.includes(c);
+    }
+
+    function escapeHtml(str) {
+        return String(str || '')
+            .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+            .replace(/'/g,'&#039;');
+    }
+
+    function formatFileSize(bytes) {
+        if (!bytes) return '0 B';
+        const k = 1024;
+        const s = ['B','KB','MB','GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return (bytes / Math.pow(k, i)).toFixed(1) + ' ' + s[i];
+    }
+
+    function wait(ms) {
+        return new Promise(r => setTimeout(r, ms));
+    }
+
+    /* ===== INIT ===== */
+    document.addEventListener('DOMContentLoaded', () => {
+        initTheme();
+        initBackground();
+        initCursor();
+        initFileUpload();
+        checkAIStatus();
+
+        // GSAP entrance
+        if (window.gsap) {
+            gsap.from('.app-hero-badge', { y: 20, opacity: 0, duration: 0.6, delay: 0.2, ease: 'power2.out' });
+            gsap.from('.app-hero-title', { y: 30, opacity: 0, duration: 0.8, delay: 0.4, ease: 'power3.out' });
+            gsap.from('.app-hero-sub', { y: 20, opacity: 0, duration: 0.6, delay: 0.6, ease: 'power2.out' });
+            gsap.from('.left-panel', { x: -40, opacity: 0, duration: 0.8, delay: 0.6, ease: 'power3.out' });
+            gsap.from('.right-panel', { x: 40, opacity: 0, duration: 0.8, delay: 0.8, ease: 'power3.out' });
+        }
+    });
+    </script>
 
 </body>
 </html>
