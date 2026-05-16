@@ -6,6 +6,14 @@
     <title>Cognixar — Neural Learning System</title>
     <meta name="description" content="AI-powered document learning platform">
 
+    <!-- COGNIXAR Favicon -->
+    <link rel="icon" type="image/svg+xml" href="cognixar-logo.svg">
+    <link rel="apple-touch-icon" href="cognixar-logo.svg">
+    <meta name="theme-color" content="#050514">
+    <meta property="og:image" content="cognixar-logo.svg">
+
+    <title>COGNIXAR — Neural Learning, Reimagined</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -184,6 +192,46 @@
         pointer-events: none;
         transform: translate(-50%,-50%);
         transition: all 0.12s ease-out;
+    }
+
+    /* ── CURSOR FIX FOR NEURAL TUTOR ────────────────── */
+    #ntTrigger,
+    #ntPanel,
+    #ntPanel *,
+    .nt-chip,
+    .nt-bubble,
+    .nt-msg,
+    #ntInput,
+    #ntSend,
+    #ntClear,
+    #ntClose,
+    #ntMessages,
+    .trick-card,
+    .trick-card * {
+        cursor: none !important;
+    }
+
+    /* Ensure cursor dot/ring stay on top */
+    #cursor-dot,
+    #cursor-ring {
+        z-index: 999999 !important;
+        pointer-events: none !important;
+        position: fixed !important;
+    }
+
+    /* Prevent cursor disappearing during transitions */
+    body, body * {
+        cursor: none;
+    }
+
+    /* Fallback: show normal cursor if custom one fails */
+    @media (hover: none) {
+        body, body * {
+            cursor: auto !important;
+        }
+        #cursor-dot, #cursor-ring {
+            display: none !important;
+        }
     }
 
     body.hovering .cursor-ring {
@@ -1910,9 +1958,258 @@
         .cursor-dot, .cursor-ring { display: none; }
         .fc-nav-btn { padding: 10px 14px; font-size: 12px; }
     }
+
+    /* ============================================
+       COGNIXAR LOGO COMPONENT
+       ============================================ */
+    .cognixar-brand {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        max-width: fit-content;
+    }
+
+    .cognixar-brand:hover {
+        transform: scale(1.03);
+        filter: brightness(1.15) drop-shadow(0 0 20px rgba(0, 240, 255, 0.5));
+    }
+
+    .cognixar-logo-mark {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+        min-height: 40px !important;
+        max-width: 40px !important;
+        max-height: 40px !important;
+        flex-shrink: 0;
+        filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.4));
+        transition: filter 0.3s ease;
+        display: block;
+    }
+
+    /* Important: Make SVG inside scale properly */
+    .cognixar-logo-mark svg,
+    svg.cognixar-logo-mark {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    .cognixar-brand:hover .cognixar-logo-mark {
+        filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.7))
+                drop-shadow(0 0 30px rgba(131, 56, 236, 0.4));
+        animation: logoSpin 8s linear infinite;
+    }
+
+    @keyframes logoSpin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .cognixar-wordmark {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        font-size: 20px !important;
+        letter-spacing: -0.02em;
+        background: linear-gradient(135deg, #00F0FF, #8338EC, #FF006E);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        text-transform: uppercase;
+        animation: gradientShift 6s ease infinite;
+        white-space: nowrap;
+        line-height: 1;
+    }
+
+    @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    /* Stylized X letter */
+    .cognixar-wordmark .x-letter {
+        color: #FF006E;
+        -webkit-text-fill-color: #FF006E;
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Variants */
+    .cognixar-brand.large .cognixar-logo-mark { width: 60px; height: 60px; }
+    .cognixar-brand.large .cognixar-wordmark { font-size: 28px; }
+
+    .cognixar-brand.small .cognixar-logo-mark { width: 32px; height: 32px; }
+    .cognixar-brand.small .cognixar-wordmark { font-size: 16px; }
+
+    .cognixar-brand.icon-only .cognixar-wordmark { display: none; }
+
+    /* ===== LOADER ANIMATIONS ===== */
+    @keyframes logoSpin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+
+    @keyframes loadBar {
+        0% { transform: scaleX(0); }
+        50% { transform: scaleX(1); }
+        100% { transform: scaleX(0); transform-origin: right; }
+    }
     </style>
 </head>
 <body>
+
+    <!-- COGNIXAR Loading Screen -->
+    <div id="cognixar-loader" style="
+        position: fixed;
+        inset: 0;
+        background: #050514;
+        z-index: 999999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        transition: opacity 0.6s ease, visibility 0.6s ease;
+    ">
+        <svg style="
+            width: 120px;
+            height: 120px;
+            filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.6));
+        " viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <radialGradient id="loaderCenterGrad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#A855F7"/>
+                    <stop offset="50%" stop-color="#8338EC"/>
+                    <stop offset="100%" stop-color="#5B21B6"/>
+                </radialGradient>
+                <radialGradient id="loaderCyanGrad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#7DF9FF"/>
+                    <stop offset="100%" stop-color="#00F0FF"/>
+                </radialGradient>
+                <radialGradient id="loaderPinkGrad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#FF4D9D"/>
+                    <stop offset="100%" stop-color="#FF006E"/>
+                </radialGradient>
+                <linearGradient id="loaderLineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#00F0FF" stop-opacity="0.6"/>
+                    <stop offset="100%" stop-color="#8338EC" stop-opacity="0.6"/>
+                </linearGradient>
+                <filter id="loaderGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="3" result="blur"/>
+                    <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+                <filter id="loaderStrongGlow" x="-100%" y="-100%" width="300%" height="300%">
+                    <feGaussianBlur stdDeviation="6" result="blur"/>
+                    <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+
+            <circle cx="100" cy="100" r="85" fill="url(#loaderCenterGrad)" opacity="0.08"/>
+
+            <g stroke="url(#loaderLineGrad)" stroke-width="1.2" filter="url(#loaderGlow)" fill="none">
+                <line x1="100" y1="100" x2="100" y2="35"/>
+                <line x1="100" y1="100" x2="156" y2="68"/>
+                <line x1="100" y1="100" x2="156" y2="132"/>
+                <line x1="100" y1="100" x2="100" y2="165"/>
+                <line x1="100" y1="100" x2="44" y2="132"/>
+                <line x1="100" y1="100" x2="44" y2="68"/>
+            </g>
+
+            <polygon points="100,35 156,68 156,132 100,165 44,132 44,68"
+                fill="none" stroke="url(#loaderLineGrad)" stroke-width="1.2"
+                filter="url(#loaderGlow)" opacity="0.7"/>
+
+            <g filter="url(#loaderGlow)">
+                <circle cx="100" cy="35" r="7" fill="url(#loaderCyanGrad)">
+                    <animate attributeName="r" values="7;8;7" dur="2.5s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="156" cy="68" r="7" fill="url(#loaderCyanGrad)">
+                    <animate attributeName="r" values="7;8;7" dur="2.5s" begin="0.3s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="156" cy="132" r="7" fill="url(#loaderPinkGrad)">
+                    <animate attributeName="r" values="7;9;7" dur="2s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="100" cy="165" r="7" fill="url(#loaderCyanGrad)">
+                    <animate attributeName="r" values="7;8;7" dur="2.5s" begin="0.9s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="44" cy="132" r="7" fill="url(#loaderCyanGrad)">
+                    <animate attributeName="r" values="7;8;7" dur="2.5s" begin="1.2s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="44" cy="68" r="7" fill="url(#loaderCyanGrad)">
+                    <animate attributeName="r" values="7;8;7" dur="2.5s" begin="1.5s" repeatCount="indefinite"/>
+                </circle>
+            </g>
+
+            <g filter="url(#loaderStrongGlow)">
+                <circle cx="100" cy="100" r="18" fill="url(#loaderCenterGrad)">
+                    <animate attributeName="r" values="18;20;18" dur="2s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" values="1;0.85;1" dur="2s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="100" cy="100" r="6" fill="#FFFFFF" opacity="0.9">
+                    <animate attributeName="opacity" values="0.9;0.6;0.9" dur="2s" repeatCount="indefinite"/>
+                </circle>
+            </g>
+        </svg>
+        <div style="
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            color: #00F0FF;
+            text-transform: uppercase;
+            animation: pulse 1.5s ease-in-out infinite;
+        ">Loading Neural Core</div>
+        <div style="
+            width: 200px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        ">
+            <div style="
+                height: 100%;
+                background: linear-gradient(90deg, #00F0FF, #8338EC, #FF006E);
+                border-radius: 2px;
+                animation: loadBar 1.5s ease-in-out infinite;
+                transform-origin: left;
+            "></div>
+        </div>
+    </div>
+
+    <script>
+        // Hide loader when page is fully loaded
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('cognixar-loader');
+                if (loader) {
+                    loader.style.opacity = '0';
+                    loader.style.visibility = 'hidden';
+                    setTimeout(() => loader.remove(), 600);
+                }
+            }, 800);
+        });
+    </script>
 
     <!-- ====== BACKGROUNDS ====== -->
     <canvas id="app-canvas"></canvas>
@@ -1949,19 +2246,91 @@
             <div class="app-nav-inner">
 
                 <!-- Logo -->
-                <a href="index.html" class="app-logo">
-                    <div class="app-logo-icon">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"/>
-                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2"/>
-                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                        <div class="logo-ring"></div>
-                    </div>
-                    <div class="app-logo-text">
-                        <span class="app-logo-name">COGNIXAR</span>
-                        <span class="app-logo-sub">NEURAL OS v2.0</span>
-                    </div>
+                <a href="index.html" class="cognixar-brand">
+                    <svg class="cognixar-logo-mark" width="40" height="40" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <radialGradient id="centerGrad" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#A855F7"/>
+                                <stop offset="50%" stop-color="#8338EC"/>
+                                <stop offset="100%" stop-color="#5B21B6"/>
+                            </radialGradient>
+                            <radialGradient id="cyanGrad" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#7DF9FF"/>
+                                <stop offset="100%" stop-color="#00F0FF"/>
+                            </radialGradient>
+                            <radialGradient id="pinkGrad" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#FF4D9D"/>
+                                <stop offset="100%" stop-color="#FF006E"/>
+                            </radialGradient>
+                            <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#00F0FF" stop-opacity="0.6"/>
+                                <stop offset="100%" stop-color="#8338EC" stop-opacity="0.6"/>
+                            </linearGradient>
+                            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="3" result="blur"/>
+                                <feMerge>
+                                    <feMergeNode in="blur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                            <filter id="strongGlow" x="-100%" y="-100%" width="300%" height="300%">
+                                <feGaussianBlur stdDeviation="6" result="blur"/>
+                                <feMerge>
+                                    <feMergeNode in="blur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        <circle cx="100" cy="100" r="85" fill="url(#centerGrad)" opacity="0.08"/>
+
+                        <g stroke="url(#lineGrad)" stroke-width="1.2" filter="url(#glow)" fill="none">
+                            <line x1="100" y1="100" x2="100" y2="35"/>
+                            <line x1="100" y1="100" x2="156" y2="68"/>
+                            <line x1="100" y1="100" x2="156" y2="132"/>
+                            <line x1="100" y1="100" x2="100" y2="165"/>
+                            <line x1="100" y1="100" x2="44" y2="132"/>
+                            <line x1="100" y1="100" x2="44" y2="68"/>
+                        </g>
+
+                        <polygon points="100,35 156,68 156,132 100,165 44,132 44,68"
+                            fill="none" stroke="url(#lineGrad)" stroke-width="1.2"
+                            filter="url(#glow)" opacity="0.7"/>
+
+                        <g filter="url(#glow)">
+                            <circle cx="100" cy="35" r="7" fill="url(#cyanGrad)">
+                                <animate attributeName="r" values="7;8;7" dur="2.5s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="156" cy="68" r="7" fill="url(#cyanGrad)">
+                                <animate attributeName="r" values="7;8;7" dur="2.5s" begin="0.3s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="156" cy="132" r="7" fill="url(#pinkGrad)">
+                                <animate attributeName="r" values="7;9;7" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="100" cy="165" r="7" fill="url(#cyanGrad)">
+                                <animate attributeName="r" values="7;8;7" dur="2.5s" begin="0.9s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="44" cy="132" r="7" fill="url(#cyanGrad)">
+                                <animate attributeName="r" values="7;8;7" dur="2.5s" begin="1.2s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="44" cy="68" r="7" fill="url(#cyanGrad)">
+                                <animate attributeName="r" values="7;8;7" dur="2.5s" begin="1.5s" repeatCount="indefinite"/>
+                            </circle>
+                        </g>
+
+                        <g filter="url(#strongGlow)">
+                            <circle cx="100" cy="100" r="18" fill="url(#centerGrad)">
+                                <animate attributeName="r" values="18;20;18" dur="2s" repeatCount="indefinite"/>
+                                <animate attributeName="opacity" values="1;0.85;1" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="100" cy="100" r="6" fill="#FFFFFF" opacity="0.9">
+                                <animate attributeName="opacity" values="0.9;0.6;0.9" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                        </g>
+                    </svg>
+                    <span class="cognixar-wordmark">
+                        COGNI<span class="x-letter">X</span>AR
+                    </span>
                 </a>
 
                 <!-- Center: AI Status -->
@@ -2293,17 +2662,17 @@
     </div>
 
     <!-- ============================================
-         APP JAVASCRIPT
+         APP JAVASCRIPT - ORGANIZED STRUCTURE
     ============================================ -->
     <script>
-    /* ===== CONFIGURATION ===== */
+    /* ========== SECTION 1: CONFIGURATION & STATE ========== */
     const CONFIG = {
         API_BASE: window.location.hostname === 'localhost'
             ? 'http://localhost:8000/api'
             : 'https://learnforge-ai-j5tx.onrender.com/api'
     };
 
-    /* ===== STATE ===== */
+    /* ========== SECTION 2: GLOBAL STATE MANAGEMENT ========== */
     const State = {
         fileId: null,
         fileName: null,
@@ -2314,7 +2683,8 @@
         flashcards: { cards: [], current: 0, flipped: false }
     };
 
-    /* ===== 3D BACKGROUND ===== */
+    /* ========== SECTION 3: UI INITIALIZATION & EFFECTS ========== */
+    /* ───── 3D Background Rendering ───── */
     function initBackground() {
         const canvas = document.getElementById('app-canvas');
         if (!canvas || !window.THREE) return;
@@ -2381,14 +2751,61 @@
 
         let dx = 0, dy = 0, rx = 0, ry = 0, tx = 0, ty = 0;
 
-        document.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
+        document.addEventListener('mousemove', e => {
+            tx = e.clientX;
+            ty = e.clientY;
+            // Ensure cursor stays visible
+            dot.style.opacity = '1';
+            ring.style.opacity = '1';
+        });
+
+        // Hide cursor when leaving window
+        document.addEventListener('mouseleave', () => {
+            dot.style.opacity = '0';
+            ring.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            dot.style.opacity = '1';
+            ring.style.opacity = '1';
+        });
 
         const hover = () => document.body.classList.add('hovering');
         const unhover = () => document.body.classList.remove('hovering');
 
-        document.querySelectorAll('a, button, .upload-zone, .quiz-opt, .fc-card, .tab-btn, .fc-nav-btn, .fc-dot').forEach(el => {
-            el.addEventListener('mouseenter', hover);
-            el.addEventListener('mouseleave', unhover);
+        // Bind to ALL interactive elements including Neural Tutor
+        const SELECTORS = 'a, button, .upload-zone, .quiz-opt, .fc-card, .tab-btn, .fc-nav-btn, .fc-dot, .nt-chip, #ntTrigger, #ntSend, #ntClear, #ntClose, #ntInput, .nt-bubble, .trick-card, .trick-card-header';
+
+        function bindCursorEvents(elements) {
+            elements.forEach(el => {
+                if (el.dataset.cursorBound) return;
+                el.dataset.cursorBound = '1';
+                el.addEventListener('mouseenter', hover);
+                el.addEventListener('mouseleave', unhover);
+            });
+        }
+
+        // Initial bind
+        bindCursorEvents(document.querySelectorAll(SELECTORS));
+
+        // Watch for dynamically added elements (chat messages, tricks, etc)
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType === 1) {
+                        if (node.matches && node.matches(SELECTORS)) {
+                            bindCursorEvents([node]);
+                        }
+                        const children = node.querySelectorAll ? node.querySelectorAll(SELECTORS) : [];
+                        bindCursorEvents(children);
+                    }
+                });
+            });
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
         });
 
         (function updateCursor() {
@@ -2419,7 +2836,7 @@
         });
     }
 
-    /* ===== API CALLS ===== */
+    /* ========== SECTION 6: AI & COMMUNICATION ========== */
     async function checkAIStatus() {
         try {
             const res = await fetch(`${CONFIG.API_BASE}/providers`);
@@ -2470,7 +2887,7 @@
         return res.json();
     }
 
-    /* ===== FILE UPLOAD ===== */
+    /* ========== SECTION 4: FILE UPLOAD HANDLING ========== */
     function initFileUpload() {
         const zone = document.getElementById('upload-zone');
         const input = document.getElementById('file-input');
@@ -2523,18 +2940,52 @@
         try {
             const data = await uploadFile(file);
 
-            State.fileId = data.file_id;
-            State.fileName = file.name;
+           State.fileId = data.file_id;
+State.fileName = file.name;
 
-            showFilePreview(file, data);
-            showToast('Document uploaded successfully!', 'success');
+try {
+    localStorage.setItem('cognixar_last_doc', JSON.stringify({
+        fileId: data.file_id,
+        fileName: file.name,
+        preview: data.preview || '',
+        charCount: data.char_count || 0,
+        fileSize: file.size,
+        fileExt: file.name.split('.').pop().toLowerCase(),
+        uploadedAt: Date.now()
+    }));
+} catch(e) {
+    console.warn('Could not save doc to localStorage:', e);
+}
 
-            // Achievement
-            const uploads = parseInt(localStorage.getItem('cx_uploads') || '0') + 1;
-            localStorage.setItem('cx_uploads', uploads);
-            if (uploads === 1) {
-                setTimeout(() => showAchievement('📄', 'First Upload', 'Uploaded your first document'), 1000);
-            }
+showFilePreview(file, data);
+showToast('Document uploaded successfully!', 'success');
+
+// ── Neural Tutor: Set document context ──────────────────
+// ── Neural Tutor: Set document context with persistence ──
+if (window.NeuralTutor) {
+    window.NeuralTutor.setDocument(
+        data.preview || '',
+        file.name,
+        data.file_id
+    );
+
+    // Persist file ID for session restoration
+    try {
+        localStorage.setItem('cognixar_last_file', JSON.stringify({
+            fileId: data.file_id,
+            fileName: file.name,
+            text: data.preview || '',
+            timestamp: Date.now()
+        }));
+    } catch(e) {}
+}
+
+// Achievement
+const uploads = parseInt(localStorage.getItem('cx_uploads') || '0') + 1;
+localStorage.setItem('cx_uploads', uploads);
+if (uploads === 1) {
+    setTimeout(() => showAchievement('📄', 'First Upload', 'Uploaded your first document'), 1000);
+} 
 
         } catch (err) {
             showToast(err.message || 'Upload failed', 'error');
@@ -2570,6 +3021,9 @@
         State.fileId = null;
         State.fileName = null;
 
+State.results = {};
+localStorage.removeItem('cognixar_last_doc');
+
         document.getElementById('upload-zone').style.display = '';
         document.getElementById('file-preview').classList.remove('show');
         document.getElementById('generate-btn').classList.remove('show');
@@ -2604,6 +3058,22 @@
 
             State.results = data;
 
+try {
+    const savedDoc = JSON.parse(localStorage.getItem('cognixar_last_doc') || '{}');
+    localStorage.setItem('cognixar_last_doc', JSON.stringify({
+        ...savedDoc,
+        results: {
+            quizzes: data.quizzes || null,
+            flashcards: data.flashcards || null,
+            tricks: data.tricks || null,
+            summary: data.summary || null
+        },
+        generatedAt: Date.now()
+    }));
+} catch(e) {
+    console.warn('Could not save results:', e);
+}
+
             // Render results
             if (data.quizzes) renderQuiz(data.quizzes);
             if (data.flashcards) renderFlashcards(data.flashcards);
@@ -2617,15 +3087,36 @@
             document.getElementById('generate-btn').classList.add('show');
 
             // Confetti!
-            spawnConfetti();
-            showToast('Neural processing complete! 🎉', 'success');
+spawnConfetti();
+showToast('Neural processing complete! 🎉', 'success');
 
-            // Achievement
-            const gens = parseInt(localStorage.getItem('cx_gens') || '0') + 1;
-            localStorage.setItem('cx_gens', gens);
-            if (gens === 1) {
-                setTimeout(() => showAchievement('⚡', 'First Generation', 'Generated your first learning content!'), 1500);
-            }
+// ── Neural Tutor: Update with full extracted text ────────
+// After generation, we have access to full document text
+// Send it to the tutor so it can answer detailed questions
+if (window.NeuralTutor && data.extracted_text) {
+    window.NeuralTutor.setDocument(
+        data.extracted_text,       // full text (better than preview)
+        State.fileName,
+        State.fileId
+    );
+} else if (window.NeuralTutor && data.summary) {
+    // Fallback: use summary text if extracted_text not available
+    const summaryText = typeof data.summary === 'string'
+        ? data.summary
+        : (data.summary?.summary || JSON.stringify(data.summary));
+    window.NeuralTutor.setDocument(
+        summaryText,
+        State.fileName,
+        State.fileId
+    );
+}
+
+// Achievement
+const gens = parseInt(localStorage.getItem('cx_gens') || '0') + 1;
+localStorage.setItem('cx_gens', gens);
+if (gens === 1) {
+    setTimeout(() => showAchievement('⚡', 'First Generation', 'Generated your first learning content!'), 1500);
+}
 
         } catch (err) {
             document.getElementById('ai-loader').style.display = 'none';
@@ -2734,16 +3225,38 @@
         if (isCorrect) spawnMiniConfetti(optEl);
 
         // Completion
-        if (State.quiz.answered === State.quiz.total) {
-            setTimeout(() => {
-                spawnConfetti();
-                showToast(`Quiz complete! Score: ${State.quiz.score}/${State.quiz.total} 🎉`, 'success');
+if (State.quiz.answered === State.quiz.total) {
+    setTimeout(() => {
+        spawnConfetti();
+        showToast(`Quiz complete! Score: ${State.quiz.score}/${State.quiz.total} 🎉`, 'success');
 
-                if (State.quiz.score === State.quiz.total) {
-                    setTimeout(() => showAchievement('🏆', 'Perfect Score!', 'Got 100% on a quiz!'), 1000);
-                }
-            }, 500);
+        if (State.quiz.score === State.quiz.total) {
+            setTimeout(() => showAchievement('🏆', 'Perfect Score!', 'Got 100% on a quiz!'), 1000);
         }
+
+        // ── Neural Tutor: Offer post-quiz help ──────────────
+        // After quiz, tutor offers to explain wrong answers
+        if (window.NeuralTutor) {
+            const pct = Math.round((State.quiz.score / State.quiz.total) * 100);
+            const missed = State.quiz.total - State.quiz.score;
+
+            // Only suggest if they got some wrong
+            if (missed > 0) {
+                setTimeout(() => {
+                    // Show notification dot on chat button
+                    const dot = document.getElementById('chatNotifDot');
+                    if (dot) dot.style.display = 'block';
+
+                    showToast(
+                        '💬 Neural Tutor can explain your missed answers!',
+                        'info'
+                    );
+                }, 2000);
+            }
+        }
+
+    }, 500);
+}
     }
 
     function updateScore() {
@@ -2845,29 +3358,93 @@
     /* ===== RENDER TRICKS ===== */
     function renderTricks(data) {
         let tricks = data.tricks || data.memory_tricks || (Array.isArray(data) ? data : []);
+
+        // DEBUG: log what we received
+        console.log('[Tricks] Received data:', tricks);
+
         document.getElementById('tricks-count').textContent = tricks.length;
 
         const container = document.getElementById('tricks-grid');
         container.innerHTML = tricks.map((t, i) => {
-            const concept = t.concept || t.title || t.topic || `Trick ${i+1}`;
-            const method = t.trick || t.method || t.mnemonic || t.description || '';
-            const type = t.type || 'Memory Trick';
-            const icons = { acronym:'🔤', visualization:'👁️', story:'📖', rhyme:'🎵', mnemonic:'🧠', general:'💡' };
-            const icon = icons[type?.toLowerCase()] || '💡';
+            // Try ALL possible field names from AI response
+            const title = t.title || t.concept || t.topic || t.name || `Trick ${i+1}`;
+            const trickContent = t.trick || t.method || t.mnemonic || t.description || t.content || '';
+            const explanation = t.explanation || t.howItWorks || t.how_it_works || t.detail || '';
+            const type = t.type || t.category || 'mnemonic';
+
+            // DEBUG: log each trick
+            console.log(`[Tricks] Card ${i}:`, { title, trickContent, explanation, type });
+
+            const icons = {
+                acronym:'🔤', visualization:'👁️', story:'📖',
+                rhyme:'🎵', mnemonic:'🧠', general:'💡',
+                analogy:'🔗', simplification:'✨', pattern:'🔢',
+                'real-world example':'🌍', 'real_world_example':'🌍'
+            };
+            const icon = icons[String(type).toLowerCase()] || '💡';
 
             return `
-                <div class="trick-card">
-                    <div class="trick-card-header">
-                        <div class="trick-icon-wrap">${icon}</div>
-                        <div>
-                            <div class="trick-concept">${escapeHtml(concept)}</div>
-                            <span class="trick-type">${escapeHtml(type)}</span>
+                <div class="trick-card" data-trick-index="${i}">
+                    <div class="trick-card-header" style="cursor: none; display: flex; align-items: center; gap: 12px; padding: 16px;">
+                        <div class="trick-icon-wrap" style="font-size: 24px;">${icon}</div>
+                        <div style="flex: 1;">
+                            <div class="trick-concept" style="font-weight: 700; font-size: 16px; color: white; margin-bottom: 4px;">${escapeHtml(title)}</div>
+                            <span class="trick-type" style="font-size: 11px; padding: 3px 8px; border-radius: 10px; background: rgba(131,56,236,0.2); color: rgba(131,56,236,0.9); font-family: monospace;">${escapeHtml(type)}</span>
+                        </div>
+                        <div class="trick-expand-icon" style="font-size: 18px; color: #00F0FF; transition: transform 0.3s ease; margin-left: 12px;">▼</div>
+                    </div>
+                    <div class="trick-content" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease;">
+                        <div style="padding: 0 16px 16px; border-top: 1px solid rgba(0,240,255,0.1);">
+                            ${trickContent ? `
+                                <div style="padding: 14px 0;">
+                                    <div style="color: #00F0FF; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 8px; text-transform: uppercase;">💡 The Trick</div>
+                                    <div style="color: rgba(255,255,255,0.9); line-height: 1.6; font-size: 14px;">${escapeHtml(trickContent)}</div>
+                                </div>
+                            ` : `
+                                <div style="padding: 14px 0; color: rgba(255,150,150,0.7); font-size: 13px;">
+                                    ⚠️ No trick content available
+                                </div>
+                            `}
+                            ${explanation ? `
+                                <div style="padding: 12px 0; border-top: 1px dashed rgba(131,56,236,0.2);">
+                                    <div style="color: #8338EC; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 8px; text-transform: uppercase;">📖 How It Works</div>
+                                    <div style="color: rgba(255,255,255,0.7); line-height: 1.6; font-size: 13px;">${escapeHtml(explanation)}</div>
+                                </div>
+                            ` : ''}
                         </div>
                     </div>
-                    <div class="trick-method">${escapeHtml(method)}</div>
                 </div>
             `;
         }).join('');
+
+        // Add click handlers
+        container.querySelectorAll('.trick-card').forEach(card => {
+            const header = card.querySelector('.trick-card-header');
+            const content = card.querySelector('.trick-content');
+            const icon = card.querySelector('.trick-expand-icon');
+
+            header.addEventListener('click', () => {
+                const isOpen = card.classList.contains('expanded');
+
+                container.querySelectorAll('.trick-card.expanded').forEach(other => {
+                    if (other !== card) {
+                        other.classList.remove('expanded');
+                        other.querySelector('.trick-content').style.maxHeight = '0';
+                        other.querySelector('.trick-expand-icon').style.transform = 'rotate(0deg)';
+                    }
+                });
+
+                if (!isOpen) {
+                    card.classList.add('expanded');
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    card.classList.remove('expanded');
+                    content.style.maxHeight = '0';
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
     }
 
     /* ===== RENDER SUMMARY ===== */
@@ -2931,7 +3508,7 @@
         }
     });
 
-    /* ===== UTILITY FUNCTIONS ===== */
+    /* ========== SECTION 7: UI UTILITIES & HELPERS ========== */
     function showToast(msg, type = 'info') {
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
@@ -3013,11 +3590,27 @@
     }
 
     function checkAnswer(selected, correct) {
-        const norm = s => String(s || '').toLowerCase().trim().replace(/[^a-z0-9]/g, '');
-        const s = norm(selected), c = norm(correct);
-        return s === c || c.includes(s) || s.includes(c);
+    const norm = s => String(s || '').toLowerCase().trim().replace(/[^a-z0-9]/g, '');
+    const s = norm(selected), c = norm(correct);
+
+    // Exact match only (no fuzzy includes - that was the bug!)
+    if (s === c) return true;
+
+    // Letter match: if correct is "A" or "B" check if selected starts with "a)" or "b)"
+    if (c.length === 1 && /[a-d]/.test(c)) {
+        return s.startsWith(c) || s === c;
     }
 
+    // Reverse: if selected is single letter "A", check if correct option starts with "a)"
+    if (s.length === 1 && /[a-d]/.test(s)) {
+        return c.startsWith(s);
+    }
+
+    // Strict equality only
+    return false;
+}
+
+    // ── Utility: HTML Escaping ────────────────────────
     function escapeHtml(str) {
         return String(str || '')
             .replace(/&/g,'&amp;').replace(/</g,'&lt;')
@@ -3037,13 +3630,100 @@
         return new Promise(r => setTimeout(r, ms));
     }
 
+function restoreLastSession() {
+    try {
+        const raw = localStorage.getItem('cognixar_last_doc');
+        if (!raw) return;
+
+        const saved = JSON.parse(raw);
+        if (!saved.fileId || !saved.fileName) return;
+
+        const age = Date.now() - (saved.uploadedAt || 0);
+        const maxAge = 24 * 60 * 60 * 1000;
+        if (age > maxAge) {
+            localStorage.removeItem('cognixar_last_doc');
+            return;
+        }
+
+        State.fileId = saved.fileId;
+        State.fileName = saved.fileName;
+
+        const fakeFile = {
+            name: saved.fileName,
+            size: saved.fileSize || 0
+        };
+
+        const fakeData = {
+            file_id: saved.fileId,
+            preview: saved.preview || '',
+            char_count: saved.charCount || 0
+        };
+
+        showFilePreview(fakeFile, fakeData);
+        showToast(`📂 Session restored: ${saved.fileName}`, 'info');
+
+        if (window.NeuralTutor) {
+            window.NeuralTutor.setDocument(
+                saved.preview || '',
+                saved.fileName,
+                saved.fileId
+            );
+        }
+
+        if (saved.results) {
+            State.results = saved.results;
+
+            document.getElementById('empty-state').style.display = 'none';
+            document.getElementById('results-panel').style.display = '';
+            document.getElementById('generate-btn').classList.add('show');
+
+            if (saved.results.quizzes) renderQuiz(saved.results.quizzes);
+            if (saved.results.flashcards) renderFlashcards(saved.results.flashcards);
+            if (saved.results.tricks) renderTricks(saved.results.tricks);
+            if (saved.results.summary) renderSummary(saved.results.summary);
+
+            showToast('✅ Previous results restored!', 'success');
+        }
+
+    } catch(e) {
+        console.warn('[Cognixar] Session restore failed:', e);
+        localStorage.removeItem('cognixar_last_doc');
+    }
+}
+
     /* ===== INIT ===== */
     document.addEventListener('DOMContentLoaded', () => {
-        initTheme();
-        initBackground();
-        initCursor();
-        initFileUpload();
-        checkAIStatus();
+    initTheme();
+    initBackground();
+    initCursor();
+    initFileUpload();
+    checkAIStatus();
+
+    setTimeout(() => restoreLastSession(), 500);
+
+    // ── Neural Tutor: Restore last session if exists ─────
+    // If user refreshes page, restore their last document
+    // ── Restore last Neural Tutor session ──
+setTimeout(() => {
+    try {
+        const lastFile = localStorage.getItem('cognixar_last_file');
+        if (lastFile && window.NeuralTutor) {
+            const data = JSON.parse(lastFile);
+            // Only restore if less than 24 hours old
+            const age = Date.now() - (data.timestamp || 0);
+            if (age < 24 * 60 * 60 * 1000) {
+                window.NeuralTutor.setDocument(
+                    data.text || '',
+                    data.fileName,
+                    data.fileId
+                );
+                console.log(`[NeuralTutor] Restored: ${data.fileName}`);
+            }
+        }
+    } catch(e) {
+        console.warn('Restore failed:', e);
+    }
+}, 500);
 
         // GSAP entrance
         if (window.gsap) {
@@ -3056,5 +3736,4419 @@
     });
     </script>
 
+<!-- ============================================================
+     COGNIXAR NEURAL TUTOR — SELF-CONTAINED VERSION
+     ============================================================ -->
+
+<button id="ntTrigger" style="
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00F0FF, #8338EC);
+    border: none;
+    cursor: pointer;
+    z-index: 99998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    box-shadow: 0 0 20px rgba(0,240,255,0.4), 0 0 40px rgba(131,56,236,0.3);
+    transition: transform 0.3s;
+">💬</button>
+
+<div id="ntPanel" style="
+    position: fixed;
+    bottom: 110px;
+    right: 32px;
+    width: 420px;
+    height: 620px;
+    background: rgba(5,5,20,0.97);
+    border: 1px solid rgba(0,240,255,0.3);
+    border-radius: 16px;
+    backdrop-filter: blur(40px);
+    z-index: 99999;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.8);
+">
+    <!-- Header -->
+    <div style="
+        padding: 16px 20px;
+        background: linear-gradient(135deg, rgba(0,240,255,0.08), rgba(131,56,236,0.08));
+        border-bottom: 1px solid rgba(0,240,255,0.1);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    ">
+        <div style="
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00F0FF, #8338EC);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+        ">⚡</div>
+        <div style="flex: 1;">
+            <div style="
+                color: #00F0FF;
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 14px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+            ">NEURAL TUTOR</div>
+            <div id="ntStatus" style="
+                font-size: 11px;
+                color: rgba(255,255,255,0.5);
+            ">Online — Ready</div>
+        </div>
+        <button id="ntClear" title="Clear" style="
+            width: 32px; height: 32px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+        ">🗑️</button>
+        <button id="ntClose" title="Close" style="
+            width: 32px; height: 32px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        ">✕</button>
+    </div>
+
+    <!-- Messages -->
+    <div id="ntMessages" style="
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    "></div>
+
+    <!-- Quick Actions -->
+    <div style="
+        padding: 10px 16px 6px;
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        border-top: 1px solid rgba(255,255,255,0.05);
+    ">
+        <button class="nt-chip" data-prompt="Summarize this document">📝 Summarize</button>
+        <button class="nt-chip" data-prompt="Explain like I'm 5">🧒 ELI5</button>
+        <button class="nt-chip" data-prompt="Give me 3 examples">💡 Examples</button>
+        <button class="nt-chip" data-prompt="Quiz me with 3 questions">🎯 Quiz me</button>
+    </div>
+
+    <!-- Input -->
+    <div style="
+        padding: 10px 16px 16px;
+        display: flex;
+        gap: 8px;
+        background: rgba(0,0,0,0.2);
+        border-top: 1px solid rgba(255,255,255,0.05);
+    ">
+        <input id="ntInput" type="text" placeholder="Ask anything about your document..." style="
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 10px 14px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            outline: none;
+        ">
+        <button id="ntSend" style="
+            width: 42px; height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #00F0FF, #8338EC);
+            border: none;
+            cursor: pointer;
+            color: white;
+            font-size: 18px;
+        ">➤</button>
+    </div>
+</div>
+
+<style>
+    .nt-chip {
+        padding: 5px 10px;
+        border-radius: 20px;
+        background: rgba(0,240,255,0.07);
+        border: 1px solid rgba(0,240,255,0.2);
+        color: rgba(0,240,255,0.85);
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s;
+    }
+    .nt-chip:hover {
+        background: rgba(0,240,255,0.15);
+        color: #00F0FF;
+    }
+    .nt-msg {
+        display: flex;
+        gap: 8px;
+        animation: ntFadeIn 0.3s ease;
+    }
+    .nt-msg.user { flex-direction: row-reverse; }
+    .nt-bubble {
+        max-width: 80%;
+        padding: 10px 14px;
+        border-radius: 14px;
+        font-family: 'Inter', sans-serif;
+        font-size: 13.5px;
+        line-height: 1.6;
+        word-break: break-word;
+        white-space: pre-wrap;
+    }
+    .nt-bubble.user-b {
+        background: linear-gradient(135deg, rgba(0,240,255,0.18), rgba(131,56,236,0.18));
+        border: 1px solid rgba(0,240,255,0.25);
+        color: white;
+        border-bottom-right-radius: 4px;
+    }
+    .nt-bubble.ai-b {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: rgba(255,255,255,0.9);
+        border-bottom-left-radius: 4px;
+    }
+    .nt-bubble.error {
+        background: rgba(255,0,110,0.1);
+        border-color: rgba(255,0,110,0.3);
+        color: rgba(255,150,150,0.9);
+    }
+    @keyframes ntFadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    #ntMessages::-webkit-scrollbar { width: 4px; }
+    #ntMessages::-webkit-scrollbar-thumb {
+        background: rgba(0,240,255,0.3);
+        border-radius: 2px;
+    }
+    #ntInput:focus {
+        border-color: rgba(0,240,255,0.4) !important;
+        box-shadow: 0 0 0 3px rgba(0,240,255,0.1);
+    }
+    #ntTrigger:hover { transform: scale(1.1); }
+    #ntPanel.open { display: flex !important; }
+    /* ============================================================
+   LIGHT MODE COMPREHENSIVE FIX
+   Add this at the END of your <style> tag to override
+   ============================================================ */
+
+[data-theme="light"] {
+    --text1: #0a0a14;
+    --text2: rgba(10, 10, 20, 0.75);
+    --text3: rgba(10, 10, 20, 0.5);
+    --bg1: #f5f7fb;
+    --bg2: #ffffff;
+    --bg3: #eef0f6;
+    --border: rgba(10, 10, 20, 0.12);
+}
+
+/* ── Body & Background ──────────────────────────── */
+[data-theme="light"] body {
+    background: linear-gradient(135deg, #f5f7fb 0%, #eef0f6 100%);
+    color: #0a0a14;
+}
+
+/* ── Headings & Text ────────────────────────────── */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5 {
+    color: #0a0a14 !important;
+}
+
+[data-theme="light"] p,
+[data-theme="light"] span,
+[data-theme="light"] div {
+    color: #1a1a2e;
+}
+
+/* Hero title with gradient stays the same */
+[data-theme="light"] .app-hero-title,
+[data-theme="light"] .hero-title {
+    color: #0a0a14 !important;
+}
+
+[data-theme="light"] .app-hero-sub,
+[data-theme="light"] .hero-sub {
+    color: rgba(10, 10, 20, 0.65) !important;
+}
+
+/* ── Glass Panels & Cards ──────────────────────── */
+[data-theme="light"] .left-panel,
+[data-theme="light"] .right-panel,
+[data-theme="light"] .glass,
+[data-theme="light"] .panel,
+[data-theme="light"] .upload-zone,
+[data-theme="light"] .file-preview,
+[data-theme="light"] .ai-loader {
+    background: rgba(255, 255, 255, 0.85) !important;
+    border: 1px solid rgba(10, 10, 20, 0.1) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08),
+                0 0 0 1px rgba(0, 240, 255, 0.05);
+}
+
+[data-theme="light"] .left-panel:hover,
+[data-theme="light"] .right-panel:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12),
+                0 0 0 1px rgba(0, 240, 255, 0.15);
+}
+
+/* ── Document Upload Section ───────────────────── */
+[data-theme="light"] .upload-zone {
+    background: rgba(255, 255, 255, 0.7) !important;
+    border: 2px dashed rgba(0, 240, 255, 0.4) !important;
+}
+
+[data-theme="light"] .upload-zone:hover,
+[data-theme="light"] .upload-zone.drag-over {
+    background: rgba(0, 240, 255, 0.05) !important;
+    border-color: #00B8CC !important;
+}
+
+[data-theme="light"] .file-preview {
+    background: rgba(255, 255, 255, 0.95) !important;
+}
+
+[data-theme="light"] #file-name,
+[data-theme="light"] .file-name {
+    color: #0a0a14 !important;
+    font-weight: 700;
+}
+
+[data-theme="light"] #file-meta,
+[data-theme="light"] .file-meta {
+    color: rgba(10, 10, 20, 0.6) !important;
+}
+
+/* ── Section labels (STEP 01, etc.) ────────────── */
+[data-theme="light"] .section-label,
+[data-theme="light"] .step-label,
+[data-theme="light"] [class*="step"] {
+    color: rgba(10, 10, 20, 0.5) !important;
+}
+
+/* ── Content Preview ───────────────────────────── */
+[data-theme="light"] #preview-text,
+[data-theme="light"] .preview-text,
+[data-theme="light"] .content-preview {
+    color: rgba(10, 10, 20, 0.75) !important;
+    background: rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid rgba(10, 10, 20, 0.08) !important;
+}
+
+[data-theme="light"] .summary-text-box {
+    background: rgba(255, 255, 255, 0.6) !important;
+    color: #0a0a14 !important;
+    border: 1px solid rgba(10, 10, 20, 0.08) !important;
+}
+
+/* ── Tabs ──────────────────────────────────────── */
+[data-theme="light"] .tab-btn {
+    background: rgba(255, 255, 255, 0.6) !important;
+    border: 1px solid rgba(10, 10, 20, 0.1) !important;
+    color: rgba(10, 10, 20, 0.7) !important;
+}
+
+[data-theme="light"] .tab-btn:hover {
+    background: rgba(0, 240, 255, 0.08) !important;
+    color: #0a0a14 !important;
+}
+
+[data-theme="light"] .tab-btn.active {
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(131, 56, 236, 0.15)) !important;
+    color: #0a0a14 !important;
+    border-color: rgba(0, 240, 255, 0.3) !important;
+}
+
+/* ── Quiz Items ────────────────────────────────── */
+[data-theme="light"] .quiz-item {
+    background: rgba(255, 255, 255, 0.8) !important;
+    border: 1px solid rgba(10, 10, 20, 0.1) !important;
+}
+
+[data-theme="light"] .quiz-question {
+    color: #0a0a14 !important;
+    font-weight: 600;
+}
+
+[data-theme="light"] .quiz-opt {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(10, 10, 20, 0.12) !important;
+    color: #1a1a2e !important;
+}
+
+[data-theme="light"] .quiz-opt:hover {
+    background: rgba(0, 240, 255, 0.08) !important;
+    border-color: rgba(0, 240, 255, 0.4) !important;
+    color: #0a0a14 !important;
+}
+
+[data-theme="light"] .quiz-opt.correct {
+    background: rgba(6, 255, 165, 0.15) !important;
+    border-color: rgba(6, 200, 130, 0.5) !important;
+    color: #0a3320 !important;
+}
+
+[data-theme="light"] .quiz-opt.wrong {
+    background: rgba(255, 0, 110, 0.1) !important;
+    border-color: rgba(255, 0, 110, 0.4) !important;
+    color: #5a0028 !important;
+}
+
+[data-theme="light"] .quiz-explanation {
+    background: rgba(0, 240, 255, 0.06) !important;
+    border-left-color: #00B8CC !important;
+    color: #1a1a2e !important;
+}
+
+[data-theme="light"] .opt-label {
+    background: rgba(0, 240, 255, 0.15) !important;
+    color: #006B7A !important;
+}
+
+/* ── Flashcards ────────────────────────────────── */
+[data-theme="light"] .fc-card {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(10, 10, 20, 0.1) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .fc-front,
+[data-theme="light"] .fc-back {
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #0a0a14 !important;
+}
+
+[data-theme="light"] .fc-text {
+    color: #0a0a14 !important;
+}
+
+[data-theme="light"] .fc-label {
+    color: rgba(10, 10, 20, 0.5) !important;
+}
+
+[data-theme="light"] .fc-hint {
+    color: rgba(10, 10, 20, 0.4) !important;
+}
+
+[data-theme="light"] .fc-counter {
+    color: #0a0a14 !important;
+}
+
+[data-theme="light"] .fc-nav-btn {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(10, 10, 20, 0.15) !important;
+    color: #0a0a14 !important;
+}
+
+[data-theme="light"] .fc-nav-btn:hover:not(:disabled) {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border-color: rgba(0, 240, 255, 0.4) !important;
+}
+
+[data-theme="light"] .fc-dot {
+    background: rgba(10, 10, 20, 0.2) !important;
+}
+
+[data-theme="light"] .fc-dot.active {
+    background: #00B8CC !important;
+}
+
+/* ── Memory Tricks ─────────────────────────────── */
+[data-theme="light"] .trick-card {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(10, 10, 20, 0.1) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .trick-card:hover {
+    background: rgba(255, 255, 255, 1) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .trick-concept {
+    color: #0a0a14 !important;
+    font-weight: 700;
+}
+
+[data-theme="light"] .trick-method {
+    color: #1a1a2e !important;
+}
+
+[data-theme="light"] .trick-icon-wrap {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border: 1px solid rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="light"] .trick-type {
+    background: rgba(131, 56, 236, 0.12) !important;
+    color: #5B21B6 !important;
+    border: 1px solid rgba(131, 56, 236, 0.2);
+}
+
+/* Trick expanded content */
+[data-theme="light"] .trick-content {
+    color: #1a1a2e !important;
+}
+
+[data-theme="light"] .trick-content > div > div {
+    color: #1a1a2e !important;
+}
+
+/* ── Summary ───────────────────────────────────── */
+[data-theme="light"] .summary-label {
+    color: rgba(10, 10, 20, 0.6) !important;
+}
+
+[data-theme="light"] .summary-text-box,
+[data-theme="light"] #summary-text-content {
+    color: #0a0a14 !important;
+}
+
+[data-theme="light"] .key-points-title {
+    color: #0a0a14 !important;
+}
+
+[data-theme="light"] .key-points-box {
+    background: rgba(255, 255, 255, 0.6) !important;
+    border: 1px solid rgba(10, 10, 20, 0.08) !important;
+}
+
+[data-theme="light"] .key-point {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(10, 10, 20, 0.08) !important;
+}
+
+[data-theme="light"] .key-point-text {
+    color: #1a1a2e !important;
+}
+
+[data-theme="light"] .key-point-num {
+    background: linear-gradient(135deg, #00B8CC, #5B21B6) !important;
+    color: white !important;
+}
+
+/* ── Headers / Titles ──────────────────────────── */
+[data-theme="light"] #score-display,
+[data-theme="light"] .score-display {
+    color: #0a0a14 !important;
+    font-weight: 800;
+}
+
+/* ── Status Badge ──────────────────────────────── */
+[data-theme="light"] .ai-status-badge {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(10, 10, 20, 0.1) !important;
+    color: #0a0a14 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] #status-text {
+    color: #0a0a14 !important;
+}
+
+/* ── Buttons ───────────────────────────────────── */
+[data-theme="light"] .home-btn,
+[data-theme="light"] [class*="back-btn"] {
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: #0a0a14 !important;
+    border: 1px solid rgba(10, 10, 20, 0.15) !important;
+}
+
+[data-theme="light"] .home-btn:hover {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border-color: rgba(0, 240, 255, 0.4) !important;
+}
+
+[data-theme="light"] #theme-btn {
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: #0a0a14 !important;
+    border: 1px solid rgba(10, 10, 20, 0.15) !important;
+}
+
+/* Generate button keeps gradient */
+[data-theme="light"] #generate-btn,
+[data-theme="light"] .generate-btn {
+    color: white !important;
+    box-shadow: 0 8px 24px rgba(131, 56, 236, 0.3);
+}
+
+[data-theme="light"] #browse-btn,
+[data-theme="light"] .browse-btn {
+    color: white !important;
+}
+
+/* ── Empty State ───────────────────────────────── */
+[data-theme="light"] #empty-state,
+[data-theme="light"] .empty-state {
+    color: rgba(10, 10, 20, 0.5) !important;
+}
+
+[data-theme="light"] .empty-state h3,
+[data-theme="light"] .empty-state-title {
+    color: rgba(10, 10, 20, 0.7) !important;
+}
+
+/* ── COGNIXAR Wordmark stays gradient ──────────── */
+[data-theme="light"] .cognixar-wordmark {
+    /* Keep gradient text effect */
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+}
+
+/* ── Toast Notifications ───────────────────────── */
+[data-theme="light"] .toast {
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #0a0a14 !important;
+    border: 1px solid rgba(10, 10, 20, 0.1) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* ── Achievement Popup ─────────────────────────── */
+[data-theme="light"] .achievement-popup {
+    background: rgba(255, 255, 255, 0.98) !important;
+    color: #0a0a14 !important;
+    border: 1px solid rgba(10, 10, 20, 0.1) !important;
+}
+
+[data-theme="light"] #ach-name {
+    color: #0a0a14 !important;
+}
+
+[data-theme="light"] #ach-desc {
+    color: rgba(10, 10, 20, 0.65) !important;
+}
+
+/* ── Neural Tutor Chat (Light Mode) ────────────── */
+[data-theme="light"] #ntPanel {
+    background: rgba(255, 255, 255, 0.97) !important;
+    border-color: rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] #ntInput {
+    background: rgba(0, 0, 0, 0.04) !important;
+    border-color: rgba(10, 10, 20, 0.15) !important;
+    color: #0a0a14 !important;
+}
+
+[data-theme="light"] #ntInput::placeholder {
+    color: rgba(10, 10, 20, 0.4) !important;
+}
+
+[data-theme="light"] .nt-bubble.user-b {
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(131, 56, 236, 0.15)) !important;
+    color: #0a0a14 !important;
+}
+
+[data-theme="light"] .nt-bubble.ai-b {
+    background: rgba(0, 0, 0, 0.04) !important;
+    color: #1a1a2e !important;
+    border-color: rgba(10, 10, 20, 0.1) !important;
+}
+
+[data-theme="light"] .nt-chip {
+    background: rgba(0, 240, 255, 0.08) !important;
+    color: #006B7A !important;
+    border-color: rgba(0, 240, 255, 0.25) !important;
+}
+
+[data-theme="light"] .nt-chip:hover {
+    background: rgba(0, 240, 255, 0.18) !important;
+    color: #00586B !important;
+}
+
+/* ── Loader / Processing Steps ─────────────────── */
+[data-theme="light"] .ai-loader,
+[data-theme="light"] .processing-step {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(10, 10, 20, 0.1) !important;
+}
+
+[data-theme="light"] .processing-step {
+    color: rgba(10, 10, 20, 0.6) !important;
+}
+
+[data-theme="light"] .processing-step.active {
+    color: #0a0a14 !important;
+    background: rgba(0, 240, 255, 0.08) !important;
+}
+
+[data-theme="light"] .processing-step.done {
+    color: rgba(10, 10, 20, 0.7) !important;
+}
+
+/* ── Mono / Code text ──────────────────────────── */
+[data-theme="light"] .mono,
+[data-theme="light"] [style*="font-family:var(--mono)"],
+[data-theme="light"] [style*="font-family: var(--mono)"] {
+    color: rgba(10, 10, 20, 0.7) !important;
+}
+
+/* ── Score Bar Background ──────────────────────── */
+[data-theme="light"] #score-bar,
+[data-theme="light"] .score-bar-bg {
+    background-color: rgba(10, 10, 20, 0.08) !important;
+}
+
+/* ── Custom Cursor adjustment for light mode ───── */
+[data-theme="light"] #cursor-dot {
+    background: #00B8CC !important;
+    box-shadow: 0 0 10px rgba(0, 184, 204, 0.5);
+}
+
+[data-theme="light"] #cursor-ring {
+    border-color: rgba(0, 184, 204, 0.4) !important;
+}
+
+/* ── Scan lines softer in light mode ───────────── */
+[data-theme="light"] body::before,
+[data-theme="light"] body::after {
+    opacity: 0.3 !important;
+}
+
+/* ── 3D Background canvas opacity ──────────────── */
+[data-theme="light"] #app-canvas {
+    opacity: 0.4 !important;
+}
+</style>
+
+<script>
+(function() {
+    'use strict';
+
+    const API_BASE = window.location.hostname === 'localhost'
+        ? 'http://localhost:8000/api'
+        : 'https://learnforge-ai-j5tx.onrender.com/api';
+
+    const STORAGE_KEY = 'cognixar_neural_chat';
+    const MAX_MESSAGES = 50;
+
+    // Get DOM elements
+    const trigger = document.getElementById('ntTrigger');
+    const panel = document.getElementById('ntPanel');
+    const messagesEl = document.getElementById('ntMessages');
+    const input = document.getElementById('ntInput');
+    const sendBtn = document.getElementById('ntSend');
+    const clearBtn = document.getElementById('ntClear');
+    const closeBtn = document.getElementById('ntClose');
+    const statusEl = document.getElementById('ntStatus');
+    const chips = document.querySelectorAll('.nt-chip');
+
+    if (!trigger || !panel) {
+        console.error('[NeuralTutor] Elements not found!');
+        return;
+    }
+
+    let messages = [];
+    let isStreaming = false;
+
+    // ── Storage ─────────────────────────────────────────────
+    function saveMessages() {
+        try {
+            const data = {
+                messages: messages.slice(-MAX_MESSAGES),
+                fileName: window.State?.fileName || '',
+                savedAt: Date.now()
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            console.log(`[NeuralTutor] Saved ${messages.length} messages`);
+        } catch(e) {
+            console.error('[NeuralTutor] Save failed:', e);
+        }
+    }
+
+    function loadMessages() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            const data = JSON.parse(raw);
+            if (data.messages && Array.isArray(data.messages)) {
+                messages = data.messages;
+                renderAllMessages();
+                console.log(`[NeuralTutor] Loaded ${messages.length} messages`);
+            }
+        } catch(e) {
+            console.error('[NeuralTutor] Load failed:', e);
+        }
+    }
+
+    // ── Render ──────────────────────────────────────────────
+    // escapeHtml is already defined above
+
+    function renderMarkdown(text) {
+        let html = escapeHtml(text);
+        html = html.replace(/\*\*(.+?)\*\*/g, '<strong style="color:#00F0FF">$1</strong>');
+        html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        html = html.replace(/`([^`]+)`/g, '<code style="background:rgba(0,240,255,0.1);padding:2px 6px;border-radius:4px;color:#00F0FF;font-family:monospace">$1</code>');
+        return html;
+    }
+
+    function renderMessage(msg) {
+        const wrap = document.createElement('div');
+        wrap.className = 'nt-msg ' + (msg.role === 'user' ? 'user' : '');
+
+        const bubble = document.createElement('div');
+        bubble.className = 'nt-bubble ' + (msg.role === 'user' ? 'user-b' : 'ai-b');
+        if (msg.error) bubble.classList.add('error');
+
+        if (msg.role === 'user') {
+            bubble.textContent = msg.content;
+        } else {
+            bubble.innerHTML = renderMarkdown(msg.content);
+        }
+
+        wrap.appendChild(bubble);
+        messagesEl.appendChild(wrap);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+        return bubble;
+    }
+
+    function renderAllMessages() {
+        messagesEl.innerHTML = '';
+        if (messages.length === 0) {
+            messagesEl.innerHTML = `
+                <div style="text-align:center;padding:40px 20px;color:rgba(255,255,255,0.4);">
+                    <div style="font-size:32px;margin-bottom:12px;">🧠</div>
+                    <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:rgba(255,255,255,0.7);margin-bottom:6px;">
+                        Neural Tutor Ready
+                    </div>
+                    <div style="font-size:12px;line-height:1.5;">
+                        Upload a document and ask me anything about it.
+                    </div>
+                </div>
+            `;
+            return;
+        }
+        messages.forEach(m => renderMessage(m));
+    }
+
+    // ── Send Message ────────────────────────────────────────
+    async function sendMessage(text) {
+        if (!text || !text.trim() || isStreaming) return;
+
+        const userMsg = { role: 'user', content: text.trim(), timestamp: Date.now() };
+        messages.push(userMsg);
+        renderMessage(userMsg);
+        saveMessages();
+
+        input.value = '';
+        sendBtn.disabled = true;
+        isStreaming = true;
+
+        // Typing indicator
+        const typingEl = document.createElement('div');
+        typingEl.className = 'nt-msg';
+        typingEl.id = 'ntTyping';
+        typingEl.innerHTML = `
+            <div class="nt-bubble ai-b" style="display:flex;gap:4px;">
+                <span style="animation:ntDot 1.4s infinite;width:6px;height:6px;border-radius:50%;background:#00F0FF"></span>
+                <span style="animation:ntDot 1.4s infinite 0.2s;width:6px;height:6px;border-radius:50%;background:#00F0FF"></span>
+                <span style="animation:ntDot 1.4s infinite 0.4s;width:6px;height:6px;border-radius:50%;background:#00F0FF"></span>
+            </div>
+        `;
+        messagesEl.appendChild(typingEl);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+
+        // Get document context from app's State
+        const docText = window.State?.fileId
+            ? (localStorage.getItem('cognixar_current_doc') || '')
+            : '';
+
+        try {
+            const history = messages.slice(-11, -1).map(m => ({
+                role: m.role,
+                content: m.content
+            }));
+
+            const res = await fetch(`${API_BASE}/chat/stream`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    message: text.trim(),
+                    document_text: docText,
+                    file_name: window.State?.fileName || 'your document',
+                    conversation_history: history
+                })
+            });
+
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.detail || `HTTP ${res.status}`);
+            }
+
+            // Remove typing
+            document.getElementById('ntTyping')?.remove();
+
+            // Create AI message
+            const aiMsg = { role: 'assistant', content: '', timestamp: Date.now() };
+            messages.push(aiMsg);
+            const bubble = renderMessage(aiMsg);
+
+            // Stream response
+            const reader = res.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop();
+
+                for (const line of lines) {
+                    if (!line.startsWith('data: ')) continue;
+                    try {
+                        const event = JSON.parse(line.slice(6).trim());
+                        if (event.type === 'content') {
+                            aiMsg.content += event.text;
+                            bubble.innerHTML = renderMarkdown(aiMsg.content);
+                            messagesEl.scrollTop = messagesEl.scrollHeight;
+                        } else if (event.type === 'done') {
+                            saveMessages();
+                            break;
+                        } else if (event.type === 'error') {
+                            throw new Error(event.message);
+                        }
+                    } catch(e) {}
+                }
+            }
+
+            saveMessages();
+
+        } catch(err) {
+            document.getElementById('ntTyping')?.remove();
+            const errMsg = {
+                role: 'assistant',
+                content: `❌ Error: ${err.message}`,
+                error: true,
+                timestamp: Date.now()
+            };
+            messages.push(errMsg);
+            renderMessage(errMsg);
+            saveMessages();
+        } finally {
+            isStreaming = false;
+            sendBtn.disabled = false;
+            input.focus();
+        }
+    }
+
+    // ── Event Handlers ──────────────────────────────────────
+    trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        panel.classList.toggle('open');
+        if (panel.classList.contains('open')) {
+            input.focus();
+            // Update status if doc loaded
+            if (window.State?.fileName) {
+                statusEl.textContent = `Analyzing: ${window.State.fileName}`;
+            }
+        }
+    });
+
+    closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+
+    clearBtn.addEventListener('click', () => {
+        if (messages.length === 0) return;
+        if (confirm('Clear chat history?')) {
+            messages = [];
+            localStorage.removeItem(STORAGE_KEY);
+            renderAllMessages();
+        }
+    });
+
+    sendBtn.addEventListener('click', () => sendMessage(input.value));
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage(input.value);
+        }
+    });
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            sendMessage(chip.dataset.prompt);
+        });
+    });
+
+    // Add dot animation
+    const style = document.createElement('style');
+    style.textContent = `@keyframes ntDot { 0%,60%,100%{opacity:0.3;transform:translateY(0)} 30%{opacity:1;transform:translateY(-4px)} }`;
+    document.head.appendChild(style);
+
+    // Public API
+    window.NeuralTutor = {
+        open: () => panel.classList.add('open'),
+        close: () => panel.classList.remove('open'),
+        toggle: () => panel.classList.toggle('open'),
+        setDocument: (text, name, id) => {
+            try {
+                localStorage.setItem('cognixar_current_doc', text || '');
+                if (window.State) {
+                    window.State.fileName = name;
+                    window.State.fileId = id;
+                }
+                statusEl.textContent = `Analyzing: ${name}`;
+                console.log(`[NeuralTutor] Document set: ${name}`);
+            } catch(e) {}
+        }
+    };
+
+        // Load saved messages on init
+    setTimeout(() => {
+        loadMessages();
+        renderAllMessages();
+        console.log('✅ Neural Tutor ready');
+
+        // ✅ Apply custom cursor to all Neural Tutor elements
+        const cursorHover = () => document.body.classList.add('hovering');
+        const cursorUnhover = () => document.body.classList.remove('hovering');
+
+        const cursorTargets = document.querySelectorAll(
+            '#ntTrigger, #ntSend, #ntClear, #ntClose, #ntInput, .nt-chip'
+        );
+
+        cursorTargets.forEach(el => {
+            el.addEventListener('mouseenter', cursorHover);
+            el.addEventListener('mouseleave', cursorUnhover);
+        });
+
+        // Watch for dynamically added elements inside panel
+        const observer = new MutationObserver(() => {
+            document.querySelectorAll('.nt-bubble, .nt-msg').forEach(el => {
+                if (!el.dataset.cursorBound) {
+                    el.dataset.cursorBound = '1';
+                    el.addEventListener('mouseenter', cursorHover);
+                    el.addEventListener('mouseleave', cursorUnhover);
+                }
+            });
+        });
+
+        observer.observe(document.getElementById('ntMessages'), {
+            childList: true,
+            subtree: true
+        });
+
+    }, 200);
+
+})();
+</script>
+
+<!-- ============================================================
+     COGNIXAR PROGRESS DASHBOARD SYSTEM v2.0
+     Paste this entire block right before </body> in app.html
+     ============================================================ -->
+
+<style>
+/* ============================================================
+   COGNIXAR PROGRESS DASHBOARD — ALL STYLES
+   Prefix: .cp- for classes, #cp_ for IDs
+   ============================================================ */
+
+/* ---- Fonts (safe re-import, browser caches) ---- */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ---- CSS Custom Properties (scoped, no conflict) ---- */
+#cp_root {
+  --cp-cyan:   #00F0FF;
+  --cp-purple: #8338EC;
+  --cp-pink:   #FF006E;
+  --cp-bg:     #050514;
+  --cp-card:   rgba(255,255,255,0.04);
+  --cp-border: rgba(0,240,255,0.2);
+  --cp-text:   #E8E8F0;
+  --cp-muted:  rgba(232,232,240,0.5);
+  --cp-font-display: 'Space Grotesk', sans-serif;
+  --cp-font-body:    'Inter', sans-serif;
+  --cp-font-mono:    'JetBrains Mono', monospace;
+  --cp-bounce:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --cp-ease:    cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- Reset scoped to our components ---- */
+.cp-reset, .cp-reset * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================
+   PROFILE BUTTON
+   ============================================================ */
+#cp_profile_btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9997;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 8px 8px;
+  background: rgba(5, 5, 20, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.3s var(--cp-bounce),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
+  will-change: transform;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+#cp_profile_btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0,240,255,0.25),
+              0 0 40px rgba(0,240,255,0.1);
+  border-color: rgba(0, 240, 255, 0.6);
+}
+
+#cp_profile_btn:active {
+  transform: scale(0.97);
+}
+
+/* Avatar circle */
+.cp-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00F0FF, #8338EC);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  font-family: 'Space Grotesk', sans-serif;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px rgba(0,240,255,0.4);
+}
+
+.cp-avatar-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* Level badge on avatar */
+.cp-level-badge {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  width: 16px;
+  height: 16px;
+  background: #FF006E;
+  border-radius: 50%;
+  font-size: 8px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid rgba(5,5,20,0.9);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Button text area */
+.cp-btn-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cp-btn-level {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(0,240,255,0.7);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.cp-btn-xp {
+  font-size: 13px;
+  font-weight: 700;
+  color: #E8E8F0;
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cp-btn-xp-star {
+  font-size: 11px;
+}
+
+/* Light mode */
+[data-theme="light"] #cp_profile_btn {
+  background: rgba(255,255,255,0.9);
+  border-color: rgba(0,200,220,0.4);
+}
+[data-theme="light"] .cp-btn-level { color: rgba(0,180,200,0.9); }
+[data-theme="light"] .cp-btn-xp    { color: #1a1a2e; }
+
+/* Mobile: icon only */
+@media (max-width: 480px) {
+  #cp_profile_btn {
+    top: 12px;
+    right: 12px;
+    padding: 8px;
+    gap: 0;
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+  }
+  .cp-btn-info { display: none; }
+}
+
+/* ============================================================
+   DASHBOARD MODAL — OVERLAY
+   ============================================================ */
+#cp_modal_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 20, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 99998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  will-change: opacity;
+}
+
+#cp_modal_overlay.cp-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+#cp_modal_overlay.cp-open #cp_modal_inner {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* ---- Modal Inner Box ---- */
+#cp_modal_inner {
+  width: 100%;
+  max-width: 800px;
+  max-height: 85vh;
+  background: rgba(8, 8, 28, 0.95);
+  border: 1px solid rgba(0,240,255,0.25);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(30px) scale(0.96);
+  opacity: 0;
+  transition: transform 0.4s var(--cp-bounce),
+              opacity 0.3s ease;
+  will-change: transform, opacity;
+  box-shadow: 0 0 60px rgba(0,240,255,0.08),
+              0 0 120px rgba(131,56,236,0.06),
+              0 40px 80px rgba(0,0,0,0.6);
+  position: relative;
+}
+
+/* Animated border glow */
+#cp_modal_inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 1px;
+  background: linear-gradient(135deg,
+    rgba(0,240,255,0.4) 0%,
+    rgba(131,56,236,0.2) 50%,
+    rgba(255,0,110,0.3) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* ---- Modal Header ---- */
+.cp-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid rgba(0,240,255,0.1);
+  flex-shrink: 0;
+  background: linear-gradient(180deg,
+    rgba(0,240,255,0.04) 0%,
+    transparent 100%);
+}
+
+.cp-modal-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #E8E8F0;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cp-modal-title-icon {
+  font-size: 26px;
+  filter: drop-shadow(0 0 8px rgba(0,240,255,0.6));
+}
+
+.cp-modal-title-sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0,240,255,0.6);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 1px;
+}
+
+.cp-modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,240,255,0.2);
+  background: rgba(0,240,255,0.06);
+  color: rgba(232,232,240,0.7);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+
+.cp-modal-close:hover {
+  background: rgba(255,0,110,0.15);
+  border-color: rgba(255,0,110,0.4);
+  color: #FF006E;
+  transform: rotate(90deg);
+}
+
+/* ---- Modal Body (scrollable) ---- */
+.cp-modal-body {
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  padding: 24px 28px 32px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,240,255,0.3) transparent;
+}
+
+.cp-modal-body::-webkit-scrollbar {
+  width: 4px;
+}
+.cp-modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+.cp-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(0,240,255,0.3);
+  border-radius: 2px;
+}
+
+/* Light mode modal */
+[data-theme="light"] #cp_modal_inner {
+  background: rgba(245,247,255,0.97);
+  border-color: rgba(0,180,200,0.3);
+}
+[data-theme="light"] .cp-modal-header {
+  border-bottom-color: rgba(0,180,200,0.15);
+}
+[data-theme="light"] .cp-modal-title {
+  color: #1a1a2e;
+}
+[data-theme="light"] #cp_modal_overlay {
+  background: rgba(220,225,240,0.85);
+}
+
+/* ============================================================
+   STAT CARDS GRID
+   ============================================================ */
+.cp-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 600px) {
+  .cp-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .cp-modal-body { padding: 16px 16px 28px; }
+  .cp-modal-header { padding: 16px 16px 14px; }
+}
+
+.cp-stat-card {
+  background: linear-gradient(135deg,
+    rgba(0,240,255,0.08) 0%,
+    rgba(131,56,236,0.08) 100%);
+  border: 1px solid rgba(0,240,255,0.15);
+  border-radius: 16px;
+  padding: 18px 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-align: center;
+  transition: transform 0.3s var(--cp-bounce),
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+  will-change: transform;
+  cursor: default;
+}
+
+.cp-stat-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0,240,255,0.35);
+  box-shadow: 0 8px 24px rgba(0,240,255,0.1);
+}
+
+.cp-stat-icon {
+  font-size: 24px;
+  display: block;
+  margin-bottom: 8px;
+  line-height: 1;
+  filter: drop-shadow(0 0 6px rgba(0,240,255,0.4));
+}
+
+.cp-stat-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #00F0FF;
+  letter-spacing: -1px;
+  line-height: 1;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.cp-stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(232,232,240,0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+[data-theme="light"] .cp-stat-card {
+  background: linear-gradient(135deg, rgba(0,200,220,0.08), rgba(131,56,236,0.06));
+  border-color: rgba(0,180,200,0.2);
+}
+[data-theme="light"] .cp-stat-val   { color: #0088aa; }
+[data-theme="light"] .cp-stat-label { color: rgba(30,30,60,0.5); }
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+.cp-section-header {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(0,240,255,0.8);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cp-section-header::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0,240,255,0.3), transparent);
+}
+
+[data-theme="light"] .cp-section-header { color: rgba(0,140,170,0.9); }
+
+/* ============================================================
+   LEVEL PROGRESS SECTION
+   ============================================================ */
+.cp-level-section {
+  background: linear-gradient(135deg,
+    rgba(0,240,255,0.05) 0%,
+    rgba(131,56,236,0.05) 100%);
+  border: 1px solid rgba(0,240,255,0.12);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.cp-level-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cp-level-current {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cp-level-icon {
+  font-size: 32px;
+  filter: drop-shadow(0 0 10px rgba(0,240,255,0.5));
+}
+
+.cp-level-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cp-level-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #E8E8F0;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.cp-level-title-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: rgba(0,240,255,0.7);
+  letter-spacing: 0.5px;
+}
+
+.cp-level-next {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: rgba(232,232,240,0.5);
+  text-align: right;
+}
+
+.cp-level-next strong {
+  color: rgba(232,232,240,0.8);
+  display: block;
+  font-size: 14px;
+}
+
+/* Progress bar */
+.cp-progress-bar-wrap {
+  width: 100%;
+  height: 10px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.cp-progress-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #00F0FF, #8338EC, #FF006E);
+  transition: width 1s var(--cp-ease);
+  position: relative;
+  will-change: width;
+}
+
+.cp-progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 4px;
+  height: 100%;
+  background: rgba(255,255,255,0.8);
+  border-radius: 2px;
+  animation: cp-pulse 2s ease-in-out infinite;
+}
+
+@keyframes cp-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.cp-progress-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cp-progress-xp {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: rgba(0,240,255,0.8);
+}
+
+.cp-progress-pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: rgba(232,232,240,0.4);
+}
+
+[data-theme="light"] .cp-level-section {
+  background: linear-gradient(135deg, rgba(0,200,220,0.06), rgba(131,56,236,0.04));
+  border-color: rgba(0,180,200,0.15);
+}
+[data-theme="light"] .cp-level-num { color: #1a1a2e; }
+
+/* ============================================================
+   STREAK SECTION
+   ============================================================ */
+.cp-streak-section {
+  background: linear-gradient(135deg,
+    rgba(255,0,110,0.06) 0%,
+    rgba(131,56,236,0.06) 100%);
+  border: 1px solid rgba(255,0,110,0.15);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.cp-streak-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cp-streak-count {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.cp-streak-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #FF006E;
+  letter-spacing: -1.5px;
+  line-height: 1;
+  text-shadow: 0 0 20px rgba(255,0,110,0.4);
+}
+
+.cp-streak-unit {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(232,232,240,0.5);
+}
+
+.cp-streak-longest {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: rgba(232,232,240,0.4);
+  text-align: right;
+}
+
+.cp-streak-longest strong {
+  color: rgba(255,0,110,0.7);
+  display: block;
+  font-size: 16px;
+}
+
+/* Day dots */
+.cp-streak-days {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cp-streak-day {
+  flex: 1;
+  min-width: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.cp-streak-dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.3s var(--cp-bounce);
+}
+
+.cp-streak-dot.cp-active {
+  background: rgba(255,0,110,0.15);
+  border-color: rgba(255,0,110,0.5);
+  box-shadow: 0 0 12px rgba(255,0,110,0.3);
+}
+
+.cp-streak-dot.cp-today {
+  background: rgba(255,0,110,0.25);
+  border-color: #FF006E;
+  box-shadow: 0 0 18px rgba(255,0,110,0.5);
+  animation: cp-streak-glow 2s ease-in-out infinite;
+}
+
+@keyframes cp-streak-glow {
+  0%, 100% { box-shadow: 0 0 12px rgba(255,0,110,0.4); }
+  50%       { box-shadow: 0 0 24px rgba(255,0,110,0.7); }
+}
+
+.cp-streak-day-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(232,232,240,0.35);
+  text-align: center;
+}
+
+[data-theme="light"] .cp-streak-section {
+  background: linear-gradient(135deg, rgba(255,0,110,0.05), rgba(131,56,236,0.04));
+  border-color: rgba(255,0,110,0.2);
+}
+[data-theme="light"] .cp-streak-num { color: #cc0055; }
+
+/* ============================================================
+   ACHIEVEMENTS SECTION
+   ============================================================ */
+.cp-achievements-section {
+  margin-bottom: 24px;
+}
+
+.cp-achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .cp-achievements-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 360px) {
+  .cp-achievements-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.cp-achievement-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.cp-achievement-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  transition: transform 0.3s var(--cp-bounce),
+              box-shadow 0.3s ease;
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+}
+
+.cp-achievement-icon-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: linear-gradient(135deg, rgba(0,240,255,0.2), rgba(131,56,236,0.2));
+}
+
+.cp-achievement-item:hover .cp-achievement-icon-wrap {
+  transform: translateY(-4px) scale(1.08);
+}
+
+.cp-achievement-item:hover .cp-achievement-icon-wrap::before {
+  opacity: 1;
+}
+
+/* Unlocked state */
+.cp-achievement-item.cp-unlocked .cp-achievement-icon-wrap {
+  background: linear-gradient(135deg,
+    rgba(0,240,255,0.12) 0%,
+    rgba(131,56,236,0.12) 100%);
+  border: 1.5px solid rgba(0,240,255,0.35);
+  box-shadow: 0 0 16px rgba(0,240,255,0.15),
+              0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Locked state */
+.cp-achievement-item.cp-locked .cp-achievement-icon-wrap {
+  background: rgba(255,255,255,0.03);
+  border: 1.5px solid rgba(255,255,255,0.06);
+  filter: grayscale(1) opacity(0.35);
+}
+
+.cp-achievement-item.cp-locked:hover .cp-achievement-icon-wrap {
+  transform: none;
+}
+
+.cp-achievement-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  color: rgba(232,232,240,0.4);
+  text-align: center;
+  line-height: 1.2;
+  max-width: 52px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cp-achievement-item.cp-unlocked .cp-achievement-name {
+  color: rgba(0,240,255,0.7);
+}
+
+/* Tooltip */
+.cp-achievement-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(8,8,28,0.97);
+  border: 1px solid rgba(0,240,255,0.25);
+  border-radius: 10px;
+  padding: 8px 12px;
+  min-width: 140px;
+  max-width: 200px;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease,
+              transform 0.2s var(--cp-bounce);
+  transform: translateX(-50%) translateY(4px);
+  z-index: 100;
+  text-align: center;
+}
+
+.cp-achievement-item:hover .cp-achievement-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.cp-tooltip-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #E8E8F0;
+  margin-bottom: 3px;
+}
+
+.cp-tooltip-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: rgba(232,232,240,0.5);
+  line-height: 1.4;
+}
+
+.cp-tooltip-status {
+  margin-top: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #00F0FF;
+}
+
+.cp-locked .cp-tooltip-status { color: rgba(232,232,240,0.3); }
+
+[data-theme="light"] .cp-achievement-tooltip {
+  background: rgba(245,247,255,0.98);
+  border-color: rgba(0,180,200,0.3);
+}
+[data-theme="light"] .cp-tooltip-name  { color: #1a1a2e; }
+[data-theme="light"] .cp-achievement-name { color: rgba(30,30,60,0.4); }
+[data-theme="light"] .cp-achievement-item.cp-unlocked .cp-achievement-name { color: rgba(0,140,170,0.8); }
+
+/* ============================================================
+   ACTIVITY HEATMAP
+   ============================================================ */
+.cp-heatmap-section {
+  margin-bottom: 16px;
+}
+
+.cp-heatmap-grid {
+  display: flex;
+  gap: 5px;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.cp-heatmap-grid::-webkit-scrollbar { display: none; }
+
+.cp-heatmap-col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.cp-heatmap-bar {
+  width: 18px;
+  border-radius: 4px;
+  min-height: 4px;
+  transition: opacity 0.3s ease, transform 0.2s var(--cp-bounce);
+  cursor: pointer;
+  position: relative;
+}
+
+.cp-heatmap-bar:hover {
+  opacity: 0.85;
+  transform: scaleY(1.1);
+}
+
+.cp-heatmap-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: rgba(232,232,240,0.25);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.cp-heatmap-empty {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: rgba(232,232,240,0.25);
+  text-align: center;
+  padding: 20px 0;
+  width: 100%;
+}
+
+/* ============================================================
+   XP HISTORY
+   ============================================================ */
+.cp-xp-history {
+  margin-top: 20px;
+}
+
+.cp-xp-log {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 180px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,240,255,0.2) transparent;
+}
+
+.cp-xp-log::-webkit-scrollbar { width: 3px; }
+.cp-xp-log::-webkit-scrollbar-thumb {
+  background: rgba(0,240,255,0.2);
+  border-radius: 2px;
+}
+
+.cp-xp-log-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.025);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.2s ease;
+}
+
+.cp-xp-log-item:hover {
+  background: rgba(0,240,255,0.04);
+}
+
+.cp-xp-log-action {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: rgba(232,232,240,0.6);
+}
+
+.cp-xp-log-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cp-xp-log-amount {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: #00F0FF;
+}
+
+.cp-xp-log-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(232,232,240,0.25);
+}
+
+.cp-xp-log-empty {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: rgba(232,232,240,0.3);
+  text-align: center;
+  padding: 16px;
+}
+
+/* ============================================================
+   XP GAIN NOTIFICATION (floating)
+   ============================================================ */
+.cp-xp-popup {
+  position: fixed;
+  z-index: 999999;
+  pointer-events: none;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #00F0FF;
+  text-shadow: 0 0 10px rgba(0,240,255,0.6);
+  animation: cp-xp-float 2s var(--cp-ease) forwards;
+  will-change: transform, opacity;
+  white-space: nowrap;
+}
+
+@keyframes cp-xp-float {
+  0%   { transform: translateY(0)   scale(0.8); opacity: 0; }
+  15%  { transform: translateY(-8px) scale(1.1); opacity: 1; }
+  80%  { transform: translateY(-50px) scale(1);  opacity: 1; }
+  100% { transform: translateY(-80px) scale(0.9);opacity: 0; }
+}
+
+/* ============================================================
+   LEVEL UP CELEBRATION
+   ============================================================ */
+#cp_levelup_overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5,5,20,0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+#cp_levelup_overlay.cp-show {
+  opacity: 1;
+  visibility: visible;
+}
+
+#cp_levelup_overlay.cp-show #cp_levelup_card {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+#cp_levelup_card {
+  background: rgba(8,8,28,0.97);
+  border: 1px solid rgba(0,240,255,0.3);
+  border-radius: 24px;
+  padding: 48px 56px;
+  text-align: center;
+  max-width: 380px;
+  width: 90%;
+  transform: translateY(40px) scale(0.9);
+  opacity: 0;
+  transition: transform 0.5s var(--cp-bounce), opacity 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(0,240,255,0.15),
+              0 0 120px rgba(131,56,236,0.1),
+              0 40px 80px rgba(0,0,0,0.7);
+}
+
+#cp_levelup_card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% -20%,
+    rgba(0,240,255,0.12) 0%,
+    transparent 70%);
+  pointer-events: none;
+}
+
+.cp-levelup-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(0,240,255,0.6);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.cp-levelup-icon {
+  font-size: 64px;
+  display: block;
+  margin: 0 auto 16px;
+  animation: cp-levelup-bounce 0.6s var(--cp-bounce) 0.3s both;
+  filter: drop-shadow(0 0 20px rgba(0,240,255,0.5));
+}
+
+@keyframes cp-levelup-bounce {
+  0%   { transform: scale(0) rotate(-20deg); }
+  60%  { transform: scale(1.2) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.cp-levelup-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 56px;
+  font-weight: 700;
+  color: #E8E8F0;
+  letter-spacing: -2px;
+  line-height: 1;
+  display: block;
+  margin-bottom: 4px;
+  background: linear-gradient(135deg, #00F0FF, #8338EC);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cp-levelup-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: rgba(232,232,240,0.8);
+  margin-bottom: 28px;
+}
+
+.cp-levelup-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 32px;
+  background: linear-gradient(135deg, #00F0FF, #8338EC);
+  border: none;
+  border-radius: 50px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.3s var(--cp-bounce), box-shadow 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cp-levelup-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 24px rgba(0,240,255,0.4);
+}
+
+/* ============================================================
+   ACHIEVEMENT UNLOCK POPUP (slide-in from right)
+   ============================================================ */
+#cp_achievement_popup {
+  position: fixed;
+  right: -380px;
+  bottom: 80px;
+  z-index: 999998;
+  max-width: 340px;
+  width: calc(100vw - 32px);
+  background: rgba(8,8,28,0.97);
+  border: 1px solid rgba(0,240,255,0.3);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 0 30px rgba(0,240,255,0.12),
+              -8px 0 30px rgba(131,56,236,0.1),
+              0 20px 40px rgba(0,0,0,0.5);
+  transition: right 0.5s var(--cp-bounce);
+  pointer-events: none;
+  will-change: right;
+}
+
+#cp_achievement_popup.cp-slide-in {
+  right: 20px;
+  pointer-events: auto;
+}
+
+.cp-ach-popup-header {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(0,240,255,0.7);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.cp-ach-popup-divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0,240,255,0.3), rgba(131,56,236,0.3), transparent);
+  margin-bottom: 12px;
+}
+
+.cp-ach-popup-body {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cp-ach-popup-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(0,240,255,0.12), rgba(131,56,236,0.12));
+  border: 1.5px solid rgba(0,240,255,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 0 16px rgba(0,240,255,0.2);
+  flex-shrink: 0;
+  animation: cp-ach-shine 2s ease-in-out infinite;
+}
+
+@keyframes cp-ach-shine {
+  0%, 100% { box-shadow: 0 0 12px rgba(0,240,255,0.2); }
+  50%       { box-shadow: 0 0 24px rgba(0,240,255,0.45); }
+}
+
+.cp-ach-popup-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.cp-ach-popup-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #E8E8F0;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cp-ach-popup-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: rgba(232,232,240,0.5);
+  line-height: 1.4;
+}
+
+[data-theme="light"] #cp_achievement_popup {
+  background: rgba(245,247,255,0.98);
+  border-color: rgba(0,180,200,0.35);
+}
+[data-theme="light"] .cp-ach-popup-name  { color: #1a1a2e; }
+[data-theme="light"] .cp-ach-popup-header { color: rgba(0,140,170,0.8); }
+
+/* ============================================================
+   RESET PROGRESS BUTTON (in modal footer)
+   ============================================================ */
+.cp-modal-footer {
+  padding: 0 28px 24px;
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.cp-reset-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: rgba(232,232,240,0.2);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: color 0.2s ease, background 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cp-reset-btn:hover {
+  color: rgba(255,0,110,0.6);
+  background: rgba(255,0,110,0.05);
+}
+
+/* ============================================================
+   MISC UTILITIES
+   ============================================================ */
+.cp-spacer { height: 20px; }
+
+/* ---- Screen reader only ---- */
+.cp-sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Skeleton pulse (loading state) ---- */
+.cp-skeleton {
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.04) 25%,
+    rgba(255,255,255,0.08) 50%,
+    rgba(255,255,255,0.04) 75%);
+  background-size: 200% 100%;
+  animation: cp-skeleton 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+@keyframes cp-skeleton {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Additional mobile fixes */
+@media (max-width: 480px) {
+  #cp_modal_inner { border-radius: 16px; }
+  .cp-level-section, .cp-streak-section { padding: 14px; }
+  .cp-stat-card { padding: 14px 10px; }
+  .cp-stat-val { font-size: 22px; }
+  .cp-streak-dot { width: 30px; height: 30px; font-size: 13px; }
+  .cp-achievement-icon-wrap { width: 44px; height: 44px; font-size: 18px; }
+  .cp-modal-footer { padding: 0 16px 20px; }
+}
+</style>
+
+<script>
+/* ============================================================
+   COGNIXAR PROGRESS DASHBOARD SYSTEM v2.0
+   IIFE pattern — zero global pollution (except window.CognixarProgress)
+   All IDs prefixed cp_  |  All classes prefixed cp-
+   ============================================================ */
+(function () {
+  'use strict';
+
+  // ============================================================
+  // CONSTANTS
+  // ============================================================
+  var CP_STORAGE_KEY = 'cognixar_progress_v2';
+
+  var XP_REWARDS = {
+    UPLOAD:        20,
+    GENERATE:      50,
+    QUIZ_COMPLETE: 30,
+    QUIZ_PERFECT: 100,
+    QUIZ_CORRECT:   5,
+    AI_CHAT:        5,
+    DAILY_LOGIN:   10,
+    STREAK_7DAY:  200,
+    FIRST_TIME_BONUS: 25
+  };
+
+  var LEVELS = [
+    { level: 1, xp: 0,    title: 'Novice',        icon: '🌱' },
+    { level: 2, xp: 100,  title: 'Apprentice',    icon: '📖' },
+    { level: 3, xp: 250,  title: 'Student',       icon: '🎓' },
+    { level: 4, xp: 500,  title: 'Scholar',       icon: '🔬' },
+    { level: 5, xp: 1000, title: 'Expert',        icon: '🧠' },
+    { level: 6, xp: 2000, title: 'Master',        icon: '💎' },
+    { level: 7, xp: 4000, title: 'Genius',        icon: '⚡' },
+    { level: 8, xp: 8000, title: 'Neural Master', icon: '👑' }
+  ];
+
+  var ACHIEVEMENTS = [
+    { id: 'first_upload',  icon: '🥇', name: 'First Upload',  desc: 'Upload your first document',       check: function(s){ return s.uploads >= 1; } },
+    { id: 'bookworm',      icon: '📚', name: 'Bookworm',      desc: 'Upload 10 documents',               check: function(s){ return s.uploads >= 10; } },
+    { id: 'first_quiz',    icon: '🎯', name: 'Quiz Starter',  desc: 'Complete your first quiz',          check: function(s){ return s.quizzes >= 1; } },
+    { id: 'quiz_master',   icon: '🏆', name: 'Quiz Master',   desc: 'Complete 20 quizzes',               check: function(s){ return s.quizzes >= 20; } },
+    { id: 'perfect_score', icon: '💯', name: 'Perfect Score', desc: 'Get 100% on a quiz',                check: function(s){ return s.perfectQuizzes >= 1; } },
+    { id: 'perfectionist', icon: '✨', name: 'Perfectionist', desc: 'Get 5 perfect quizzes',             check: function(s){ return s.perfectQuizzes >= 5; } },
+    { id: 'first_chat',    icon: '💬', name: 'First Chat',    desc: 'Send your first AI message',        check: function(s){ return s.chats >= 1; } },
+    { id: 'chatterbox',    icon: '🗨️', name: 'Chatterbox',    desc: 'Send 50 AI messages',               check: function(s){ return s.chats >= 50; } },
+    { id: 'streak_3',      icon: '🔥', name: 'On Fire',       desc: '3-day streak',                      check: function(s, p){ return p.streak >= 3; } },
+    { id: 'streak_7',      icon: '⚡', name: 'Week Warrior',  desc: '7-day streak',                      check: function(s, p){ return p.streak >= 7; } },
+    { id: 'streak_30',     icon: '🌟', name: 'Unstoppable',   desc: '30-day streak',                     check: function(s, p){ return p.streak >= 30; } },
+    { id: 'level_3',       icon: '🎓', name: 'Rising Star',   desc: 'Reach Level 3',                     check: function(s, p){ return p.level >= 3; } },
+    { id: 'level_5',       icon: '🧠', name: 'Brainiac',      desc: 'Reach Level 5',                     check: function(s, p){ return p.level >= 5; } },
+    { id: 'level_8',       icon: '👑', name: 'Legend',        desc: 'Reach Level 8 (Neural Master)',     check: function(s, p){ return p.level >= 8; } },
+    { id: 'night_owl',     icon: '🌙', name: 'Night Owl',     desc: 'Study after 10 PM',                 check: function(s){ return s.nightOwl === true; } },
+    { id: 'early_bird',    icon: '☀️', name: 'Early Bird',    desc: 'Study before 7 AM',                 check: function(s){ return s.earlyBird === true; } }
+  ];
+
+  var ACTION_LABELS = {
+    upload:       'Document uploaded',
+    generate:     'Content generated',
+    quiz:         'Quiz completed',
+    perfect:      'Perfect quiz bonus',
+    correct:      'Correct answer',
+    chat:         'AI chat message',
+    login:        'Daily login bonus',
+    streak:       'Streak bonus',
+    first:        'First-time bonus'
+  };
+
+  // ============================================================
+  // STATE — loaded from / persisted to localStorage
+  // ============================================================
+  var cp_progress = null; // will be loaded in init
+
+  function cp_defaultProgress() {
+    var today = cp_today();
+    return {
+      xp: 0,
+      level: 1,
+      streak: 0,
+      longestStreak: 0,
+      lastActiveDate: null,
+      streakDays: [],
+      achievements: [],
+      stats: {
+        uploads: 0,
+        generations: 0,
+        quizzes: 0,
+        perfectQuizzes: 0,
+        chats: 0,
+        totalXP: 0,
+        nightOwl: false,
+        earlyBird: false
+      },
+      activityHeatmap: {},
+      xpHistory: [],
+      createdAt: Date.now()
+    };
+  }
+
+  // ============================================================
+  // STORAGE HELPERS
+  // ============================================================
+  function cp_loadProgress() {
+    try {
+      var raw = localStorage.getItem(CP_STORAGE_KEY);
+      if (!raw) return cp_defaultProgress();
+      var parsed = JSON.parse(raw);
+      // Deep merge with defaults to handle missing keys in older saves
+      var def = cp_defaultProgress();
+      if (!parsed.stats) parsed.stats = def.stats;
+      if (!parsed.activityHeatmap) parsed.activityHeatmap = {};
+      if (!parsed.xpHistory) parsed.xpHistory = [];
+      if (!parsed.streakDays) parsed.streakDays = [];
+      if (!parsed.achievements) parsed.achievements = [];
+      // Merge stats keys
+      Object.keys(def.stats).forEach(function(k) {
+        if (typeof parsed.stats[k] === 'undefined') {
+          parsed.stats[k] = def.stats[k];
+        }
+      });
+      return parsed;
+    } catch (e) {
+      console.warn('[CognixarProgress] Could not load progress:', e);
+      return cp_defaultProgress();
+    }
+  }
+
+  function cp_saveProgress() {
+    try {
+      localStorage.setItem(CP_STORAGE_KEY, JSON.stringify(cp_progress));
+    } catch (e) {
+      console.warn('[CognixarProgress] Could not save progress:', e);
+    }
+  }
+
+  // ============================================================
+  // DATE UTILITIES
+  // ============================================================
+  function cp_today() {
+    var d = new Date();
+    return d.getFullYear() + '-' +
+           String(d.getMonth() + 1).padStart(2, '0') + '-' +
+           String(d.getDate()).padStart(2, '0');
+  }
+
+  function cp_yesterday() {
+    var d = new Date();
+    d.setDate(d.getDate() - 1);
+    return d.getFullYear() + '-' +
+           String(d.getMonth() + 1).padStart(2, '0') + '-' +
+           String(d.getDate()).padStart(2, '0');
+  }
+
+  function cp_dayLabel(dateStr) {
+    // Returns short day name, e.g. "Mon"
+    try {
+      var d = new Date(dateStr + 'T00:00:00');
+      return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()];
+    } catch(e) { return ''; }
+  }
+
+  function cp_shortDate(dateStr) {
+    // Returns "May 13"
+    try {
+      var d = new Date(dateStr + 'T00:00:00');
+      return ['Jan','Feb','Mar','Apr','May','Jun',
+              'Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()] +
+             ' ' + d.getDate();
+    } catch(e) { return dateStr; }
+  }
+
+  function cp_relDate(dateStr) {
+    var today = cp_today();
+    if (dateStr === today) return 'Today';
+    if (dateStr === cp_yesterday()) return 'Yesterday';
+    return cp_shortDate(dateStr);
+  }
+
+  // Get last 30 dates (including today)
+  function cp_last30Dates() {
+    var dates = [];
+    var d = new Date();
+    for (var i = 29; i >= 0; i--) {
+      var dd = new Date(d);
+      dd.setDate(d.getDate() - i);
+      dates.push(dd.getFullYear() + '-' +
+        String(dd.getMonth() + 1).padStart(2, '0') + '-' +
+        String(dd.getDate()).padStart(2, '0'));
+    }
+    return dates;
+  }
+
+  // Get last 7 dates (including today)
+  function cp_last7Dates() {
+    var dates = [];
+    var d = new Date();
+    for (var i = 6; i >= 0; i--) {
+      var dd = new Date(d);
+      dd.setDate(d.getDate() - i);
+      dates.push(dd.getFullYear() + '-' +
+        String(dd.getMonth() + 1).padStart(2, '0') + '-' +
+        String(dd.getDate()).padStart(2, '0'));
+    }
+    return dates;
+  }
+
+  // ============================================================
+  // LEVEL CALCULATION
+  // ============================================================
+  function cp_getLevelData(xp) {
+    var currentLevel = LEVELS[0];
+    var nextLevel = LEVELS[1];
+    for (var i = LEVELS.length - 1; i >= 0; i--) {
+      if (xp >= LEVELS[i].xp) {
+        currentLevel = LEVELS[i];
+        nextLevel = LEVELS[i + 1] || null;
+        break;
+      }
+    }
+    var progressXP = 0, totalXP = 0, pct = 100;
+    if (nextLevel) {
+      progressXP = xp - currentLevel.xp;
+      totalXP    = nextLevel.xp - currentLevel.xp;
+      pct = Math.min(100, Math.round((progressXP / totalXP) * 100));
+    }
+    return {
+      current:    currentLevel,
+      next:       nextLevel,
+      progressXP: progressXP,
+      totalXP:    totalXP,
+      pct:        pct
+    };
+  }
+
+  // ============================================================
+  // STREAK MANAGEMENT
+  // ============================================================
+  function cp_updateStreak() {
+    var today     = cp_today();
+    var yesterday = cp_yesterday();
+    var last      = cp_progress.lastActiveDate;
+
+    if (last === today) {
+      // Already updated today — just make sure today is in streakDays
+      if (cp_progress.streakDays.indexOf(today) === -1) {
+        cp_progress.streakDays.push(today);
+      }
+      return false; // no change needed
+    }
+
+    // Update heatmap
+    cp_progress.activityHeatmap[today] =
+      (cp_progress.activityHeatmap[today] || 0) + 1;
+
+    if (last === yesterday) {
+      // Continuing streak
+      cp_progress.streak += 1;
+    } else if (last === null) {
+      // First ever login
+      cp_progress.streak = 1;
+    } else {
+      // Streak broken
+      cp_progress.streak = 1;
+    }
+
+    // Add today to streakDays (keep last 7)
+    if (cp_progress.streakDays.indexOf(today) === -1) {
+      cp_progress.streakDays.push(today);
+    }
+    // Trim to last 35 days
+    cp_progress.streakDays = cp_progress.streakDays.slice(-35);
+
+    // Update longest streak
+    if (cp_progress.streak > cp_progress.longestStreak) {
+      cp_progress.longestStreak = cp_progress.streak;
+    }
+
+    cp_progress.lastActiveDate = today;
+    return true; // did update
+  }
+
+  // ============================================================
+  // CHECK TIME-BASED ACHIEVEMENTS
+  // ============================================================
+  function cp_checkTimeAchievements() {
+    try {
+      var hour = new Date().getHours();
+      if (hour >= 22) cp_progress.stats.nightOwl = true;
+      if (hour < 7)   cp_progress.stats.earlyBird = true;
+    } catch(e) {}
+  }
+
+  // ============================================================
+  // ACHIEVEMENT CHECKING
+  // ============================================================
+  function cp_checkAchievements() {
+    var newly = [];
+    ACHIEVEMENTS.forEach(function(ach) {
+      if (cp_progress.achievements.indexOf(ach.id) !== -1) return; // already unlocked
+      try {
+        var unlocked = ach.check(cp_progress.stats, cp_progress);
+        if (unlocked) {
+          cp_progress.achievements.push(ach.id);
+          newly.push(ach);
+        }
+      } catch(e) {}
+    });
+    return newly;
+  }
+
+  // ============================================================
+  // XP HISTORY LOG
+  // ============================================================
+  function cp_logXP(amount, action) {
+    try {
+      cp_progress.xpHistory.unshift({
+        date:   cp_today(),
+        xp:     amount,
+        action: action
+      });
+      // Keep last 50 entries
+      cp_progress.xpHistory = cp_progress.xpHistory.slice(0, 50);
+    } catch(e) {}
+  }
+
+  // ============================================================
+  // HEATMAP ACTIVITY INCREMENT
+  // ============================================================
+  function cp_logActivity() {
+    var today = cp_today();
+    cp_progress.activityHeatmap[today] =
+      (cp_progress.activityHeatmap[today] || 0) + 1;
+    // Prune to last 60 days
+    try {
+      var keys = Object.keys(cp_progress.activityHeatmap).sort();
+      if (keys.length > 60) {
+        var toRemove = keys.slice(0, keys.length - 60);
+        toRemove.forEach(function(k) {
+          delete cp_progress.activityHeatmap[k];
+        });
+      }
+    } catch(e) {}
+  }
+
+  // ============================================================
+  // CORE addXP FUNCTION
+  // ============================================================
+  var cp_pendingLevelUp = null; // store level-up data to show after save
+  var cp_achievementQueue = [];
+  var cp_isShowingAchievement = false;
+
+  function cp_addXP(amount, action) {
+    try {
+      if (!amount || amount <= 0) return;
+      var safeAmount = Math.floor(amount);
+
+      var oldLevel = cp_getLevelData(cp_progress.xp).current.level;
+
+      cp_progress.xp += safeAmount;
+      cp_progress.stats.totalXP = (cp_progress.stats.totalXP || 0) + safeAmount;
+      cp_logXP(safeAmount, action || 'unknown');
+      cp_logActivity();
+      cp_checkTimeAchievements();
+
+      var newLevelData = cp_getLevelData(cp_progress.xp);
+      cp_progress.level = newLevelData.current.level;
+
+      // Check for level up
+      var didLevelUp = newLevelData.current.level > oldLevel;
+
+      // Check achievements
+      var newAchievements = cp_checkAchievements();
+
+      cp_saveProgress();
+
+      // UI updates (async to not block)
+      setTimeout(function() {
+        try { cp_showXPGain(safeAmount); } catch(e) {}
+        try { cp_updateProfileButton(); } catch(e) {}
+
+        if (didLevelUp) {
+          setTimeout(function() {
+            try { cp_showLevelUp(newLevelData.current); } catch(e) {}
+          }, 600);
+        }
+
+        if (newAchievements && newAchievements.length > 0) {
+          newAchievements.forEach(function(ach) {
+            cp_achievementQueue.push(ach);
+          });
+          setTimeout(cp_processAchievementQueue, didLevelUp ? 4000 : 800);
+        }
+      }, 50);
+
+    } catch(e) {
+      console.warn('[CognixarProgress] addXP error:', e);
+    }
+  }
+
+  function cp_processAchievementQueue() {
+    if (cp_isShowingAchievement || cp_achievementQueue.length === 0) return;
+    var ach = cp_achievementQueue.shift();
+    cp_isShowingAchievement = true;
+    cp_showAchievementPopup(ach, function() {
+      cp_isShowingAchievement = false;
+      if (cp_achievementQueue.length > 0) {
+        setTimeout(cp_processAchievementQueue, 500);
+      }
+    });
+  }
+
+  function cp_incrementStat(statName) {
+    try {
+      if (typeof cp_progress.stats[statName] === 'undefined') {
+        cp_progress.stats[statName] = 0;
+      }
+      if (typeof cp_progress.stats[statName] === 'number') {
+        cp_progress.stats[statName] += 1;
+      } else if (typeof cp_progress.stats[statName] === 'boolean') {
+        cp_progress.stats[statName] = true;
+      }
+      cp_saveProgress();
+    } catch(e) {
+      console.warn('[CognixarProgress] incrementStat error:', e);
+    }
+  }
+
+  // ============================================================
+  // NUMBER FORMATTING
+  // ============================================================
+  function cp_formatNum(n) {
+    try {
+      var num = parseInt(n, 10) || 0;
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+      if (num >= 1000)    return (num / 1000).toFixed(1) + 'K';
+      return num.toLocaleString();
+    } catch(e) { return String(n); }
+  }
+
+  // ============================================================
+  // DOM HELPERS
+  // ============================================================
+  function cp_el(id) {
+    return document.getElementById(id);
+  }
+
+  function cp_safe(fn) {
+    try { fn(); } catch(e) {
+      console.warn('[CognixarProgress] DOM error:', e);
+    }
+  }
+
+  // ============================================================
+  // BUILD DOM — Profile Button
+  // ============================================================
+  function cp_buildProfileButton() {
+    // Remove if exists (idempotent)
+    var existing = cp_el('cp_profile_btn');
+    if (existing) existing.parentNode.removeChild(existing);
+
+    var btn = document.createElement('button');
+    btn.id = 'cp_profile_btn';
+    btn.setAttribute('aria-label', 'Open progress dashboard');
+    btn.setAttribute('role', 'button');
+    btn.className = 'cp-reset';
+
+    // Avatar
+    var avatar = document.createElement('div');
+    avatar.className = 'cp-avatar';
+
+    var avatarIcon = document.createElement('span');
+    avatarIcon.className = 'cp-avatar-icon';
+    avatarIcon.id = 'cp_avatar_icon';
+    avatarIcon.textContent = '🌱';
+    avatar.appendChild(avatarIcon);
+
+    var levelBadge = document.createElement('span');
+    levelBadge.className = 'cp-level-badge';
+    levelBadge.id = 'cp_level_badge_num';
+    levelBadge.textContent = '1';
+    avatar.appendChild(levelBadge);
+
+    // Info
+    var info = document.createElement('div');
+    info.className = 'cp-btn-info';
+
+    var lvlText = document.createElement('div');
+    lvlText.className = 'cp-btn-level';
+    lvlText.id = 'cp_btn_level_text';
+    lvlText.textContent = 'LVL 1 · NOVICE';
+
+    var xpText = document.createElement('div');
+    xpText.className = 'cp-btn-xp';
+
+    var star = document.createElement('span');
+    star.className = 'cp-btn-xp-star';
+    star.textContent = '⭐';
+
+    var xpNum = document.createElement('span');
+    xpNum.id = 'cp_btn_xp_num';
+    xpNum.textContent = '0 XP';
+
+    xpText.appendChild(star);
+    xpText.appendChild(xpNum);
+
+    info.appendChild(lvlText);
+    info.appendChild(xpText);
+
+    btn.appendChild(avatar);
+    btn.appendChild(info);
+
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      cp_openDashboard();
+    });
+
+    btn.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        cp_openDashboard();
+      }
+    });
+
+    document.body.appendChild(btn);
+  }
+
+  // ============================================================
+  // UPDATE PROFILE BUTTON (animated XP counter)
+  // ============================================================
+  function cp_updateProfileButton() {
+    cp_safe(function() {
+      var levelData = cp_getLevelData(cp_progress.xp);
+      var lv = levelData.current;
+
+      var iconEl   = cp_el('cp_avatar_icon');
+      var badgeEl  = cp_el('cp_level_badge_num');
+      var lvlEl    = cp_el('cp_btn_level_text');
+      var xpEl     = cp_el('cp_btn_xp_num');
+
+      if (iconEl)  iconEl.textContent  = lv.icon;
+      if (badgeEl) badgeEl.textContent = lv.level;
+      if (lvlEl)   lvlEl.textContent   = 'LVL ' + lv.level + ' · ' + lv.title.toUpperCase();
+      if (xpEl)    xpEl.textContent    = cp_formatNum(cp_progress.xp) + ' XP';
+    });
+  }
+
+  // ============================================================
+  // BUILD DOM — Dashboard Modal
+  // ============================================================
+  function cp_buildDashboardModal() {
+    var existing = cp_el('cp_modal_overlay');
+    if (existing) existing.parentNode.removeChild(existing);
+
+    // ---- Overlay ----
+    var overlay = document.createElement('div');
+    overlay.id = 'cp_modal_overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'Neural Profile Dashboard');
+
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) cp_closeDashboard();
+    });
+
+    // ---- Inner modal ----
+    var inner = document.createElement('div');
+    inner.id = 'cp_modal_inner';
+    inner.className = 'cp-reset';
+
+    // ---- Header ----
+    var header = document.createElement('div');
+    header.className = 'cp-modal-header';
+
+    var titleWrap = document.createElement('div');
+    var icon = document.createElement('span');
+    icon.className = 'cp-modal-title-icon';
+    icon.textContent = '🧠';
+    var titleText = document.createElement('div');
+    titleText.className = 'cp-modal-title';
+    var titleMain = document.createTextNode('NEURAL PROFILE');
+    var titleSub = document.createElement('span');
+    titleSub.className = 'cp-modal-title-sub';
+    titleSub.textContent = 'Progress & Achievements';
+    titleText.appendChild(icon);
+    titleText.appendChild(titleMain);
+    // Insert sub below
+    var titleBlock = document.createElement('div');
+    var titleLine = document.createElement('div');
+    titleLine.className = 'cp-modal-title';
+    titleLine.appendChild(icon);
+    var titleWords = document.createElement('div');
+    var titleMainLine = document.createElement('div');
+    titleMainLine.textContent = 'NEURAL PROFILE';
+    titleMainLine.style.fontFamily = "'Space Grotesk', sans-serif";
+    titleMainLine.style.fontSize = '22px';
+    titleMainLine.style.fontWeight = '700';
+    titleMainLine.style.color = '#E8E8F0';
+    titleWords.appendChild(titleMainLine);
+    titleWords.appendChild(titleSub);
+    titleLine.appendChild(titleWords);
+    header.appendChild(titleLine);
+
+    // Close button
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'cp-modal-close';
+    closeBtn.setAttribute('aria-label', 'Close dashboard');
+    closeBtn.innerHTML = '✕';
+    closeBtn.addEventListener('click', function() { cp_closeDashboard(); });
+    header.appendChild(closeBtn);
+
+    // ---- Body ----
+    var body = document.createElement('div');
+    body.className = 'cp-modal-body';
+    body.id = 'cp_modal_body';
+
+    // ---- Footer ----
+    var footer = document.createElement('div');
+    footer.className = 'cp-modal-footer';
+    var resetBtn = document.createElement('button');
+    resetBtn.className = 'cp-reset-btn';
+    resetBtn.textContent = '⚙ reset progress';
+    resetBtn.setAttribute('aria-label', 'Reset all progress data');
+    resetBtn.addEventListener('click', function() {
+      if (confirm('Reset all progress? This cannot be undone.')) {
+        cp_resetProgress();
+      }
+    });
+    footer.appendChild(resetBtn);
+
+    inner.appendChild(header);
+    inner.appendChild(body);
+    inner.appendChild(footer);
+    overlay.appendChild(inner);
+    document.body.appendChild(overlay);
+
+    // ---- Level-up overlay ----
+    cp_buildLevelUpOverlay();
+
+    // ---- Achievement popup ----
+    cp_buildAchievementPopup();
+  }
+
+  // ============================================================
+  // RENDER DASHBOARD CONTENT
+  // ============================================================
+  function cp_renderDashboard() {
+    var body = cp_el('cp_modal_body');
+    if (!body) return;
+
+    var levelData  = cp_getLevelData(cp_progress.xp);
+    var lv         = levelData.current;
+    var nextLv     = levelData.next;
+    var stats      = cp_progress.stats;
+    var streak     = cp_progress.streak;
+    var longestStr = cp_progress.longestStreak || streak;
+
+    // Clear
+    body.innerHTML = '';
+
+    // 1. STATS GRID
+    body.appendChild(cp_buildSectionLabel('', '')); // spacer
+    var statsSection = document.createElement('div');
+    statsSection.innerHTML = '<div class="cp-section-header">⚡ STATS</div>';
+    var grid = document.createElement('div');
+    grid.className = 'cp-stats-grid';
+
+    var statItems = [
+      { icon: '⭐', val: cp_formatNum(cp_progress.xp), label: 'Total XP' },
+      { icon: '📚', val: cp_formatNum(stats.uploads || 0), label: 'Docs' },
+      { icon: '🎯', val: cp_formatNum((stats.quizzes || 0) + (stats.perfectQuizzes || 0)), label: 'Quizzes' },
+      { icon: '🔥', val: streak, label: 'Day Streak' }
+    ];
+
+    statItems.forEach(function(item) {
+      var card = document.createElement('div');
+      card.className = 'cp-stat-card';
+      card.innerHTML =
+        '<span class="cp-stat-icon">' + item.icon + '</span>' +
+        '<span class="cp-stat-val">' + item.val + '</span>' +
+        '<span class="cp-stat-label">' + item.label + '</span>';
+      grid.appendChild(card);
+    });
+
+    statsSection.appendChild(grid);
+    body.appendChild(statsSection);
+
+    // 2. LEVEL PROGRESS
+    var lvSection = document.createElement('div');
+    lvSection.innerHTML = '<div class="cp-section-header">🏆 LEVEL PROGRESS</div>';
+    var lvCard = document.createElement('div');
+    lvCard.className = 'cp-level-section';
+
+    var lvRow = document.createElement('div');
+    lvRow.className = 'cp-level-row';
+
+    // Left side
+    var lvLeft = document.createElement('div');
+    lvLeft.className = 'cp-level-current';
+    lvLeft.innerHTML =
+      '<span class="cp-level-icon">' + lv.icon + '</span>' +
+      '<div class="cp-level-info">' +
+        '<div class="cp-level-num">Level ' + lv.level + '</div>' +
+        '<div class="cp-level-title-text">' + lv.title.toUpperCase() + '</div>' +
+      '</div>';
+
+    // Right side
+    var lvRight = document.createElement('div');
+    lvRight.className = 'cp-level-next';
+    if (nextLv) {
+      lvRight.innerHTML =
+        '<strong>' + nextLv.icon + ' ' + nextLv.title + '</strong>' +
+        'Level ' + nextLv.level + ' at ' + cp_formatNum(nextLv.xp) + ' XP';
+    } else {
+      lvRight.innerHTML = '<strong>👑 MAX LEVEL</strong>Neural Master';
+    }
+
+    lvRow.appendChild(lvLeft);
+    lvRow.appendChild(lvRight);
+
+    // Progress bar
+    var barWrap = document.createElement('div');
+    barWrap.className = 'cp-progress-bar-wrap';
+    var barFill = document.createElement('div');
+    barFill.className = 'cp-progress-bar-fill';
+    barFill.style.width = '0%';
+    barWrap.appendChild(barFill);
+
+    // Animate bar
+    setTimeout(function() {
+      if (barFill) barFill.style.width = levelData.pct + '%';
+    }, 200);
+
+    // Label
+    var barLabel = document.createElement('div');
+    barLabel.className = 'cp-progress-label';
+    var xpLabel = '', pctLabel = '';
+    if (nextLv) {
+      xpLabel = cp_formatNum(levelData.progressXP) + ' / ' + cp_formatNum(levelData.totalXP) + ' XP';
+      pctLabel = levelData.pct + '%';
+    } else {
+      xpLabel = cp_formatNum(cp_progress.xp) + ' XP — MAX LEVEL!';
+      pctLabel = '100%';
+    }
+    barLabel.innerHTML =
+      '<span class="cp-progress-xp">' + xpLabel + '</span>' +
+      '<span class="cp-progress-pct">' + pctLabel + '</span>';
+
+    lvCard.appendChild(lvRow);
+    lvCard.appendChild(barWrap);
+    lvCard.appendChild(barLabel);
+    lvSection.appendChild(lvCard);
+    body.appendChild(lvSection);
+
+    // 3. STREAK
+    var streakSection = document.createElement('div');
+    streakSection.innerHTML = '<div class="cp-section-header">🔥 STREAK</div>';
+    var streakCard = document.createElement('div');
+    streakCard.className = 'cp-streak-section';
+
+    var streakHdr = document.createElement('div');
+    streakHdr.className = 'cp-streak-header';
+    streakHdr.innerHTML =
+      '<div class="cp-streak-count">' +
+        '<span class="cp-streak-num">' + streak + '</span>' +
+        '<span class="cp-streak-unit">&nbsp;day streak</span>' +
+      '</div>' +
+      '<div class="cp-streak-longest">' +
+        '<strong>' + longestStr + '</strong>' +
+        'longest streak' +
+      '</div>';
+
+    // 7-day dots
+    var daysWrap = document.createElement('div');
+    daysWrap.className = 'cp-streak-days';
+
+    var last7 = cp_last7Dates();
+    var today  = cp_today();
+    var activeDays = cp_progress.streakDays || [];
+
+    last7.forEach(function(dateStr) {
+      var dayItem = document.createElement('div');
+      dayItem.className = 'cp-streak-day';
+
+      var dot = document.createElement('div');
+      dot.className = 'cp-streak-dot';
+
+      var isActive = activeDays.indexOf(dateStr) !== -1;
+      var isToday  = dateStr === today;
+
+      if (isActive || isToday) {
+        dot.classList.add(isToday ? 'cp-today' : 'cp-active');
+        dot.textContent = '✅';
+      } else {
+        dot.textContent = '○';
+        dot.style.color = 'rgba(232,232,240,0.15)';
+      }
+
+      var lbl = document.createElement('div');
+      lbl.className = 'cp-streak-day-label';
+      lbl.textContent = cp_dayLabel(dateStr);
+
+      dayItem.appendChild(dot);
+      dayItem.appendChild(lbl);
+      daysWrap.appendChild(dayItem);
+    });
+
+    streakCard.appendChild(streakHdr);
+    streakCard.appendChild(daysWrap);
+    streakSection.appendChild(streakCard);
+    body.appendChild(streakSection);
+
+    // 4. ACHIEVEMENTS
+    var achSection = document.createElement('div');
+    var unlockedCount = cp_progress.achievements.length;
+    achSection.innerHTML =
+      '<div class="cp-section-header">🏅 ACHIEVEMENTS (' + unlockedCount + '/' + ACHIEVEMENTS.length + ')</div>';
+
+    var achGrid = document.createElement('div');
+    achGrid.className = 'cp-achievements-grid';
+
+    ACHIEVEMENTS.forEach(function(ach) {
+      var isUnlocked = cp_progress.achievements.indexOf(ach.id) !== -1;
+
+      var item = document.createElement('div');
+      item.className = 'cp-achievement-item ' + (isUnlocked ? 'cp-unlocked' : 'cp-locked');
+
+      var iconWrap = document.createElement('div');
+      iconWrap.className = 'cp-achievement-icon-wrap';
+      iconWrap.textContent = ach.icon;
+
+      var nameEl = document.createElement('div');
+      nameEl.className = 'cp-achievement-name';
+      nameEl.textContent = ach.name;
+
+      // Tooltip
+      var tooltip = document.createElement('div');
+      tooltip.className = 'cp-achievement-tooltip';
+      tooltip.innerHTML =
+        '<div class="cp-tooltip-name">' + ach.icon + ' ' + ach.name + '</div>' +
+        '<div class="cp-tooltip-desc">' + ach.desc + '</div>' +
+        '<div class="cp-tooltip-status">' + (isUnlocked ? '✅ Unlocked' : '🔒 Locked') + '</div>';
+
+      item.appendChild(tooltip);
+      item.appendChild(iconWrap);
+      item.appendChild(nameEl);
+      achGrid.appendChild(item);
+    });
+
+    achSection.appendChild(achGrid);
+    body.appendChild(achSection);
+
+    // 5. HEATMAP
+    var heatSection = document.createElement('div');
+    heatSection.innerHTML = '<div class="cp-section-header">📊 30-DAY ACTIVITY</div>';
+
+    var heatGrid = document.createElement('div');
+    heatGrid.className = 'cp-heatmap-grid';
+
+    var last30 = cp_last30Dates();
+    var heatmap = cp_progress.activityHeatmap || {};
+
+    // Find max for scaling
+    var maxActivity = 1;
+    last30.forEach(function(d) {
+      if ((heatmap[d] || 0) > maxActivity) maxActivity = heatmap[d];
+    });
+
+    var hasActivity = last30.some(function(d) { return (heatmap[d] || 0) > 0; });
+
+    if (!hasActivity) {
+      var empty = document.createElement('div');
+      empty.className = 'cp-heatmap-empty';
+      empty.textContent = '— Start learning to see activity —';
+      heatGrid.appendChild(empty);
+    } else {
+      last30.forEach(function(dateStr, idx) {
+        var count = heatmap[dateStr] || 0;
+        var col = document.createElement('div');
+        col.className = 'cp-heatmap-col';
+
+        var barH = count > 0 ? Math.max(8, Math.round((count / maxActivity) * 60)) : 4;
+        var alpha = count > 0 ? Math.max(0.15, Math.min(1, count / maxActivity)) : 0.04;
+
+        var bar = document.createElement('div');
+        bar.className = 'cp-heatmap-bar';
+        bar.style.height = barH + 'px';
+        bar.style.background = count > 0
+          ? 'linear-gradient(180deg, rgba(0,240,255,' + alpha + '), rgba(131,56,236,' + (alpha * 0.8) + '))'
+          : 'rgba(255,255,255,0.04)';
+        bar.style.border = count > 0
+          ? '1px solid rgba(0,240,255,' + (alpha * 0.5) + ')'
+          : '1px solid rgba(255,255,255,0.04)';
+        bar.title = cp_shortDate(dateStr) + ': ' + count + ' action' + (count !== 1 ? 's' : '');
+
+        // Label every 5th
+        var lbl = document.createElement('div');
+        lbl.className = 'cp-heatmap-label';
+        lbl.textContent = (idx % 5 === 0 || idx === 29) ? cp_shortDate(dateStr).split(' ')[1] : '';
+
+        col.appendChild(bar);
+        col.appendChild(lbl);
+        heatGrid.appendChild(col);
+      });
+    }
+
+    heatSection.appendChild(heatGrid);
+    body.appendChild(heatSection);
+
+    // 6. XP HISTORY
+    var histSection = document.createElement('div');
+    histSection.className = 'cp-xp-history';
+    histSection.innerHTML = '<div class="cp-section-header">📈 RECENT XP</div>';
+
+    var log = document.createElement('div');
+    log.className = 'cp-xp-log';
+
+    if (!cp_progress.xpHistory || cp_progress.xpHistory.length === 0) {
+      var noLog = document.createElement('div');
+      noLog.className = 'cp-xp-log-empty';
+      noLog.textContent = 'No XP earned yet — start learning!';
+      log.appendChild(noLog);
+    } else {
+      cp_progress.xpHistory.slice(0, 20).forEach(function(entry) {
+        var item = document.createElement('div');
+        item.className = 'cp-xp-log-item';
+
+        var actionLabel = ACTION_LABELS[entry.action] || entry.action || 'Activity';
+        item.innerHTML =
+          '<span class="cp-xp-log-action">' + actionLabel + '</span>' +
+          '<div class="cp-xp-log-right">' +
+            '<span class="cp-xp-log-amount">+' + entry.xp + ' XP</span>' +
+            '<span class="cp-xp-log-date">' + cp_relDate(entry.date) + '</span>' +
+          '</div>';
+        log.appendChild(item);
+      });
+    }
+
+    histSection.appendChild(log);
+    body.appendChild(histSection);
+  }
+
+  function cp_buildSectionLabel(icon, text) {
+    var spacer = document.createElement('div');
+    spacer.style.height = '4px';
+    return spacer;
+  }
+
+  // ============================================================
+  // OPEN / CLOSE DASHBOARD
+  // ============================================================
+  function cp_openDashboard() {
+    cp_safe(function() {
+      var overlay = cp_el('cp_modal_overlay');
+      if (!overlay) return;
+      cp_renderDashboard();
+      overlay.classList.add('cp-open');
+      document.body.style.overflow = 'hidden';
+    });
+  }
+
+  function cp_closeDashboard() {
+    cp_safe(function() {
+      var overlay = cp_el('cp_modal_overlay');
+      if (!overlay) return;
+      overlay.classList.remove('cp-open');
+      document.body.style.overflow = '';
+    });
+  }
+
+  // Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      cp_closeDashboard();
+    }
+  });
+
+  // ============================================================
+  // XP GAIN FLOATING NOTIFICATION
+  // ============================================================
+  function cp_showXPGain(amount) {
+    try {
+      var btn = cp_el('cp_profile_btn');
+      if (!btn) return;
+
+      var rect = btn.getBoundingClientRect();
+      var popup = document.createElement('div');
+      popup.className = 'cp-xp-popup';
+      popup.textContent = '+' + amount + ' XP';
+
+      // Position above the profile button
+      popup.style.top  = (rect.top + window.scrollY - 10) + 'px';
+      popup.style.left = (rect.left + window.scrollX + rect.width / 2 - 30) + 'px';
+
+      document.body.appendChild(popup);
+
+      // Remove after animation
+      setTimeout(function() {
+        if (popup && popup.parentNode) {
+          popup.parentNode.removeChild(popup);
+        }
+      }, 2100);
+    } catch(e) {}
+  }
+
+  // ============================================================
+  // LEVEL UP OVERLAY
+  // ============================================================
+  function cp_buildLevelUpOverlay() {
+    var existing = cp_el('cp_levelup_overlay');
+    if (existing) existing.parentNode.removeChild(existing);
+
+    var overlay = document.createElement('div');
+    overlay.id = 'cp_levelup_overlay';
+
+    var card = document.createElement('div');
+    card.id = 'cp_levelup_card';
+    card.className = 'cp-reset';
+
+    card.innerHTML =
+      '<div class="cp-levelup-label">🎉 LEVEL UP 🎉</div>' +
+      '<span class="cp-levelup-icon" id="cp_levelup_icon">🌱</span>' +
+      '<span class="cp-levelup-num" id="cp_levelup_num">2</span>' +
+      '<div class="cp-levelup-title" id="cp_levelup_title">Apprentice</div>' +
+      '<button class="cp-levelup-btn" id="cp_levelup_btn">Continue →</button>';
+
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+
+    // Close button
+    var btn = document.getElementById('cp_levelup_btn');
+    if (btn) {
+      btn.addEventListener('click', function() {
+        cp_hideLevelUp();
+      });
+    }
+
+    // Click outside
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) cp_hideLevelUp();
+    });
+  }
+
+  function cp_showLevelUp(levelObj) {
+    cp_safe(function() {
+      var overlay = cp_el('cp_levelup_overlay');
+      if (!overlay) return;
+
+      var iconEl  = document.getElementById('cp_levelup_icon');
+      var numEl   = document.getElementById('cp_levelup_num');
+      var titleEl = document.getElementById('cp_levelup_title');
+
+      if (iconEl)  iconEl.textContent  = levelObj.icon || '⭐';
+      if (numEl)   numEl.textContent   = levelObj.level || '';
+      if (titleEl) titleEl.textContent = levelObj.title || '';
+
+      overlay.classList.add('cp-show');
+
+      // Spawn confetti if available
+      try {
+        if (typeof spawnConfetti === 'function') spawnConfetti();
+      } catch(e) {}
+
+      // Auto-dismiss after 4 seconds
+      var autoDismiss = setTimeout(function() {
+        cp_hideLevelUp();
+      }, 4000);
+
+      // Store so button can clear it
+      overlay._autoDismiss = autoDismiss;
+    });
+  }
+
+  function cp_hideLevelUp() {
+    cp_safe(function() {
+      var overlay = cp_el('cp_levelup_overlay');
+      if (!overlay) return;
+      if (overlay._autoDismiss) {
+        clearTimeout(overlay._autoDismiss);
+        overlay._autoDismiss = null;
+      }
+      overlay.classList.remove('cp-show');
+    });
+  }
+
+  // ============================================================
+  // ACHIEVEMENT POPUP
+  // ============================================================
+  function cp_buildAchievementPopup() {
+    var existing = cp_el('cp_achievement_popup');
+    if (existing) existing.parentNode.removeChild(existing);
+
+    var popup = document.createElement('div');
+    popup.id = 'cp_achievement_popup';
+    popup.className = 'cp-reset';
+    popup.innerHTML =
+      '<div class="cp-ach-popup-header">🏆 Achievement Unlocked</div>' +
+      '<div class="cp-ach-popup-divider"></div>' +
+      '<div class="cp-ach-popup-body">' +
+        '<div class="cp-ach-popup-icon" id="cp_ach_popup_icon">🥇</div>' +
+        '<div class="cp-ach-popup-text">' +
+          '<div class="cp-ach-popup-name" id="cp_ach_popup_name">Achievement</div>' +
+          '<div class="cp-ach-popup-desc" id="cp_ach_popup_desc">Description</div>' +
+        '</div>' +
+      '</div>';
+
+    document.body.appendChild(popup);
+  }
+
+  var cp_achDismissTimer = null;
+
+  function cp_showAchievementPopup(ach, callback) {
+    cp_safe(function() {
+      var popup   = cp_el('cp_achievement_popup');
+      var iconEl  = document.getElementById('cp_ach_popup_icon');
+      var nameEl  = document.getElementById('cp_ach_popup_name');
+      var descEl  = document.getElementById('cp_ach_popup_desc');
+
+      if (!popup) { if (callback) callback(); return; }
+
+      if (iconEl) iconEl.textContent = ach.icon || '🏆';
+      if (nameEl) nameEl.textContent = ach.name || '';
+      if (descEl) descEl.textContent = ach.desc || '';
+
+      popup.classList.add('cp-slide-in');
+
+      if (cp_achDismissTimer) clearTimeout(cp_achDismissTimer);
+      cp_achDismissTimer = setTimeout(function() {
+        popup.classList.remove('cp-slide-in');
+        setTimeout(function() {
+          if (callback) callback();
+        }, 550);
+      }, 4000);
+    });
+  }
+
+  // ============================================================
+  // RESET PROGRESS
+  // ============================================================
+  function cp_resetProgress() {
+    cp_safe(function() {
+      cp_progress = cp_defaultProgress();
+      cp_saveProgress();
+      cp_updateProfileButton();
+      cp_closeDashboard();
+      // Re-open with fresh data
+      setTimeout(function() { cp_openDashboard(); }, 400);
+      // Show toast if available
+      try {
+        if (typeof showToast === 'function') {
+          showToast('Progress reset!', 'info');
+        }
+      } catch(e) {}
+    });
+  }
+
+  // ============================================================
+  // DAILY LOGIN
+  // ============================================================
+  function cp_handleDailyLogin() {
+    try {
+      var didUpdate = cp_updateStreak();
+      if (didUpdate) {
+        // Award daily login XP
+        cp_addXP(XP_REWARDS.DAILY_LOGIN, 'login');
+
+        // Check for 7-day streak bonus
+        if (cp_progress.streak === 7 || (cp_progress.streak > 0 && cp_progress.streak % 7 === 0)) {
+          setTimeout(function() {
+            cp_addXP(XP_REWARDS.STREAK_7DAY, 'streak');
+          }, 1500);
+        }
+
+        // Check for first-time user bonus
+        var isFirstTime = !cp_progress.stats || !cp_progress.stats.uploads;
+        // Actually give first-time bonus if no XP history
+        if (!cp_progress.xpHistory || cp_progress.xpHistory.length === 0) {
+          setTimeout(function() {
+            cp_addXP(XP_REWARDS.FIRST_TIME_BONUS, 'first');
+          }, 800);
+        }
+      } else {
+        // Same day — just update the profile button display
+        cp_saveProgress();
+      }
+    } catch(e) {
+      console.warn('[CognixarProgress] Login handling error:', e);
+    }
+  }
+
+  // ============================================================
+  // AUTO-INTEGRATION — HOOK INTO EXISTING FEATURES
+  // Uses showToast wrapping + MutationObserver + event listeners
+  // ============================================================
+  function cp_setupAutoIntegration() {
+    // ---- 1. WRAP showToast ----
+    setTimeout(function() {
+      try {
+        var originalShowToast = window.showToast;
+        if (typeof originalShowToast === 'function') {
+          window.showToast = function(msg, type) {
+            // Call original first
+            var result = originalShowToast.apply(this, arguments);
+
+            try {
+              if (typeof msg !== 'string') return result;
+              var lowerMsg = msg.toLowerCase();
+
+              // Upload detection
+              if (lowerMsg.indexOf('uploaded') !== -1 ||
+                  lowerMsg.indexOf('upload') !== -1 && lowerMsg.indexOf('success') !== -1) {
+                setTimeout(function() {
+                  cp_addXP(XP_REWARDS.UPLOAD, 'upload');
+                  cp_incrementStat('uploads');
+                }, 100);
+              }
+
+              // Generation / processing complete detection
+              else if (lowerMsg.indexOf('complete') !== -1 ||
+                       lowerMsg.indexOf('generated') !== -1 ||
+                       lowerMsg.indexOf('ready') !== -1 ||
+                       lowerMsg.indexOf('finished') !== -1 ||
+                       lowerMsg.indexOf('processing') !== -1 && type === 'success') {
+                setTimeout(function() {
+                  cp_addXP(XP_REWARDS.GENERATE, 'generate');
+                  cp_incrementStat('generations');
+                }, 100);
+              }
+
+              // Quiz completion detection
+              else if (lowerMsg.indexOf('quiz') !== -1) {
+                setTimeout(function() {
+                  cp_addXP(XP_REWARDS.QUIZ_COMPLETE, 'quiz');
+                  cp_incrementStat('quizzes');
+
+                  // Check for perfect score in message
+                  // Common patterns: "10/10", "5/5", "100%", "perfect"
+                  var isPerfect = lowerMsg.indexOf('perfect') !== -1 ||
+                                  lowerMsg.indexOf('100%') !== -1 ||
+                                  /\b(\d+)\/\1\b/.test(msg); // matches "5/5", "10/10"
+                  if (isPerfect) {
+                    setTimeout(function() {
+                      cp_addXP(XP_REWARDS.QUIZ_PERFECT, 'perfect');
+                      cp_incrementStat('perfectQuizzes');
+                    }, 300);
+                  }
+                }, 100);
+              }
+            } catch(hookErr) {}
+
+            return result;
+          };
+        }
+      } catch(e) {
+        console.warn('[CognixarProgress] showToast hook error:', e);
+      }
+    }, 500); // small delay to ensure showToast is defined
+
+    // ---- 2. WRAP NeuralTutor.sendMessage ----
+    // Poll for NeuralTutor being available
+    var cp_ntPollCount = 0;
+    var cp_ntPollInterval = setInterval(function() {
+      cp_ntPollCount++;
+      if (cp_ntPollCount > 60) { // stop after 30s
+        clearInterval(cp_ntPollInterval);
+        return;
+      }
+      try {
+        if (window.NeuralTutor && typeof window.NeuralTutor.sendMessage === 'function') {
+          clearInterval(cp_ntPollInterval);
+          var origSend = window.NeuralTutor.sendMessage;
+          window.NeuralTutor.sendMessage = function() {
+            try {
+              cp_addXP(XP_REWARDS.AI_CHAT, 'chat');
+              cp_incrementStat('chats');
+            } catch(e) {}
+            return origSend.apply(this, arguments);
+          };
+        }
+      } catch(e) {}
+    }, 500);
+
+    // ---- 3. MutationObserver — watch for quiz answer renders ----
+    // Look for correct/wrong feedback appearing in DOM
+    try {
+      var cp_quizObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          mutation.addedNodes.forEach(function(node) {
+            if (!node || node.nodeType !== 1) return;
+            try {
+              // Look for correct answer indicators
+              var correctEls = node.querySelectorAll
+                ? node.querySelectorAll('[class*="correct"]:not([class*="incorrect"])')
+                : [];
+              if (correctEls.length > 0) {
+                // Debounce — don't double-count
+                if (!node._cpQuizTracked) {
+                  node._cpQuizTracked = true;
+                  cp_addXP(XP_REWARDS.QUIZ_CORRECT, 'correct');
+                }
+              }
+            } catch(e) {}
+          });
+        });
+      });
+
+      // Observe the main content area if it exists
+      var mainContent = document.querySelector('main') ||
+                        document.querySelector('[id*="content"]') ||
+                        document.querySelector('[class*="content"]') ||
+                        document.body;
+      cp_quizObserver.observe(mainContent, {
+        childList: true,
+        subtree:   true
+      });
+    } catch(e) {
+      console.warn('[CognixarProgress] MutationObserver setup error:', e);
+    }
+
+    // ---- 4. Listen for custom events ----
+    // Apps can dispatch these events to trigger XP
+    document.addEventListener('cognixar:upload', function(e) {
+      try {
+        var detail = e.detail || {};
+        cp_addXP(detail.xp || XP_REWARDS.UPLOAD, 'upload');
+        cp_incrementStat('uploads');
+      } catch(err) {}
+    });
+
+    document.addEventListener('cognixar:generate', function(e) {
+      try {
+        var detail = e.detail || {};
+        cp_addXP(detail.xp || XP_REWARDS.GENERATE, 'generate');
+        cp_incrementStat('generations');
+      } catch(err) {}
+    });
+
+    document.addEventListener('cognixar:quiz_correct', function(e) {
+      try {
+        cp_addXP(XP_REWARDS.QUIZ_CORRECT, 'correct');
+      } catch(err) {}
+    });
+
+    document.addEventListener('cognixar:quiz_complete', function(e) {
+      try {
+        var detail = e.detail || {};
+        cp_addXP(XP_REWARDS.QUIZ_COMPLETE, 'quiz');
+        cp_incrementStat('quizzes');
+        if (detail.perfect) {
+          setTimeout(function() {
+            cp_addXP(XP_REWARDS.QUIZ_PERFECT, 'perfect');
+            cp_incrementStat('perfectQuizzes');
+          }, 300);
+        }
+      } catch(err) {}
+    });
+
+    document.addEventListener('cognixar:chat', function(e) {
+      try {
+        cp_addXP(XP_REWARDS.AI_CHAT, 'chat');
+        cp_incrementStat('chats');
+      } catch(err) {}
+    });
+
+    // ---- 5. Monitor State object for file uploads ----
+    // Poll for State.fileId changes
+    try {
+      if (typeof State !== 'undefined') {
+        var cp_lastFileId = State.fileId;
+        var cp_statePoller = setInterval(function() {
+          try {
+            if (State.fileId && State.fileId !== cp_lastFileId) {
+              cp_lastFileId = State.fileId;
+              cp_addXP(XP_REWARDS.UPLOAD, 'upload');
+              cp_incrementStat('uploads');
+            }
+          } catch(e) {}
+        }, 1000);
+        // Clean up after 10 minutes (page likely reloaded)
+        setTimeout(function() {
+          clearInterval(cp_statePoller);
+        }, 600000);
+      }
+    } catch(e) {}
+
+    // ---- 6. Monitor State.results for generation completion ----
+    try {
+      if (typeof State !== 'undefined') {
+        var cp_lastResultsKeys = '';
+        var cp_resultsPoller = setInterval(function() {
+          try {
+            var newKeys = Object.keys(State.results || {}).join(',');
+            if (newKeys !== cp_lastResultsKeys && newKeys !== '') {
+              var wasEmpty = cp_lastResultsKeys === '';
+              cp_lastResultsKeys = newKeys;
+              if (!wasEmpty) {
+                // New content generated
+                cp_addXP(XP_REWARDS.GENERATE, 'generate');
+                cp_incrementStat('generations');
+              } else {
+                // First load from localStorage, don't award XP
+                cp_lastResultsKeys = newKeys;
+              }
+            }
+          } catch(e) {}
+        }, 1500);
+        setTimeout(function() {
+          clearInterval(cp_resultsPoller);
+        }, 600000);
+      }
+    } catch(e) {}
+
+    // ---- 7. Listen for handleQuizAnswer calls via DOM events ----
+    // Wrap handleQuizAnswer if it exists
+    setTimeout(function() {
+      try {
+        if (typeof window.handleQuizAnswer === 'function') {
+          var origHandleQuiz = window.handleQuizAnswer;
+          window.handleQuizAnswer = function(optEl) {
+            try {
+              // Check if it's a correct answer by looking at existing State
+              if (typeof State !== 'undefined') {
+                var wasCorrect = optEl &&
+                  (optEl.classList.contains('correct') ||
+                   optEl.dataset.correct === 'true' ||
+                   optEl.getAttribute('data-correct') === 'true');
+                if (wasCorrect) {
+                  cp_addXP(XP_REWARDS.QUIZ_CORRECT, 'correct');
+                }
+              }
+            } catch(e) {}
+            return origHandleQuiz.apply(this, arguments);
+          };
+        }
+      } catch(e) {}
+    }, 800);
+  }
+
+  // ============================================================
+  // PUBLIC API
+  // ============================================================
+  window.CognixarProgress = {
+    /**
+     * Add XP to the user's progress
+     * @param {number} amount - XP to add
+     * @param {string} action - Action label (e.g. 'upload', 'chat')
+     */
+    addXP: function(amount, action) {
+      try {
+        cp_addXP(amount, action);
+      } catch(e) {
+        console.warn('[CognixarProgress] addXP failed:', e);
+      }
+    },
+
+    /**
+     * Get current stats object
+     * @returns {object} Full progress data
+     */
+    getStats: function() {
+      try {
+        return JSON.parse(JSON.stringify(cp_progress));
+      } catch(e) {
+        return {};
+      }
+    },
+
+    /**
+     * Increment a stat counter
+     * @param {string} statName - Key in cp_progress.stats
+     */
+    incrementStat: function(statName) {
+      try {
+        cp_incrementStat(statName);
+      } catch(e) {
+        console.warn('[CognixarProgress] incrementStat failed:', e);
+      }
+    },
+
+    /**
+     * Open the dashboard modal
+     */
+    open: function() {
+      try { cp_openDashboard(); } catch(e) {}
+    },
+
+    /**
+     * Close the dashboard modal
+     */
+    close: function() {
+      try { cp_closeDashboard(); } catch(e) {}
+    },
+
+    /**
+     * Reset all progress (DEBUG)
+     */
+    reset: function() {
+      try { cp_resetProgress(); } catch(e) {}
+    },
+
+    /**
+     * Add a custom XP reward with a custom action label
+     * @param {number} amount
+     * @param {string} actionKey
+     * @param {string} actionLabel  - Human-readable label
+     */
+    addCustomXP: function(amount, actionKey, actionLabel) {
+      try {
+        if (actionLabel) ACTION_LABELS[actionKey] = actionLabel;
+        cp_addXP(amount, actionKey);
+      } catch(e) {}
+    },
+
+    /**
+     * Force check and show unlocked achievements
+     */
+    checkAchievements: function() {
+      try {
+        var newly = cp_checkAchievements();
+        cp_saveProgress();
+        newly.forEach(function(ach) {
+          cp_achievementQueue.push(ach);
+        });
+        cp_processAchievementQueue();
+        return newly.map(function(a) { return a.id; });
+      } catch(e) { return []; }
+    },
+
+    /**
+     * Get current level data
+     */
+    getLevelData: function() {
+      try {
+        return cp_getLevelData(cp_progress.xp);
+      } catch(e) { return null; }
+    }
+  };
+
+  // ============================================================
+  // INITIALIZE
+  // ============================================================
+  function cp_init() {
+    try {
+      // Load saved progress
+      cp_progress = cp_loadProgress();
+
+      // Build DOM components
+      cp_buildProfileButton();
+      cp_buildDashboardModal();
+
+      // Update button display
+      cp_updateProfileButton();
+
+      // Handle daily login / streak (delayed to not interfere with page load)
+      setTimeout(function() {
+        try {
+          cp_handleDailyLogin();
+          cp_updateProfileButton();
+        } catch(e) {}
+      }, 1500);
+
+      // Setup auto-integration hooks
+      cp_setupAutoIntegration();
+
+      console.info(
+        '%c[COGNIXAR Progress] ✅ Initialized — Level ' + cp_progress.level +
+        ' | ' + cp_progress.xp + ' XP | ' + cp_progress.streak + '-day streak',
+        'color: #00F0FF; font-family: monospace; font-weight: bold;'
+      );
+
+    } catch(e) {
+      console.error('[CognixarProgress] Initialization failed:', e);
+    }
+  }
+
+  // ---- Run on DOM ready ----
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', cp_init);
+  } else {
+    // DOM already ready (script at end of body)
+    cp_init();
+  }
+
+})(); // end IIFE
+</script>
+
+<!-- ============================================================
+     CRITICAL PATCH: FIX CHAT CONNECTIVITY
+     Paste this at the very end of app.html
+     ============================================================ -->
+<script>
+(function() {
+    'use strict';
+
+    // --- 1. AUTO-SYNC PATCH ---
+    // We wrap handleFile to ensure NeuralTutor knows about the file
+    var originalHandleFile = window.handleFile;
+
+    if (typeof originalHandleFile === 'function') {
+        window.handleFile = function(fileObj) {
+            console.log('⚡ [PATCH] Intercepting Upload:', fileObj?.name);
+            
+            // Execute original handler first
+            try {
+                originalHandleFile(fileObj);
+            } catch (err) {
+                console.error('[PATCH] Error in original handleFile:', err);
+            }
+
+            // Wait for the file to be parsed by the original handler (usually takes 500ms - 2s)
+            // Then force push the result to the Neural Tutor
+            setTimeout(function() {
+                try {
+                    if (!window.State || !State.lastDoc) return;
+
+                    console.log('🔗 [SYNC] Pushing', State.fileName, 'to Neural Tutor...');
+
+                    // Method A: If Tutor has a sync method (Preferred)
+                    if (window.NeuralTutor && typeof window.NeuralTutor.syncDocument === 'function') {
+                        window.NeuralTutor.syncDocument(State.lastDoc, State.fileName);
+                    } 
+                    // Method B: Direct global context injection (Fallback)
+                    else if (window.NeuralTutor) {
+                        // Inject directly into tutor's memory if it exposes one
+                        if (window.NeuralTutor.setContext) {
+                            window.NeuralTutor.setContext(State.lastDoc);
+                        }
+                    }
+
+                    // Fire a custom event other tutors might listen to
+                    document.dispatchEvent(new CustomEvent('cognixar:doc_sync_complete', {
+                        detail: { text: State.lastDoc, name: State.fileName }
+                    }));
+
+                } catch(e) {
+                    console.warn('[PATCH] Auto-sync failed (likely timing), check Fix Button below.');
+                }
+            }, 1500); // Delay ensures parsing is done
+        };
+    } else {
+        console.warn('[PATCH] handleFile not found, wrapping may fail.');
+    }
+
+    // --- 2. MANUAL FIX BUTTON ---
+    // Creates a floating button if auto-fix fails, letting you manually "Push" the doc
+    var fixBtn = document.createElement('button');
+    fixBtn.id = 'cp_manual_sync_btn';
+    
+    // Styling (Cyberpunk Pink)
+    Object.assign(fixBtn.style, {
+        position: 'fixed',
+        bottom: '90px',  // Above the progress button
+        right: '20px',
+        zIndex: '9996',
+        background: '#FF006E',
+        color: '#fff',
+        border: 'none',
+        padding: '10px 18px',
+        borderRadius: '24px',
+        boxShadow: '0 4px 15px rgba(255,0,110,0.4)',
+        cursor: 'pointer',
+        fontFamily: 'Inter, sans-serif',
+        fontSize: '12px',
+        fontWeight: '700',
+        letterSpacing: '0.5px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        transition: 'all 0.3s ease'
+    });
+
+    fixBtn.innerHTML = '<span>⚠️</span> <span style="white-space:nowrap">MANUAL SYNC</span>';
+    fixBtn.title = "If Chat says 'No Document', click here to force the link.";
+
+    fixBtn.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.05)';
+        this.style.boxShadow = '0 6px 20px rgba(255,0,110,0.6)';
+    });
+
+    fixBtn.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+        this.style.boxShadow = '0 4px 15px rgba(255,0,110,0.4)';
+    });
+
+    fixBtn.addEventListener('click', function() {
+        try {
+            if (!window.State || !State.lastDoc) {
+                alert("❌ No document found in memory! Please upload one first.");
+                return;
+            }
+
+            // Force the sync
+            console.log('🚀 Manual Sync Triggered');
+            
+            var docText = State.lastDoc.substring(0, 5000); // Send chunk to test
+            
+            if (window.NeuralTutor) {
+                if (window.NeuralTutor.syncDocument) {
+                    window.NeuralTutor.syncDocument(docText, State.fileName);
+                }
+                
+                // Or if it accepts context directly via chat input (fallback hack)
+                // This depends on how your Chat handles initialization
+            } else {
+                alert("⚠️ NeuralTutor object not found in window scope.");
+                return;
+            }
+
+            // Visual Feedback
+            var originalHTML = fixBtn.innerHTML;
+            fixBtn.innerHTML = '<span>✅</span> <span>SYNCED!</span>';
+            fixBtn.style.background = '#00F0FF';
+            fixBtn.style.color = '#000';
+
+            // Hide after 3 seconds
+            setTimeout(function() {
+                fixBtn.innerHTML = originalHTML;
+                fixBtn.style.background = '#FF006E';
+                fixBtn.style.color = '#fff';
+            }, 3000);
+
+            showToast("Document synced with Tutor!", "success");
+
+        } catch(err) {
+            console.error("[MANUAL SYNC ERROR]:", err);
+            alert("Sync failed. Check console.");
+        }
+    });
+
+    document.body.appendChild(fixBtn);
+
+})();
+</script>
+<!-- ============================================================
+     COGNIXAR CHAT CONTEXT FIX
+     Paste at the very end of app.html, right before </body>
+     ============================================================ -->
+<script>
+(function() {
+    'use strict';
+
+    // ============================================================
+    // CONFIG
+    // ============================================================
+    var DOC_KEY = 'cognixar_current_doc';
+    var MAX_CONTEXT_CHARS = 8000;
+    var CHAT_URL_PATTERNS = ['/api/chat', '/chat', 'groq', 'completions'];
+
+    // ============================================================
+    // HELPER: Get document text from localStorage or State fallback
+    // ============================================================
+    function cgx_getDocText() {
+        try {
+            var text = localStorage.getItem(DOC_KEY) || '';
+            
+            // Fallback: check State object for various possible keys
+            if (!text && window.State) {
+                text = window.State.lastDoc 
+                    || window.State.fileContent 
+                    || window.State.documentText 
+                    || window.State.extractedText 
+                    || '';
+                
+                // Auto-sync to localStorage if found
+                if (text) {
+                    try {
+                        localStorage.setItem(DOC_KEY, text);
+                        console.log('[CGX-FIX] Auto-synced State document to localStorage (' + text.length + ' chars)');
+                    } catch(e) {}
+                }
+            }
+            
+            return text || '';
+        } catch(e) {
+            return '';
+        }
+    }
+
+    // ============================================================
+    // HELPER: Build system context message
+    // ============================================================
+    function cgx_buildContextMessage(docText) {
+        var truncated = docText.substring(0, MAX_CONTEXT_CHARS);
+        return "You have access to the following document the user uploaded. " +
+               "Use it to answer all questions. Document content:\n\n" +
+               truncated + 
+               "\n\nAlways reference this document when answering.";
+    }
+
+    // ============================================================
+    // HELPER: Check if URL is a chat endpoint
+    // ============================================================
+    function cgx_isChatURL(url) {
+        try {
+            if (!url) return false;
+            var urlStr = String(url).toLowerCase();
+            for (var i = 0; i < CHAT_URL_PATTERNS.length; i++) {
+                if (urlStr.indexOf(CHAT_URL_PATTERNS[i].toLowerCase()) !== -1) {
+                    return true;
+                }
+            }
+            return false;
+        } catch(e) {
+            return false;
+        }
+    }
+
+    // ============================================================
+    // HELPER: Inject context into request body
+    // ============================================================
+    function cgx_injectContext(bodyObj, docText) {
+        try {
+            var contextMsg = cgx_buildContextMessage(docText);
+            
+            // Pattern A: Has messages array (OpenAI/Groq format)
+            if (bodyObj.messages && Array.isArray(bodyObj.messages)) {
+                // Remove any existing system message we previously injected
+                bodyObj.messages = bodyObj.messages.filter(function(m) {
+                    return !(m.role === 'system' && m.content && 
+                             m.content.indexOf('[CGX_INJECTED]') !== -1);
+                });
+                
+                // Prepend new system message
+                bodyObj.messages.unshift({
+                    role: 'system',
+                    content: '[CGX_INJECTED] ' + contextMsg
+                });
+                
+                console.log('[CONTEXT INJECTED] Sent ' + docText.substring(0, MAX_CONTEXT_CHARS).length + ' chars of document to AI');
+                return bodyObj;
+            }
+            
+            // Pattern B: Has 'message' field
+            if (typeof bodyObj.message === 'string') {
+                var originalMsg = bodyObj.message;
+                bodyObj.message = contextMsg + '\n\n---\n\nUser question: ' + originalMsg;
+                bodyObj.context = docText.substring(0, MAX_CONTEXT_CHARS);
+                bodyObj.document_text = docText.substring(0, MAX_CONTEXT_CHARS);
+                console.log('[CONTEXT INJECTED] Sent ' + docText.substring(0, MAX_CONTEXT_CHARS).length + ' chars of document to AI');
+                return bodyObj;
+            }
+            
+            // Pattern C: Has 'prompt' field
+            if (typeof bodyObj.prompt === 'string') {
+                var originalPrompt = bodyObj.prompt;
+                bodyObj.prompt = contextMsg + '\n\n---\n\nUser question: ' + originalPrompt;
+                bodyObj.context = docText.substring(0, MAX_CONTEXT_CHARS);
+                bodyObj.document_text = docText.substring(0, MAX_CONTEXT_CHARS);
+                console.log('[CONTEXT INJECTED] Sent ' + docText.substring(0, MAX_CONTEXT_CHARS).length + ' chars of document to AI');
+                return bodyObj;
+            }
+            
+            // Pattern D: Has 'query' or 'question' field
+            if (typeof bodyObj.query === 'string' || typeof bodyObj.question === 'string') {
+                bodyObj.context = docText.substring(0, MAX_CONTEXT_CHARS);
+                bodyObj.document_text = docText.substring(0, MAX_CONTEXT_CHARS);
+                bodyObj.system = contextMsg;
+                console.log('[CONTEXT INJECTED] Sent ' + docText.substring(0, MAX_CONTEXT_CHARS).length + ' chars of document to AI');
+                return bodyObj;
+            }
+            
+            // Pattern E: Unknown structure - just add context fields
+            bodyObj.context = docText.substring(0, MAX_CONTEXT_CHARS);
+            bodyObj.document_text = docText.substring(0, MAX_CONTEXT_CHARS);
+            bodyObj.system_prompt = contextMsg;
+            console.log('[CONTEXT INJECTED] Sent ' + docText.substring(0, MAX_CONTEXT_CHARS).length + ' chars of document to AI (generic injection)');
+            return bodyObj;
+            
+        } catch(e) {
+            console.warn('[CGX-FIX] Inject error:', e);
+            return bodyObj;
+        }
+    }
+
+    // ============================================================
+    // FETCH WRAPPER
+    // ============================================================
+    var originalFetch = window.fetch;
+    
+    if (typeof originalFetch === 'function') {
+        window.fetch = function(input, init) {
+            try {
+                var url = (typeof input === 'string') ? input : (input && input.url ? input.url : '');
+                
+                // Only process chat endpoints
+                if (!cgx_isChatURL(url)) {
+                    return originalFetch.apply(this, arguments);
+                }
+                
+                // Get document text
+                var docText = cgx_getDocText();
+                
+                if (!docText || docText.length === 0) {
+                    console.warn('[CGX-FIX] Chat call detected but NO document in localStorage. URL:', url);
+                    return originalFetch.apply(this, arguments);
+                }
+                
+                // Process the request body
+                init = init || {};
+                
+                if (init.body) {
+                    var bodyObj;
+                    var bodyStr = init.body;
+                    
+                    // Parse body if it's a string
+                    if (typeof bodyStr === 'string') {
+                        try {
+                            bodyObj = JSON.parse(bodyStr);
+                        } catch(e) {
+                            console.warn('[CGX-FIX] Could not parse body as JSON, skipping injection');
+                            return originalFetch.apply(this, arguments);
+                        }
+                    } else if (typeof bodyStr === 'object' && bodyStr !== null) {
+                        bodyObj = bodyStr;
+                    } else {
+                        return originalFetch.apply(this, arguments);
+                    }
+                    
+                    // Inject context
+                    bodyObj = cgx_injectContext(bodyObj, docText);
+                    
+                    // Re-serialize
+                    init.body = JSON.stringify(bodyObj);
+                    
+                    // Make sure content-type is set
+                    init.headers = init.headers || {};
+                    if (init.headers instanceof Headers) {
+                        if (!init.headers.has('Content-Type')) {
+                            init.headers.set('Content-Type', 'application/json');
+                        }
+                    } else if (typeof init.headers === 'object') {
+                        var hasContentType = false;
+                        for (var k in init.headers) {
+                            if (k.toLowerCase() === 'content-type') {
+                                hasContentType = true;
+                                break;
+                            }
+                        }
+                        if (!hasContentType) {
+                            init.headers['Content-Type'] = 'application/json';
+                        }
+                    }
+                }
+                
+                return originalFetch.call(this, input, init);
+                
+            } catch(err) {
+                console.error('[CGX-FIX] Fetch wrapper error:', err);
+                return originalFetch.apply(this, arguments);
+            }
+        };
+        
+        console.log('%c[CGX-FIX] ✅ Chat context injector active', 'color:#00F0FF;font-weight:bold;');
+    } else {
+        console.warn('[CGX-FIX] window.fetch not available, cannot install patch');
+    }
+
+    // ============================================================
+    // STATUS BADGE
+    // ============================================================
+    function cgx_buildBadge() {
+        try {
+            // Remove if exists
+            var existing = document.getElementById('cgx_fix_badge');
+            if (existing) existing.parentNode.removeChild(existing);
+            
+            // Inject styles
+            if (!document.getElementById('cgx_fix_styles')) {
+                var style = document.createElement('style');
+                style.id = 'cgx_fix_styles';
+                style.textContent = 
+                    '#cgx_fix_badge {' +
+                    '  position: fixed;' +
+                    '  top: 70px;' +
+                    '  right: 20px;' +
+                    '  z-index: 999999;' +
+                    '  padding: 6px 12px;' +
+                    '  background: rgba(5, 5, 20, 0.92);' +
+                    '  border: 1px solid #00F0FF;' +
+                    '  border-radius: 20px;' +
+                    '  font-family: "JetBrains Mono", monospace;' +
+                    '  font-size: 10px;' +
+                    '  font-weight: 700;' +
+                    '  letter-spacing: 0.5px;' +
+                    '  color: #00F0FF;' +
+                    '  box-shadow: 0 0 12px rgba(0,240,255,0.3);' +
+                    '  pointer-events: none;' +
+                    '  transition: all 0.3s ease;' +
+                    '  white-space: nowrap;' +
+                    '  backdrop-filter: blur(10px);' +
+                    '  -webkit-backdrop-filter: blur(10px);' +
+                    '}' +
+                    '#cgx_fix_badge.cgx-fix-loaded {' +
+                    '  border-color: #00ff88;' +
+                    '  color: #00ff88;' +
+                    '  box-shadow: 0 0 12px rgba(0,255,136,0.4);' +
+                    '}' +
+                    '#cgx_fix_badge.cgx-fix-empty {' +
+                    '  border-color: #ff9500;' +
+                    '  color: #ff9500;' +
+                    '  box-shadow: 0 0 12px rgba(255,149,0,0.3);' +
+                    '}' +
+                    '@media (max-width: 600px) {' +
+                    '  #cgx_fix_badge {' +
+                    '    top: 60px;' +
+                    '    right: 10px;' +
+                    '    font-size: 9px;' +
+                    '    padding: 4px 8px;' +
+                    '  }' +
+                    '}';
+                document.head.appendChild(style);
+            }
+            
+            // Create badge
+            var badge = document.createElement('div');
+            badge.id = 'cgx_fix_badge';
+            badge.className = 'cgx-fix-badge cgx-fix-empty';
+            badge.textContent = '⚠️ NO DOC';
+            document.body.appendChild(badge);
+            
+        } catch(e) {
+            console.warn('[CGX-FIX] Badge build error:', e);
+        }
+    }
+
+    function cgx_updateBadge() {
+        try {
+            var badge = document.getElementById('cgx_fix_badge');
+            if (!badge) return;
+            
+            var docText = cgx_getDocText();
+            
+            if (docText && docText.length > 0) {
+                badge.className = 'cgx-fix-badge cgx-fix-loaded';
+                var kb = (docText.length / 1024).toFixed(1);
+                badge.textContent = '📄 DOC LOADED · ' + kb + 'KB';
+            } else {
+                badge.className = 'cgx-fix-badge cgx-fix-empty';
+                badge.textContent = '⚠️ NO DOC';
+            }
+        } catch(e) {}
+    }
+
+    // ============================================================
+    // INITIALIZE
+    // ============================================================
+    function cgx_init() {
+        try {
+            cgx_buildBadge();
+            cgx_updateBadge();
+            
+            // Update badge every 2 seconds
+            setInterval(cgx_updateBadge, 2000);
+            
+            // Also try auto-sync from State on init
+            setTimeout(function() {
+                cgx_getDocText(); // Triggers auto-sync if needed
+                cgx_updateBadge();
+            }, 1000);
+            
+            console.log('%c[CGX-FIX] ✅ Status badge active', 'color:#00ff88;font-weight:bold;');
+        } catch(e) {
+            console.error('[CGX-FIX] Init error:', e);
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', cgx_init);
+    } else {
+        cgx_init();
+    }
+
+})();
+</script>
+
+<script>
+(function() {
+    // Remove debug UI elements
+    setTimeout(function() {
+        try {
+            // Remove pink Manual Sync button
+            var syncBtn = document.getElementById('cp_manual_sync_btn');
+            if (syncBtn) syncBtn.remove();
+            
+            // Hide the green DOC LOADED badge
+            var badge = document.getElementById('cgx_fix_badge');
+            if (badge) badge.style.display = 'none';
+            
+            console.log('✅ Debug UI cleaned up');
+        } catch(e) {}
+    }, 1000);
+})();
+</script>
 </body>
 </html>
