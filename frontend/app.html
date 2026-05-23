@@ -8150,5 +8150,3496 @@ setTimeout(() => {
     }, 1000);
 })();
 </script>
+
+<!-- ============================================================
+     COGNIXAR STAGE 3: SAVED LIBRARY SYSTEM
+     ============================================================ -->
+
+<style>
+/* ============================================================
+   LIBRARY SYSTEM STYLES - All prefixed with .lib- or #lib_
+   ============================================================ */
+
+/* ── Library Nav Button ─────────────────────────────────── */
+#lib_nav_btn {
+  position: fixed;
+  bottom: 24px;        /* ← Bottom of screen */
+  left: 24px;          /* ← Left side */
+  top: unset;          /* ← Override any top value */
+  z-index: 9996;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px 8px 10px;
+  background: rgba(5, 5, 20, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(131, 56, 236, 0.35);
+  border-radius: 50px;
+  cursor: none !important;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+  user-select: none;
+}
+
+#lib_nav_btn * {
+  cursor: none !important;
+}
+
+#lib_nav_btn:hover {
+  transform: scale(1.05);
+  border-color: rgba(131, 56, 236, 0.7);
+  box-shadow: 0 0 20px rgba(131, 56, 236, 0.3);
+}
+
+#lib_nav_btn:active {
+  transform: scale(0.97);
+}
+
+.lib-nav-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8338EC, #FF006E);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.lib-nav-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 16px;
+  height: 16px;
+  background: #FF006E;
+  border-radius: 8px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  border: 1.5px solid rgba(5, 5, 20, 0.9);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.lib-nav-badge.lib-pop {
+  transform: scale(1.4);
+}
+
+.lib-nav-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.8);
+  letter-spacing: 0.5px;
+}
+
+.lib-nav-count {
+  font-size: 13px;
+  color: #8338EC;
+  font-weight: 700;
+}
+
+/* ── Full-Screen Library Overlay ────────────────────────── */
+#lib_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 20, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: 99995;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+  overflow: hidden;
+}
+
+#lib_overlay.lib-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Animated mesh gradient background */
+.lib-mesh-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lib-mesh-bg::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(131,56,236,0.12) 0%, transparent 70%);
+  top: -200px;
+  right: -100px;
+  animation: lib-drift1 12s ease-in-out infinite alternate;
+}
+
+.lib-mesh-bg::after {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0,240,255,0.08) 0%, transparent 70%);
+  bottom: -150px;
+  left: -100px;
+  animation: lib-drift2 15s ease-in-out infinite alternate;
+}
+
+@keyframes lib-drift1 {
+  from { transform: translate(0,0) scale(1); }
+  to   { transform: translate(-60px, 80px) scale(1.15); }
+}
+
+@keyframes lib-drift2 {
+  from { transform: translate(0,0) scale(1); }
+  to   { transform: translate(80px, -60px) scale(1.2); }
+}
+
+/* ── Library Container ──────────────────────────────────── */
+.lib-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 24px;
+}
+
+/* ── Library Header ─────────────────────────────────────── */
+.lib-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0 20px;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.lib-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lib-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #8338EC, #FF006E);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 0 24px rgba(131,56,236,0.4);
+  flex-shrink: 0;
+}
+
+.lib-title-group h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.lib-title-group p {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  margin: 2px 0 0;
+}
+
+.lib-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lib-close-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.7);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.lib-close-btn:hover {
+  background: rgba(255, 0, 110, 0.15);
+  border-color: rgba(255, 0, 110, 0.4);
+  color: #FF006E;
+  transform: rotate(90deg);
+}
+
+/* ── Search & Filters Bar ───────────────────────────────── */
+.lib-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 0 16px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.lib-search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.lib-search-wrap::before {
+  content: '🔍';
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 1;
+  filter: grayscale(0.5);
+}
+
+#lib_search {
+  width: 100%;
+  padding: 10px 16px 10px 42px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(0,240,255,0.2);
+  border-radius: 12px;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+#lib_search::placeholder { color: rgba(255,255,255,0.3); }
+
+#lib_search:focus {
+  border-color: rgba(0,240,255,0.5);
+  background: rgba(0,240,255,0.05);
+  box-shadow: 0 0 20px rgba(0,240,255,0.1);
+}
+
+/* Filter chips */
+.lib-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.lib-filter-chip {
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.6);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.lib-filter-chip:hover {
+  border-color: rgba(0,240,255,0.4);
+  color: #00F0FF;
+  background: rgba(0,240,255,0.05);
+}
+
+.lib-filter-chip.lib-active {
+  background: rgba(0,240,255,0.12);
+  border-color: rgba(0,240,255,0.5);
+  color: #00F0FF;
+  font-weight: 600;
+}
+
+/* Sort dropdown */
+.lib-sort-wrap {
+  position: relative;
+  margin-left: auto;
+}
+
+#lib_sort {
+  padding: 8px 32px 8px 12px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  color: rgba(255,255,255,0.7);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: all 0.25s ease;
+}
+
+#lib_sort:focus,
+#lib_sort:hover {
+  border-color: rgba(131,56,236,0.5);
+  color: #fff;
+}
+
+.lib-sort-arrow {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255,255,255,0.4);
+  font-size: 10px;
+  pointer-events: none;
+}
+
+/* View toggle */
+.lib-view-toggle {
+  display: flex;
+  gap: 4px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.lib-view-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.lib-view-btn.lib-active {
+  background: rgba(0,240,255,0.12);
+  color: #00F0FF;
+}
+
+/* ── Stats Summary Bar ──────────────────────────────────── */
+.lib-stats-bar {
+  display: flex;
+  gap: 20px;
+  padding: 12px 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.lib-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter', sans-serif;
+}
+
+.lib-stat-item .lib-si-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: #00F0FF;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.lib-stat-item .lib-si-lbl {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.lib-stat-divider {
+  width: 1px;
+  height: 30px;
+  background: rgba(255,255,255,0.08);
+  align-self: center;
+}
+
+/* ── Cards Grid ─────────────────────────────────────────── */
+.lib-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 2px 24px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(131,56,236,0.4) transparent;
+}
+
+.lib-content::-webkit-scrollbar { width: 5px; }
+.lib-content::-webkit-scrollbar-track { background: transparent; }
+.lib-content::-webkit-scrollbar-thumb {
+  background: rgba(131,56,236,0.4);
+  border-radius: 3px;
+}
+
+/* Grid view */
+.lib-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 4px;
+}
+
+/* List view */
+.lib-grid.lib-list-view {
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+/* ── Document Card ──────────────────────────────────────── */
+.lib-card {
+  background: linear-gradient(135deg,
+    rgba(0,240,255,0.04) 0%,
+    rgba(131,56,236,0.06) 50%,
+    rgba(255,0,110,0.03) 100%
+  );
+  border: 1px solid rgba(0,240,255,0.12);
+  border-radius: 20px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+  animation: lib-card-in 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lib-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #00F0FF, #8338EC, #FF006E);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.lib-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: rgba(0,240,255,0.35);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.4),
+    0 0 40px rgba(0,240,255,0.08),
+    0 0 0 1px rgba(0,240,255,0.1);
+}
+
+.lib-card:hover::before { opacity: 1; }
+
+/* List view card adjustments */
+.lib-list-view .lib-card {
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 20px;
+  border-radius: 14px;
+}
+
+.lib-list-view .lib-card:hover {
+  transform: translateX(4px) scale(1);
+}
+
+@keyframes lib-card-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Card color accent by subject */
+.lib-card[data-color="cyan"]   { border-left: 3px solid rgba(0,240,255,0.4); }
+.lib-card[data-color="purple"] { border-left: 3px solid rgba(131,56,236,0.5); }
+.lib-card[data-color="pink"]   { border-left: 3px solid rgba(255,0,110,0.5); }
+.lib-card[data-color="green"]  { border-left: 3px solid rgba(0,255,128,0.4); }
+.lib-card[data-color="gold"]   { border-left: 3px solid rgba(255,200,0,0.4); }
+
+/* Card icon */
+.lib-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.lib-list-view .lib-card-icon {
+  width: 44px;
+  height: 44px;
+}
+
+/* Card body */
+.lib-card-body { flex: 1; min-width: 0; }
+
+.lib-card-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.2px;
+}
+
+.lib-card-meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.lib-card-meta span { display: flex; align-items: center; gap: 3px; }
+
+/* Tools row */
+.lib-card-tools {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.lib-tool-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,0.5);
+  transition: all 0.2s ease;
+}
+
+.lib-tool-chip.lib-has-content {
+  border-color: rgba(0,240,255,0.2);
+  color: #00F0FF;
+  background: rgba(0,240,255,0.06);
+}
+
+/* Score bar */
+.lib-score-wrap { display: flex; flex-direction: column; gap: 5px; }
+
+.lib-score-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+}
+
+.lib-score-val {
+  color: #00F0FF;
+  font-weight: 600;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.lib-score-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.lib-score-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00F0FF, #8338EC);
+  border-radius: 2px;
+  transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+/* Tags */
+.lib-tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.lib-tag {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Card actions */
+.lib-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+
+.lib-card-action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.5);
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.lib-card-action-btn:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border-color: rgba(255,255,255,0.2);
+}
+
+.lib-card-action-btn.lib-fav-btn.lib-favorited {
+  color: #FF006E;
+  border-color: rgba(255,0,110,0.3);
+  background: rgba(255,0,110,0.1);
+}
+
+.lib-card-action-btn.lib-del-btn:hover {
+  color: #FF006E;
+  border-color: rgba(255,0,110,0.3);
+  background: rgba(255,0,110,0.1);
+}
+
+.lib-open-btn {
+  flex: 1;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,240,255,0.25);
+  background: rgba(0,240,255,0.08);
+  color: #00F0FF;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.25s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.lib-open-btn:hover {
+  background: rgba(0,240,255,0.15);
+  border-color: rgba(0,240,255,0.5);
+  box-shadow: 0 0 16px rgba(0,240,255,0.15);
+}
+
+/* List view action adjustments */
+.lib-list-view .lib-card-actions {
+  padding-top: 0;
+  border-top: none;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 80px;
+  align-items: flex-end;
+}
+
+/* ── Empty State ────────────────────────────────────────── */
+#lib_empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  gap: 16px;
+  text-align: center;
+  padding: 40px;
+}
+
+.lib-empty-icon {
+  font-size: 64px;
+  animation: lib-float 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(131,56,236,0.4));
+}
+
+@keyframes lib-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+.lib-empty-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+}
+
+.lib-empty-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: rgba(255,255,255,0.35);
+  max-width: 300px;
+  line-height: 1.6;
+}
+
+.lib-empty-cta {
+  padding: 10px 24px;
+  background: linear-gradient(135deg, rgba(131,56,236,0.3), rgba(0,240,255,0.2));
+  border: 1px solid rgba(0,240,255,0.3);
+  border-radius: 12px;
+  color: #00F0FF;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.lib-empty-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,240,255,0.2);
+}
+
+/* ── Detail Modal ───────────────────────────────────────── */
+#lib_detail {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 20, 0.95);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  z-index: 99997;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.35s ease;
+  overflow: hidden;
+}
+
+#lib_detail.lib-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lib-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px 20px;
+  border-bottom: 1px solid rgba(0,240,255,0.1);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.lib-detail-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  flex: 1;
+}
+
+.lib-detail-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(131,56,236,0.3), rgba(0,240,255,0.2));
+  border: 1px solid rgba(0,240,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.lib-detail-title-group { min-width: 0; flex: 1; }
+
+.lib-detail-title-group h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lib-detail-title-group p {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  margin: 0;
+}
+
+.lib-detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.lib-detail-action-btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.7);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.lib-detail-action-btn:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+.lib-detail-action-btn.lib-study-btn {
+  background: linear-gradient(135deg, rgba(0,240,255,0.15), rgba(131,56,236,0.15));
+  border-color: rgba(0,240,255,0.3);
+  color: #00F0FF;
+}
+
+.lib-detail-action-btn.lib-study-btn:hover {
+  box-shadow: 0 0 20px rgba(0,240,255,0.2);
+  transform: translateY(-1px);
+}
+
+/* Detail tabs */
+.lib-detail-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 16px 32px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.lib-detail-tabs::-webkit-scrollbar { display: none; }
+
+.lib-tab {
+  padding: 10px 18px;
+  border-radius: 10px 10px 0 0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: none;
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid transparent;
+  border-bottom: none;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.lib-tab:hover {
+  color: rgba(255,255,255,0.75);
+  background: rgba(255,255,255,0.03);
+}
+
+.lib-tab.lib-tab-active {
+  color: #00F0FF;
+  background: rgba(0,240,255,0.06);
+  border-color: rgba(0,240,255,0.15);
+  position: relative;
+}
+
+.lib-tab.lib-tab-active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(5,5,20,1);
+}
+
+/* Detail content */
+.lib-detail-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 32px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(131,56,236,0.3) transparent;
+}
+
+.lib-detail-body::-webkit-scrollbar { width: 4px; }
+.lib-detail-body::-webkit-scrollbar-thumb {
+  background: rgba(131,56,236,0.3);
+  border-radius: 2px;
+}
+
+.lib-tab-panel { display: none; }
+.lib-tab-panel.lib-panel-active { display: block; }
+
+/* Overview panel */
+.lib-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.lib-overview-card {
+  padding: 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  text-align: center;
+}
+
+.lib-overview-card .lib-oc-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #00F0FF;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.lib-overview-card .lib-oc-lbl {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* Notes panel */
+#lib_notes_area {
+  width: 100%;
+  min-height: 250px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 16px;
+  color: rgba(255,255,255,0.85);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+#lib_notes_area:focus {
+  border-color: rgba(131,56,236,0.4);
+  box-shadow: 0 0 20px rgba(131,56,236,0.08);
+}
+
+#lib_notes_area::placeholder { color: rgba(255,255,255,0.2); }
+
+.lib-save-notes-btn {
+  margin-top: 12px;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, rgba(131,56,236,0.3), rgba(0,240,255,0.2));
+  border: 1px solid rgba(131,56,236,0.4);
+  border-radius: 10px;
+  color: #8338EC;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.lib-save-notes-btn:hover {
+  background: linear-gradient(135deg, rgba(131,56,236,0.4), rgba(0,240,255,0.3));
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(131,56,236,0.2);
+}
+
+/* Tags panel */
+.lib-tags-panel-wrap { padding: 8px 0; }
+
+.lib-tags-input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+#lib_tag_input {
+  flex: 1;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+#lib_tag_input:focus {
+  border-color: rgba(0,240,255,0.4);
+  box-shadow: 0 0 14px rgba(0,240,255,0.08);
+}
+
+#lib_tag_input::placeholder { color: rgba(255,255,255,0.25); }
+
+.lib-add-tag-btn {
+  padding: 10px 20px;
+  background: rgba(0,240,255,0.1);
+  border: 1px solid rgba(0,240,255,0.3);
+  border-radius: 10px;
+  color: #00F0FF;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.lib-add-tag-btn:hover { background: rgba(0,240,255,0.18); }
+
+.lib-tags-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lib-tag-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: default;
+}
+
+.lib-tag-item .lib-tag-del {
+  cursor: pointer;
+  opacity: 0.6;
+  font-size: 12px;
+  line-height: 1;
+  transition: opacity 0.2s;
+}
+
+.lib-tag-item .lib-tag-del:hover { opacity: 1; }
+
+/* Content preview sections */
+.lib-content-section {
+  margin-bottom: 24px;
+}
+
+.lib-content-section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lib-content-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+}
+
+/* Quiz score history */
+.lib-quiz-history {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.lib-quiz-score-pill {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(0,240,255,0.08);
+  border: 1px solid rgba(0,240,255,0.2);
+  color: #00F0FF;
+}
+
+.lib-quiz-score-pill.lib-perfect {
+  background: rgba(0,255,128,0.08);
+  border-color: rgba(0,255,128,0.3);
+  color: #00FF80;
+}
+
+/* Text preview */
+.lib-text-preview {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.7;
+  max-height: 200px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ── Delete Confirm Modal ───────────────────────────────── */
+#lib_confirm {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 20, 0.8);
+  backdrop-filter: blur(16px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s ease;
+}
+
+#lib_confirm.lib-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lib-confirm-box {
+  background: rgba(15, 15, 35, 0.95);
+  border: 1px solid rgba(255,0,110,0.3);
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 380px;
+  width: 90%;
+  text-align: center;
+  animation: lib-pop-in 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+  box-shadow: 0 0 60px rgba(255,0,110,0.1);
+}
+
+@keyframes lib-pop-in {
+  from { transform: scale(0.85); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.lib-confirm-icon { font-size: 42px; margin-bottom: 12px; }
+
+.lib-confirm-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.lib-confirm-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.lib-confirm-btns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.lib-confirm-cancel {
+  padding: 10px 24px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  color: rgba(255,255,255,0.7);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.lib-confirm-cancel:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+.lib-confirm-delete {
+  padding: 10px 24px;
+  background: rgba(255,0,110,0.15);
+  border: 1px solid rgba(255,0,110,0.4);
+  border-radius: 10px;
+  color: #FF006E;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.lib-confirm-delete:hover {
+  background: rgba(255,0,110,0.25);
+  box-shadow: 0 0 20px rgba(255,0,110,0.2);
+}
+
+/* ── Auto-save Toast ────────────────────────────────────── */
+.lib-autosave-toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  padding: 10px 20px;
+  background: rgba(15,15,35,0.95);
+  border: 1px solid rgba(0,240,255,0.3);
+  border-radius: 50px;
+  color: #00F0FF;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 99999;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events: none;
+  box-shadow: 0 0 24px rgba(0,240,255,0.15);
+  white-space: nowrap;
+}
+
+.lib-autosave-toast.lib-show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Heatmap ────────────────────────────────────────────── */
+.lib-heatmap {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+
+.lib-heatmap-day {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.05);
+  transition: transform 0.2s ease;
+  cursor: default;
+  position: relative;
+}
+
+.lib-heatmap-day:hover { transform: scale(1.3); }
+
+.lib-heatmap-day[data-level="1"] { background: rgba(0,240,255,0.2); }
+.lib-heatmap-day[data-level="2"] { background: rgba(0,240,255,0.4); }
+.lib-heatmap-day[data-level="3"] { background: rgba(131,56,236,0.5); }
+.lib-heatmap-day[data-level="4"] { background: rgba(131,56,236,0.8); }
+
+/* ── Export Dropdown ────────────────────────────────────── */
+.lib-export-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.lib-export-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: rgba(15,15,35,0.98);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 8px;
+  min-width: 180px;
+  z-index: 10;
+  animation: lib-drop-in 0.25s ease both;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+@keyframes lib-drop-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.lib-export-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  transition: all 0.2s ease;
+}
+
+.lib-export-option:hover {
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+}
+
+/* ── Light Theme Overrides ──────────────────────────────── */
+[data-theme="light"] #lib_nav_btn {
+  background: rgba(240,240,255,0.9);
+  border-color: rgba(131,56,236,0.3);
+  color: #1a1a2e;
+}
+
+[data-theme="light"] #lib_overlay {
+  background: rgba(240,240,255,0.95);
+}
+
+[data-theme="light"] .lib-card {
+  background: rgba(255,255,255,0.7);
+  border-color: rgba(131,56,236,0.15);
+}
+
+[data-theme="light"] .lib-card:hover {
+  box-shadow: 0 20px 40px rgba(131,56,236,0.15);
+}
+
+[data-theme="light"] .lib-card-name { color: #1a1a2e; }
+[data-theme="light"] .lib-card-meta { color: rgba(26,26,46,0.5); }
+
+[data-theme="light"] #lib_search {
+  background: rgba(255,255,255,0.8);
+  color: #1a1a2e;
+  border-color: rgba(131,56,236,0.2);
+}
+
+[data-theme="light"] #lib_search::placeholder { color: rgba(26,26,46,0.4); }
+
+[data-theme="light"] .lib-filter-chip {
+  background: rgba(255,255,255,0.6);
+  border-color: rgba(131,56,236,0.2);
+  color: rgba(26,26,46,0.6);
+}
+
+[data-theme="light"] .lib-filter-chip.lib-active {
+  background: rgba(131,56,236,0.1);
+  color: #8338EC;
+}
+
+[data-theme="light"] #lib_detail {
+  background: rgba(240,240,255,0.97);
+}
+
+[data-theme="light"] .lib-detail-title-group h3 { color: #1a1a2e; }
+[data-theme="light"] .lib-title-group h2 { color: #1a1a2e; }
+[data-theme="light"] .lib-tab { color: rgba(26,26,46,0.5); }
+[data-theme="light"] .lib-tab.lib-tab-active { color: #8338EC; }
+
+[data-theme="light"] .lib-confirm-box {
+  background: rgba(240,240,255,0.98);
+}
+[data-theme="light"] .lib-confirm-title { color: #1a1a2e; }
+
+[data-theme="light"] #lib_notes_area {
+  background: rgba(255,255,255,0.8);
+  color: #1a1a2e;
+  border-color: rgba(131,56,236,0.2);
+}
+
+[data-theme="light"] .lib-overview-card {
+  background: rgba(255,255,255,0.7);
+}
+
+[data-theme="light"] .lib-text-preview {
+  background: rgba(255,255,255,0.6);
+  color: rgba(26,26,46,0.6);
+}
+
+[data-theme="light"] .lib-empty-title { color: rgba(26,26,46,0.7); }
+[data-theme="light"] .lib-empty-sub { color: rgba(26,26,46,0.4); }
+
+[data-theme="light"] #lib_sort {
+  background: rgba(255,255,255,0.8);
+  color: rgba(26,26,46,0.7);
+}
+
+[data-theme="light"] .lib-autosave-toast {
+  background: rgba(240,240,255,0.98);
+}
+
+[data-theme="light"] .lib-export-dropdown {
+  background: rgba(240,240,255,0.98);
+  border-color: rgba(131,56,236,0.15);
+}
+
+[data-theme="light"] .lib-export-option { color: rgba(26,26,46,0.7); }
+[data-theme="light"] .lib-export-option:hover { color: #1a1a2e; background: rgba(131,56,236,0.06); }
+
+[data-theme="light"] .lib-stat-item .lib-si-lbl { color: rgba(26,26,46,0.45); }
+[data-theme="light"] .lib-stats-bar { background: rgba(255,255,255,0.5); }
+
+/* ── Mobile ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  #lib_nav_btn .lib-nav-label,
+  #lib_nav_btn .lib-nav-count {
+    display: none;
+  }
+
+  #lib_nav_btn {
+    padding: 8px;
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  .lib-container { padding: 0 16px; }
+
+  .lib-header {
+    padding: 16px 0 12px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lib-controls { flex-direction: column; align-items: stretch; }
+
+  .lib-search-wrap { max-width: 100%; }
+
+  .lib-sort-wrap { align-self: flex-start; }
+
+  .lib-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .lib-stats-bar { gap: 12px; }
+
+  .lib-detail-header {
+    padding: 16px 20px 12px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lib-detail-body { padding: 16px 20px; }
+  .lib-detail-tabs { padding: 12px 20px 0; }
+
+  .lib-overview-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .lib-list-view .lib-card { flex-direction: column; }
+  .lib-list-view .lib-card-actions { flex-direction: row; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 10px; min-width: unset; }
+}
+
+@media (max-width: 400px) {
+  .lib-overview-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ============================================================
+     COGNIXAR LIBRARY SYSTEM - IIFE
+     All variables prefixed lib_ or LIB_
+     ============================================================ */
+
+  /* ── Constants ──────────────────────────────────────────── */
+  const LIB_STORAGE_KEY = 'cognixar_library_v1';
+  const LIB_SETTINGS_KEY = 'cognixar_library_settings';
+  const LIB_MAX_DOCS = 100;
+
+  /* Tag color palette */
+  const LIB_TAG_COLORS = [
+    { bg: 'rgba(0,240,255,0.12)',   border: 'rgba(0,240,255,0.3)',   text: '#00F0FF' },
+    { bg: 'rgba(131,56,236,0.12)',  border: 'rgba(131,56,236,0.35)', text: '#8338EC' },
+    { bg: 'rgba(255,0,110,0.12)',   border: 'rgba(255,0,110,0.3)',   text: '#FF006E' },
+    { bg: 'rgba(0,255,128,0.10)',   border: 'rgba(0,255,128,0.3)',   text: '#00FF80' },
+    { bg: 'rgba(255,200,0,0.10)',   border: 'rgba(255,200,0,0.3)',   text: '#FFC800' },
+    { bg: 'rgba(255,120,0,0.10)',   border: 'rgba(255,120,0,0.3)',   text: '#FF7800' },
+  ];
+
+  /* Card accent colors per doc type */
+  const LIB_DOC_COLORS = ['cyan','purple','pink','green','gold'];
+
+  /* File type → emoji */
+  const LIB_FILE_ICONS = {
+    pdf:  '📕', docx: '📘', doc: '📘',
+    txt:  '📄', pptx:'📊', ppt: '📊',
+    xlsx: '📗', csv: '📗', md:  '📝',
+    default: '📁'
+  };
+
+  /* ── State ──────────────────────────────────────────────── */
+  let lib_state = {
+    docs: [],       // all saved documents
+    view: 'grid',   // 'grid' | 'list'
+    filter: 'all',  // 'all' | 'favorites' | 'today' | 'week'
+    sort: 'recent', // 'recent' | 'name' | 'studied'
+    search: '',
+    detailId: null,
+    detailTab: 'overview',
+    confirmDeleteId: null,
+    exportDropdownOpen: false,
+    autoSave: true,
+  };
+
+  let lib_searchTimeout = null;
+  let lib_initialized  = false;
+
+  /* ── Storage Helpers ────────────────────────────────────── */
+  function lib_load() {
+    try {
+      const raw = localStorage.getItem(LIB_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch(e) {
+      console.warn('[COGNIXAR Library] Load error:', e);
+      return [];
+    }
+  }
+
+  function lib_save(docs) {
+    try {
+      localStorage.setItem(LIB_STORAGE_KEY, JSON.stringify(docs));
+    } catch(e) {
+      console.warn('[COGNIXAR Library] Save error:', e);
+    }
+  }
+
+  function lib_loadSettings() {
+    try {
+      const raw = localStorage.getItem(LIB_SETTINGS_KEY);
+      return raw ? JSON.parse(raw) : { autoSave: true };
+    } catch(e) { return { autoSave: true }; }
+  }
+
+  function lib_saveSettings() {
+    try {
+      localStorage.setItem(LIB_SETTINGS_KEY, JSON.stringify({ autoSave: lib_state.autoSave }));
+    } catch(e) { console.warn('[COGNIXAR Library] Settings save error:', e); }
+  }
+
+  /* ── UUID Generator ─────────────────────────────────────── */
+  function lib_uuid() {
+    try {
+      return crypto.randomUUID();
+    } catch(e) {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+      });
+    }
+  }
+
+  /* ── Date Helpers ───────────────────────────────────────── */
+  function lib_today() {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  function lib_timeAgo(ts) {
+    if (!ts) return 'Unknown';
+    const diff = Date.now() - ts;
+    const mins  = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days  = Math.floor(diff / 86400000);
+    if (mins  < 1)  return 'Just now';
+    if (mins  < 60) return `${mins}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    if (days  < 7)  return `${days}d ago`;
+    return new Date(ts).toLocaleDateString();
+  }
+
+  function lib_formatDate(ts) {
+    if (!ts) return '—';
+    return new Date(ts).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+  }
+
+  /* ── File Icon Helper ───────────────────────────────────── */
+  function lib_getIcon(fileName) {
+    if (!fileName) return LIB_FILE_ICONS.default;
+    const ext = (fileName.split('.').pop() || '').toLowerCase();
+    return LIB_FILE_ICONS[ext] || LIB_FILE_ICONS.default;
+  }
+
+  /* ── Assign Card Color ──────────────────────────────────── */
+  function lib_getColor(index) {
+    return LIB_DOC_COLORS[index % LIB_DOC_COLORS.length];
+  }
+
+  /* ── Build HTML Structure ───────────────────────────────── */
+  function lib_buildDOM() {
+    /* ── Nav Button ── */
+    const navBtn = document.createElement('div');
+    navBtn.id = 'lib_nav_btn';
+    navBtn.setAttribute('role', 'button');
+    navBtn.setAttribute('tabindex', '0');
+    navBtn.setAttribute('aria-label', 'Open Saved Library');
+    navBtn.innerHTML = `
+      <div class="lib-nav-icon" id="lib_nav_icon_wrap">
+        📚
+        <span class="lib-nav-badge" id="lib_nav_badge">0</span>
+      </div>
+      <span class="lib-nav-label">Library</span>
+      <span class="lib-nav-count" id="lib_nav_count">0</span>
+    `;
+    document.body.appendChild(navBtn);
+
+    /* ── Main Overlay ── */
+    const overlay = document.createElement('div');
+    overlay.id = 'lib_overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'Saved Library');
+    overlay.innerHTML = `
+      <div class="lib-mesh-bg"></div>
+      <div class="lib-container">
+
+        <!-- Header -->
+        <div class="lib-header">
+          <div class="lib-header-left">
+            <div class="lib-logo">📚</div>
+            <div class="lib-title-group">
+              <h2>SAVED LIBRARY</h2>
+              <p id="lib_subtitle">Your personal learning archive</p>
+            </div>
+          </div>
+          <div class="lib-header-right">
+            <button class="lib-detail-action-btn" id="lib_autosave_toggle" title="Toggle auto-save">
+              <span id="lib_autosave_icon">🔄</span>
+              <span id="lib_autosave_label">Auto-save ON</span>
+            </button>
+            <button class="lib-close-btn" id="lib_close_btn" aria-label="Close library">✕</button>
+          </div>
+        </div>
+
+        <!-- Stats bar -->
+        <div class="lib-stats-bar" id="lib_stats_bar">
+          <div class="lib-stat-item">
+            <span class="lib-si-val" id="lib_stat_docs">0</span>
+            <span class="lib-si-lbl">Documents</span>
+          </div>
+          <div class="lib-stat-divider"></div>
+          <div class="lib-stat-item">
+            <span class="lib-si-val" id="lib_stat_quizzes">0</span>
+            <span class="lib-si-lbl">Quizzes</span>
+          </div>
+          <div class="lib-stat-divider"></div>
+          <div class="lib-stat-item">
+            <span class="lib-si-val" id="lib_stat_flashcards">0</span>
+            <span class="lib-si-lbl">Flashcards</span>
+          </div>
+          <div class="lib-stat-divider"></div>
+          <div class="lib-stat-item">
+            <span class="lib-si-val" id="lib_stat_favorites">0</span>
+            <span class="lib-si-lbl">Favorites</span>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="lib-controls">
+          <div class="lib-search-wrap">
+            <input
+              type="text"
+              id="lib_search"
+              placeholder="Search documents, tags..."
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </div>
+
+          <div class="lib-filters" id="lib_filters">
+            <button class="lib-filter-chip lib-active" data-filter="all">All</button>
+            <button class="lib-filter-chip" data-filter="favorites">⭐ Favorites</button>
+            <button class="lib-filter-chip" data-filter="today">Today</button>
+            <button class="lib-filter-chip" data-filter="week">This Week</button>
+          </div>
+
+          <div class="lib-sort-wrap">
+            <select id="lib_sort" aria-label="Sort documents">
+              <option value="recent">Recent</option>
+              <option value="name">Name A–Z</option>
+              <option value="studied">Most Studied</option>
+            </select>
+            <span class="lib-sort-arrow">▼</span>
+          </div>
+
+          <div class="lib-view-toggle">
+            <button class="lib-view-btn lib-active" id="lib_view_grid" title="Grid view">⊞</button>
+            <button class="lib-view-btn" id="lib_view_list" title="List view">☰</button>
+          </div>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="lib-content">
+          <div class="lib-grid" id="lib_grid"></div>
+          <div id="lib_empty" style="display:none;">
+            <div class="lib-empty-icon">📭</div>
+            <div class="lib-empty-title">Library is empty</div>
+            <div class="lib-empty-sub">Upload and generate content from documents to save them here automatically.</div>
+            <button class="lib-empty-cta" id="lib_empty_cta">← Go Generate Content</button>
+          </div>
+        </div>
+
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    /* ── Detail Modal ── */
+    const detail = document.createElement('div');
+    detail.id = 'lib_detail';
+    detail.setAttribute('role', 'dialog');
+    detail.setAttribute('aria-modal', 'true');
+    detail.setAttribute('aria-label', 'Document Detail');
+    detail.innerHTML = `
+      <div class="lib-detail-header">
+        <div class="lib-detail-title-row">
+          <div class="lib-detail-icon" id="lib_detail_icon">📕</div>
+          <div class="lib-detail-title-group">
+            <h3 id="lib_detail_name">Document</h3>
+            <p id="lib_detail_meta">Uploaded —</p>
+          </div>
+        </div>
+        <div class="lib-detail-actions">
+          <button class="lib-detail-action-btn lib-study-btn" id="lib_detail_study">
+            🚀 Study Now
+          </button>
+          <div class="lib-export-wrap">
+            <button class="lib-detail-action-btn" id="lib_export_btn">📤 Export ▾</button>
+            <div class="lib-export-dropdown" id="lib_export_dropdown" style="display:none;">
+              <div class="lib-export-option" id="lib_export_json">📦 Export as JSON</div>
+              <div class="lib-export-option" id="lib_export_txt">📄 Export as Text</div>
+              <div class="lib-export-option" id="lib_export_copy">📋 Copy Summary</div>
+            </div>
+          </div>
+          <button class="lib-detail-action-btn" id="lib_detail_fav">⭐ Favorite</button>
+          <button class="lib-close-btn" id="lib_detail_close" aria-label="Close detail">✕</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="lib-detail-tabs" id="lib_detail_tabs">
+        <button class="lib-tab lib-tab-active" data-tab="overview">📊 Overview</button>
+        <button class="lib-tab" data-tab="content">📝 Content</button>
+        <button class="lib-tab" data-tab="quiz">🎯 Quiz History</button>
+        <button class="lib-tab" data-tab="notes">✏️ Notes</button>
+        <button class="lib-tab" data-tab="tags">🏷️ Tags</button>
+      </div>
+
+      <!-- Tab Panels -->
+      <div class="lib-detail-body" id="lib_detail_body">
+
+        <!-- Overview -->
+        <div class="lib-tab-panel lib-panel-active" data-panel="overview">
+          <div class="lib-overview-grid" id="lib_overview_grid">
+            <div class="lib-overview-card">
+              <span class="lib-oc-val" id="lib_ov_times">0</span>
+              <span class="lib-oc-lbl">Times Studied</span>
+            </div>
+            <div class="lib-overview-card">
+              <span class="lib-oc-val" id="lib_ov_cards">0</span>
+              <span class="lib-oc-lbl">Flashcards</span>
+            </div>
+            <div class="lib-overview-card">
+              <span class="lib-oc-val" id="lib_ov_quiz">0</span>
+              <span class="lib-oc-lbl">Quiz Attempts</span>
+            </div>
+            <div class="lib-overview-card">
+              <span class="lib-oc-val" id="lib_ov_avg">—</span>
+              <span class="lib-oc-lbl">Avg Score</span>
+            </div>
+          </div>
+          <div class="lib-content-section">
+            <div class="lib-content-section-title">📅 Activity</div>
+            <div class="lib-heatmap" id="lib_detail_heatmap"></div>
+          </div>
+          <div class="lib-content-section" id="lib_ov_tools_section">
+            <div class="lib-content-section-title">🛠️ Available Content</div>
+            <div class="lib-card-tools" id="lib_ov_tools"></div>
+          </div>
+        </div>
+
+        <!-- Content Preview -->
+        <div class="lib-tab-panel" data-panel="content">
+          <div class="lib-content-section">
+            <div class="lib-content-section-title">📄 Document Text Preview</div>
+            <div class="lib-text-preview" id="lib_content_text">No text available.</div>
+          </div>
+          <div class="lib-content-section" id="lib_summary_section" style="display:none;">
+            <div class="lib-content-section-title">🧠 Summary</div>
+            <div class="lib-text-preview" id="lib_content_summary"></div>
+          </div>
+          <div class="lib-content-section" id="lib_tricks_section" style="display:none;">
+            <div class="lib-content-section-title">💡 Memory Tricks</div>
+            <div id="lib_content_tricks"></div>
+          </div>
+        </div>
+
+        <!-- Quiz History -->
+        <div class="lib-tab-panel" data-panel="quiz">
+          <div class="lib-content-section">
+            <div class="lib-content-section-title">📊 Score History</div>
+            <div class="lib-quiz-history" id="lib_quiz_history_wrap"></div>
+          </div>
+          <div class="lib-content-section">
+            <div class="lib-content-section-title">📈 Best Score</div>
+            <div class="lib-score-wrap" style="max-width:400px;">
+              <div class="lib-score-row">
+                <span>Best performance</span>
+                <span class="lib-score-val" id="lib_quiz_best">—</span>
+              </div>
+              <div class="lib-score-bar">
+                <div class="lib-score-fill" id="lib_quiz_best_bar" style="width:0%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="lib-content-section" id="lib_quiz_preview_section" style="display:none;">
+            <div class="lib-content-section-title">❓ Quiz Questions</div>
+            <div id="lib_quiz_preview"></div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="lib-tab-panel" data-panel="notes">
+          <p style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:12px;">
+            Personal notes for this document. Auto-saved when you click Save.
+          </p>
+          <textarea
+            id="lib_notes_area"
+            placeholder="Write your notes here... thoughts, summaries, key points..."
+          ></textarea>
+          <button class="lib-save-notes-btn" id="lib_save_notes_btn">💾 Save Notes</button>
+        </div>
+
+        <!-- Tags -->
+        <div class="lib-tab-panel" data-panel="tags">
+          <div class="lib-tags-panel-wrap">
+            <p style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:16px;">
+              Add custom tags to organize your documents.
+            </p>
+            <div class="lib-tags-input-row">
+              <input
+                type="text"
+                id="lib_tag_input"
+                placeholder="#biology  #exam  #important"
+                maxlength="30"
+              />
+              <button class="lib-add-tag-btn" id="lib_add_tag_btn">+ Add Tag</button>
+            </div>
+            <div class="lib-tags-display" id="lib_tags_display"></div>
+          </div>
+        </div>
+
+      </div>
+    `;
+    document.body.appendChild(detail);
+
+    /* ── Delete Confirm ── */
+    const confirm = document.createElement('div');
+    confirm.id = 'lib_confirm';
+    confirm.innerHTML = `
+      <div class="lib-confirm-box">
+        <div class="lib-confirm-icon">🗑️</div>
+        <div class="lib-confirm-title">Delete Document?</div>
+        <div class="lib-confirm-sub" id="lib_confirm_sub">
+          This will permanently remove the document and all its content from your library.
+        </div>
+        <div class="lib-confirm-btns">
+          <button class="lib-confirm-cancel" id="lib_confirm_cancel">Cancel</button>
+          <button class="lib-confirm-delete" id="lib_confirm_delete">Delete</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(confirm);
+
+    /* ── Auto-save toast ── */
+    const toast = document.createElement('div');
+    toast.className = 'lib-autosave-toast';
+    toast.id = 'lib_autosave_toast';
+    toast.innerHTML = '✅ Saved to Library';
+    document.body.appendChild(toast);
+  }
+
+  /* ── Show Auto-save Toast ───────────────────────────────── */
+  function lib_showSaveToast(msg) {
+    const el = document.getElementById('lib_autosave_toast');
+    if (!el) return;
+    el.textContent = msg || '✅ Saved to Library';
+    el.classList.add('lib-show');
+    setTimeout(function() {
+      if (el) el.classList.remove('lib-show');
+    }, 3000);
+  }
+
+  /* ── Open / Close Overlay ───────────────────────────────── */
+  function lib_open() {
+    try {
+      const overlay = document.getElementById('lib_overlay');
+      if (!overlay) return;
+      lib_state.docs = lib_load();
+      lib_updateStats();
+      lib_renderGrid();
+      overlay.classList.add('lib-open');
+      document.body.style.overflow = 'hidden';
+      // focus search
+      setTimeout(function() {
+        const s = document.getElementById('lib_search');
+        if (s) s.focus();
+      }, 350);
+    } catch(e) { console.warn('[COGNIXAR Library] Open error:', e); }
+  }
+
+  function lib_close() {
+    try {
+      const overlay = document.getElementById('lib_overlay');
+      if (overlay) overlay.classList.remove('lib-open');
+      document.body.style.overflow = '';
+    } catch(e) { console.warn('[COGNIXAR Library] Close error:', e); }
+  }
+
+  /* ── Open / Close Detail ────────────────────────────────── */
+  function lib_openDetail(id) {
+    try {
+      const doc = lib_state.docs.find(function(d) { return d.id === id; });
+      if (!doc) return;
+      lib_state.detailId = id;
+      lib_state.detailTab = 'overview';
+
+      /* populate header */
+      const iconEl   = document.getElementById('lib_detail_icon');
+      const nameEl   = document.getElementById('lib_detail_name');
+      const metaEl   = document.getElementById('lib_detail_meta');
+      const favBtn   = document.getElementById('lib_detail_fav');
+      const studyBtn = document.getElementById('lib_detail_study');
+
+      if (iconEl)   iconEl.textContent = lib_getIcon(doc.fileName || doc.name);
+      if (nameEl)   nameEl.textContent = doc.name || 'Untitled';
+      if (metaEl)   metaEl.textContent = 'Uploaded ' + lib_formatDate(doc.uploadedAt) + ' · Last studied ' + (doc.lastStudiedAt ? lib_timeAgo(doc.lastStudiedAt) : 'never');
+      if (favBtn)   favBtn.textContent = doc.favorite ? '💛 Favorited' : '⭐ Favorite';
+      if (studyBtn) studyBtn.setAttribute('data-id', id);
+
+      /* populate tabs */
+      lib_switchDetailTab('overview');
+      lib_populateDetailOverview(doc);
+
+      /* switch active tab button */
+      document.querySelectorAll('#lib_detail_tabs .lib-tab').forEach(function(btn) {
+        btn.classList.toggle('lib-tab-active', btn.getAttribute('data-tab') === 'overview');
+      });
+
+      const detailEl = document.getElementById('lib_detail');
+      if (detailEl) detailEl.classList.add('lib-open');
+    } catch(e) { console.warn('[COGNIXAR Library] Open detail error:', e); }
+  }
+
+  function lib_closeDetail() {
+    try {
+      const detailEl = document.getElementById('lib_detail');
+      if (detailEl) detailEl.classList.remove('lib-open');
+      lib_state.detailId = null;
+      /* close any export dropdown */
+      lib_closeExportDropdown();
+    } catch(e) {}
+  }
+
+  /* ── Switch Detail Tab ──────────────────────────────────── */
+  function lib_switchDetailTab(tabName) {
+    try {
+      lib_state.detailTab = tabName;
+
+      /* panels */
+      document.querySelectorAll('#lib_detail_body .lib-tab-panel').forEach(function(p) {
+        p.classList.toggle('lib-panel-active', p.getAttribute('data-panel') === tabName);
+      });
+
+      /* tab buttons */
+      document.querySelectorAll('#lib_detail_tabs .lib-tab').forEach(function(btn) {
+        btn.classList.toggle('lib-tab-active', btn.getAttribute('data-tab') === tabName);
+      });
+
+      /* populate specific panels */
+      const id = lib_state.detailId;
+      if (!id) return;
+      const doc = lib_state.docs.find(function(d) { return d.id === id; });
+      if (!doc) return;
+
+      if (tabName === 'content')  lib_populateDetailContent(doc);
+      if (tabName === 'quiz')     lib_populateDetailQuiz(doc);
+      if (tabName === 'notes')    lib_populateDetailNotes(doc);
+      if (tabName === 'tags')     lib_populateDetailTags(doc);
+    } catch(e) { console.warn('[COGNIXAR Library] Tab switch error:', e); }
+  }
+
+  /* ── Populate Overview Tab ──────────────────────────────── */
+  function lib_populateDetailOverview(doc) {
+    try {
+      const stats = doc.studyStats || {};
+      const scores = stats.quizScores || [];
+
+      /* stat cards */
+      lib_safeSet('lib_ov_times', stats.timesStudied || 0);
+      lib_safeSet('lib_ov_cards', (doc.flashcards || []).length);
+      lib_safeSet('lib_ov_quiz',  scores.length);
+
+      if (scores.length > 0) {
+        const avg = Math.round(scores.reduce(function(a,b){ return a+b; }, 0) / scores.length);
+        lib_safeSet('lib_ov_avg', avg + '%');
+      } else {
+        lib_safeSet('lib_ov_avg', '—');
+      }
+
+      /* heatmap */
+      const heatmapEl = document.getElementById('lib_detail_heatmap');
+      if (heatmapEl) {
+        heatmapEl.innerHTML = '';
+        const activity = doc.activityLog || {};
+        for (let i = 29; i >= 0; i--) {
+          const d = new Date(Date.now() - i * 86400000);
+          const key = d.toISOString().split('T')[0];
+          const count = activity[key] || 0;
+          const cell = document.createElement('div');
+          cell.className = 'lib-heatmap-day';
+          if (count > 0) cell.setAttribute('data-level', Math.min(count, 4));
+          cell.setAttribute('title', key + ': ' + count + ' activities');
+          heatmapEl.appendChild(cell);
+        }
+      }
+
+      /* tools */
+      const toolsEl = document.getElementById('lib_ov_tools');
+      if (toolsEl) {
+        const tools = [
+          { key: 'quiz',       icon: '🎯', label: 'Quiz' },
+          { key: 'flashcards', icon: '🃏', label: 'Flashcards' },
+          { key: 'tricks',     icon: '💡', label: 'Tricks' },
+          { key: 'summary',    icon: '📝', label: 'Summary' },
+        ];
+        toolsEl.innerHTML = tools.map(function(t) {
+          const has = doc[t.key] && (Array.isArray(doc[t.key]) ? doc[t.key].length > 0 : Object.keys(doc[t.key]).length > 0);
+          return '<span class="lib-tool-chip ' + (has ? 'lib-has-content' : '') + '">' + t.icon + ' ' + t.label + '</span>';
+        }).join('');
+      }
+    } catch(e) { console.warn('[COGNIXAR Library] Overview populate error:', e); }
+  }
+
+  /* ── Populate Content Tab ───────────────────────────────── */
+  function lib_populateDetailContent(doc) {
+  try {
+    /* ── Text Preview ── */
+    const textEl = document.getElementById('lib_content_text');
+    if (textEl) {
+      textEl.textContent = doc.extractedText
+        ? (doc.extractedText.length > 2000
+            ? doc.extractedText.substring(0, 2000) + '…'
+            : doc.extractedText)
+        : 'No text extracted.';
+    }
+
+    /* ── Summary ── */
+    const summarySection = document.getElementById('lib_summary_section');
+    const summaryEl      = document.getElementById('lib_content_summary');
+    const rawSummary     = doc.summary;
+
+    if (rawSummary && summaryEl) {
+      let summaryText = '';
+      try {
+        if (typeof rawSummary === 'string' && rawSummary.trim().startsWith('{')) {
+          const parsed = JSON.parse(rawSummary);
+          summaryText  = lib_extractSummaryText(parsed);
+        } else if (typeof rawSummary === 'object') {
+          summaryText  = lib_extractSummaryText(rawSummary);
+        } else {
+          summaryText  = String(rawSummary);
+        }
+      } catch(e2) {
+        summaryText = String(rawSummary);
+      }
+
+      /* Clear old content */
+      summaryEl.innerHTML = '';
+
+      /* Render paragraphs */
+      if (summaryText) {
+        const sentences = summaryText.split(/(?<=[.!?])\s+/);
+        const chunkSize = 2;
+        for (let i = 0; i < sentences.length; i += chunkSize) {
+          const chunk = sentences.slice(i, i + chunkSize).join(' ');
+          if (chunk.trim()) {
+            const p = document.createElement('p');
+            p.style.cssText = 'margin:0 0 10px;font-family:Inter,sans-serif;font-size:14px;line-height:1.75;color:rgba(255,255,255,0.78);';
+            p.textContent = chunk.trim();
+            summaryEl.appendChild(p);
+          }
+        }
+      }
+
+      /* Key points */
+      const parsed2    = lib_tryParseJSON(rawSummary);
+      const keyPoints  = parsed2 && (
+        parsed2.key_points || parsed2.keyPoints ||
+        parsed2.keys       || parsed2.points
+      );
+      if (keyPoints && Array.isArray(keyPoints) && keyPoints.length > 0) {
+        const kpTitle = document.createElement('p');
+        kpTitle.style.cssText = 'font-family:Space Grotesk,sans-serif;font-size:12px;font-weight:700;color:rgba(0,240,255,0.8);text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px;';
+        kpTitle.textContent = '🔑 Key Points';
+        summaryEl.appendChild(kpTitle);
+
+        keyPoints.forEach(function(point) {
+          const li = document.createElement('div');
+          li.style.cssText = 'display:flex;gap:10px;align-items:flex-start;margin-bottom:6px;font-family:Inter,sans-serif;font-size:13px;line-height:1.6;color:rgba(255,255,255,0.7);';
+          li.innerHTML = '<span style="color:#00F0FF;flex-shrink:0;margin-top:2px">▸</span>' +
+            '<span>' + lib_escapeHTML(String(point)) + '</span>';
+          summaryEl.appendChild(li);
+        });
+      }
+
+      if (summarySection) summarySection.style.display = '';
+    } else {
+      if (summarySection) summarySection.style.display = 'none';
+    }
+
+    /* ── Memory Tricks ── */
+    const tricksSection = document.getElementById('lib_tricks_section');
+    const tricksEl      = document.getElementById('lib_content_tricks');
+    const rawTricks     = doc.tricks;
+
+    if (rawTricks && tricksEl) {
+      let tricksArr = [];
+
+      try {
+        if (typeof rawTricks === 'string' && rawTricks.trim().startsWith('[')) {
+          tricksArr = JSON.parse(rawTricks);
+        } else if (typeof rawTricks === 'string' && rawTricks.trim().startsWith('{')) {
+          const p2  = JSON.parse(rawTricks);
+          tricksArr = p2.tricks || p2.items || p2.data || [p2];
+        } else if (Array.isArray(rawTricks)) {
+          tricksArr = rawTricks;
+        } else if (typeof rawTricks === 'object') {
+          tricksArr = rawTricks.tricks || rawTricks.items || [rawTricks];
+        } else {
+          tricksArr = [{ content: String(rawTricks) }];
+        }
+      } catch(e3) {
+        tricksArr = [{ content: String(rawTricks) }];
+      }
+
+      if (tricksArr.length > 0) {
+        tricksEl.innerHTML = '';
+
+        const typeIcons = {
+          mnemonic:       '🧠',
+          analogy:        '🔗',
+          simplification: '✨',
+          'real-world':   '🌍',
+          real_world:     '🌍',
+          example:        '💡',
+          story:          '📖',
+          visual:         '👁️',
+          default:        '💡',
+        };
+
+        const typeColors = {
+          mnemonic:       'rgba(0,240,255,0.08)',
+          analogy:        'rgba(131,56,236,0.10)',
+          simplification: 'rgba(0,255,128,0.08)',
+          'real-world':   'rgba(255,200,0,0.08)',
+          real_world:     'rgba(255,200,0,0.08)',
+          example:        'rgba(255,120,0,0.08)',
+          story:          'rgba(255,0,110,0.08)',
+          default:        'rgba(255,255,255,0.04)',
+        };
+
+        tricksArr.forEach(function(trick, i) {
+          let type    = '';
+          let title   = '';
+          let content = '';
+
+          if (typeof trick === 'string') {
+            content = trick;
+          } else if (typeof trick === 'object' && trick !== null) {
+            type    = (trick.type    || '').toLowerCase();
+            title   = trick.title   || trick.name   || '';
+            content = trick.content || trick.text   || trick.description || '';
+          }
+
+          const icon      = typeIcons[type]  || typeIcons.default;
+          const bgColor   = typeColors[type] || typeColors.default;
+          const typeLabel = type
+            ? (type.charAt(0).toUpperCase() + type.slice(1).replace(/_/g,' '))
+            : '';
+
+          const card = document.createElement('div');
+          card.style.cssText = 'padding:14px 16px;background:' + bgColor + ';border:1px solid rgba(255,255,255,0.08);border-radius:12px;margin-bottom:10px;transition:transform 0.2s ease;';
+
+          let html = '<div style="display:flex;align-items:flex-start;gap:12px;">';
+          html += '<span style="font-size:20px;flex-shrink:0;margin-top:2px">' + icon + '</span>';
+          html += '<div style="flex:1;min-width:0;">';
+
+          if (title || typeLabel) {
+            html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">';
+            if (title) {
+              html += '<span style="font-family:Space Grotesk,sans-serif;font-size:14px;font-weight:700;color:#fff;">' +
+                lib_escapeHTML(title) + '</span>';
+            }
+            if (typeLabel) {
+              html += '<span style="font-family:JetBrains Mono,monospace;font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);">' +
+                lib_escapeHTML(typeLabel) + '</span>';
+            }
+            html += '</div>';
+          }
+
+          html += '<p style="font-family:Inter,sans-serif;font-size:13px;line-height:1.7;color:rgba(255,255,255,0.75);margin:0;">' +
+            lib_escapeHTML(content) + '</p>';
+          html += '</div></div>';
+
+          card.innerHTML = html;
+
+          card.addEventListener('mouseenter', function() {
+            card.style.transform = 'translateX(4px)';
+          });
+          card.addEventListener('mouseleave', function() {
+            card.style.transform = 'translateX(0)';
+          });
+
+          tricksEl.appendChild(card);
+        });
+
+        if (tricksSection) tricksSection.style.display = '';
+      } else {
+        if (tricksSection) tricksSection.style.display = 'none';
+      }
+    } else {
+      if (tricksSection) tricksSection.style.display = 'none';
+    }
+
+  } catch(e) {
+    console.warn('[COGNIXAR Library] Content populate error:', e);
+  }
+}
+
+  /* ── Populate Quiz Tab ──────────────────────────────────── */
+  function lib_populateDetailQuiz(doc) {
+    try {
+      const stats  = doc.studyStats || {};
+      const scores = stats.quizScores || [];
+
+      /* score history */
+      const histEl = document.getElementById('lib_quiz_history_wrap');
+      if (histEl) {
+        if (scores.length === 0) {
+          histEl.innerHTML = '<p style="font-family:Inter,sans-serif;font-size:13px;color:rgba(255,255,255,0.3);">No quiz attempts yet.</p>';
+        } else {
+          histEl.innerHTML = scores.map(function(s) {
+            const isPerfect = s === 100;
+            return '<span class="lib-quiz-score-pill ' + (isPerfect ? 'lib-perfect' : '') + '">' + s + '%</span>';
+          }).join('');
+        }
+      }
+
+      /* best score bar */
+      const bestEl  = document.getElementById('lib_quiz_best');
+      const bestBar = document.getElementById('lib_quiz_best_bar');
+      if (scores.length > 0) {
+        const best = Math.max.apply(null, scores);
+        if (bestEl)  bestEl.textContent = best + '%';
+        if (bestBar) setTimeout(function() { bestBar.style.width = best + '%'; }, 100);
+      } else {
+        if (bestEl)  bestEl.textContent = '—';
+        if (bestBar) bestBar.style.width = '0%';
+      }
+
+      /* quiz preview */
+      const qSection = document.getElementById('lib_quiz_preview_section');
+      const qEl = document.getElementById('lib_quiz_preview');
+      const quiz = doc.quiz;
+      if (quiz && Array.isArray(quiz) && quiz.length > 0 && qEl) {
+        const preview = quiz.slice(0, 3);
+        qEl.innerHTML = preview.map(function(q, i) {
+          const question = typeof q === 'string' ? q : (q.question || q.q || 'Question ' + (i+1));
+          return '<div style="padding:12px 16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;margin-bottom:8px;">' +
+            '<span style="font-family:Space Grotesk,sans-serif;font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);">' + (i+1) + '. ' + lib_escapeHTML(question) + '</span>' +
+          '</div>';
+        }).join('') + (quiz.length > 3 ? '<p style="font-family:Inter,sans-serif;font-size:12px;color:rgba(255,255,255,0.3);margin-top:8px;">...and ' + (quiz.length - 3) + ' more questions</p>' : '');
+        if (qSection) qSection.style.display = '';
+      } else {
+        if (qSection) qSection.style.display = 'none';
+      }
+    } catch(e) { console.warn('[COGNIXAR Library] Quiz populate error:', e); }
+  }
+
+  /* ── Populate Notes Tab ─────────────────────────────────── */
+  function lib_populateDetailNotes(doc) {
+    try {
+      const el = document.getElementById('lib_notes_area');
+      if (el) el.value = doc.notes || '';
+    } catch(e) {}
+  }
+
+  /* ── Populate Tags Tab ──────────────────────────────────── */
+  function lib_populateDetailTags(doc) {
+    try {
+      lib_renderTags(doc.tags || []);
+    } catch(e) {}
+  }
+
+  /* ── Render Tags ────────────────────────────────────────── */
+  function lib_renderTags(tags) {
+    const el = document.getElementById('lib_tags_display');
+    if (!el) return;
+    if (!tags || tags.length === 0) {
+      el.innerHTML = '<span style="font-family:Inter,sans-serif;font-size:12px;color:rgba(255,255,255,0.25);">No tags yet. Add some above!</span>';
+      return;
+    }
+    el.innerHTML = tags.map(function(tag, i) {
+      const c = LIB_TAG_COLORS[i % LIB_TAG_COLORS.length];
+      return '<div class="lib-tag-item" style="background:' + c.bg + ';border:1px solid ' + c.border + ';color:' + c.text + ';">' +
+        '<span>#' + lib_escapeHTML(tag) + '</span>' +
+        '<span class="lib-tag-del" data-tag="' + lib_escapeHTML(tag) + '" title="Remove tag">✕</span>' +
+      '</div>';
+    }).join('');
+
+    /* remove tag clicks */
+    el.querySelectorAll('.lib-tag-del').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        lib_removeTag(btn.getAttribute('data-tag'));
+      });
+    });
+  }
+
+  /* ── Add / Remove Tag ───────────────────────────────────── */
+  function lib_addTag() {
+    try {
+      const input = document.getElementById('lib_tag_input');
+      if (!input) return;
+      let val = input.value.trim().replace(/^#/, '').toLowerCase().replace(/\s+/g, '-');
+      if (!val || val.length > 25) return;
+
+      const doc = lib_state.docs.find(function(d) { return d.id === lib_state.detailId; });
+      if (!doc) return;
+
+      if (!doc.tags) doc.tags = [];
+      if (doc.tags.includes(val)) {
+        input.value = '';
+        return;
+      }
+      if (doc.tags.length >= 10) {
+        if (window.showToast) window.showToast('Maximum 10 tags per document', 'warning');
+        return;
+      }
+
+      doc.tags.push(val);
+      lib_save(lib_state.docs);
+      lib_renderTags(doc.tags);
+      input.value = '';
+      lib_renderGrid();
+    } catch(e) { console.warn('[COGNIXAR Library] Add tag error:', e); }
+  }
+
+  function lib_removeTag(tag) {
+    try {
+      const doc = lib_state.docs.find(function(d) { return d.id === lib_state.detailId; });
+      if (!doc || !doc.tags) return;
+      doc.tags = doc.tags.filter(function(t) { return t !== tag; });
+      lib_save(lib_state.docs);
+      lib_renderTags(doc.tags);
+      lib_renderGrid();
+    } catch(e) {}
+  }
+
+  /* ── Update Stats Bar ───────────────────────────────────── */
+  function lib_updateStats() {
+    try {
+      const docs = lib_state.docs;
+      let totalQuiz = 0, totalCards = 0, totalFav = 0;
+      docs.forEach(function(d) {
+        if (d.quiz && Array.isArray(d.quiz)) totalQuiz += d.quiz.length;
+        if (d.flashcards && Array.isArray(d.flashcards)) totalCards += d.flashcards.length;
+        if (d.favorite) totalFav++;
+      });
+
+      lib_safeSet('lib_stat_docs',       docs.length);
+      lib_safeSet('lib_stat_quizzes',    totalQuiz);
+      lib_safeSet('lib_stat_flashcards', totalCards);
+      lib_safeSet('lib_stat_favorites',  totalFav);
+
+      /* Update subtitle */
+      const sub = document.getElementById('lib_subtitle');
+      if (sub) sub.textContent = docs.length === 0 ? 'Your personal learning archive' : docs.length + ' document' + (docs.length === 1 ? '' : 's') + ' saved';
+
+      /* Update nav badge */
+      const badge = document.getElementById('lib_nav_badge');
+      const count = document.getElementById('lib_nav_count');
+      if (badge) {
+        badge.textContent = docs.length;
+        badge.style.display = docs.length > 0 ? 'flex' : 'none';
+      }
+      if (count) count.textContent = docs.length;
+    } catch(e) { console.warn('[COGNIXAR Library] Stats update error:', e); }
+  }
+
+  /* ── Filter & Sort Documents ────────────────────────────── */
+  function lib_getFilteredDocs() {
+    try {
+      let docs = lib_state.docs.slice();
+      const search  = lib_state.search.toLowerCase().trim();
+      const filter  = lib_state.filter;
+      const sort    = lib_state.sort;
+      const todayStr = lib_today();
+      const weekAgo  = Date.now() - 7 * 86400000;
+
+      /* search */
+      if (search) {
+        docs = docs.filter(function(d) {
+          const name = (d.name || '').toLowerCase();
+          const file = (d.fileName || '').toLowerCase();
+          const tags = (d.tags || []).join(' ').toLowerCase();
+          return name.includes(search) || file.includes(search) || tags.includes(search);
+        });
+      }
+
+      /* filter */
+      if (filter === 'favorites') {
+        docs = docs.filter(function(d) { return d.favorite; });
+      } else if (filter === 'today') {
+        docs = docs.filter(function(d) {
+          return d.savedAt && new Date(d.savedAt).toISOString().split('T')[0] === todayStr;
+        });
+      } else if (filter === 'week') {
+        docs = docs.filter(function(d) { return d.savedAt && d.savedAt >= weekAgo; });
+      }
+
+      /* sort */
+      if (sort === 'name') {
+        docs.sort(function(a, b) { return (a.name || '').localeCompare(b.name || ''); });
+      } else if (sort === 'studied') {
+        docs.sort(function(a, b) {
+          const sa = (a.studyStats && a.studyStats.timesStudied) || 0;
+          const sb = (b.studyStats && b.studyStats.timesStudied) || 0;
+          return sb - sa;
+        });
+      } else {
+        docs.sort(function(a, b) { return (b.savedAt || 0) - (a.savedAt || 0); });
+      }
+
+      return docs;
+    } catch(e) {
+      console.warn('[COGNIXAR Library] Filter error:', e);
+      return lib_state.docs;
+    }
+  }
+
+  /* ── Render Grid ────────────────────────────────────────── */
+  function lib_renderGrid() {
+    try {
+      const grid  = document.getElementById('lib_grid');
+      const empty = document.getElementById('lib_empty');
+      if (!grid) return;
+
+      const docs = lib_getFilteredDocs();
+
+      if (docs.length === 0) {
+        grid.innerHTML = '';
+        if (empty) empty.style.display = 'flex';
+      } else {
+        if (empty) empty.style.display = 'none';
+        grid.innerHTML = docs.map(function(doc, i) { return lib_buildCard(doc, i); }).join('');
+
+        /* animate score bars after render */
+        setTimeout(function() {
+          grid.querySelectorAll('.lib-score-fill').forEach(function(el) {
+            el.style.width = el.getAttribute('data-w') + '%';
+          });
+        }, 100);
+
+        /* attach card events */
+        lib_attachCardEvents(grid);
+      }
+
+      /* apply view class */
+      if (lib_state.view === 'list') {
+        grid.classList.add('lib-list-view');
+      } else {
+        grid.classList.remove('lib-list-view');
+      }
+
+      /* update stats */
+      lib_updateStats();
+    } catch(e) { console.warn('[COGNIXAR Library] Render error:', e); }
+  }
+
+  /* ── Build Card HTML ────────────────────────────────────── */
+  function lib_buildCard(doc, index) {
+    try {
+      const icon    = lib_getIcon(doc.fileName || doc.name);
+      const color   = doc.colorAccent || lib_getColor(index);
+      const scores  = (doc.studyStats && doc.studyStats.quizScores) || [];
+      const avgScore = scores.length > 0
+        ? Math.round(scores.reduce(function(a,b){ return a+b; },0) / scores.length)
+        : 0;
+      const tools = [
+        { key: 'quiz',       icon: '🎯', label: 'Quiz' },
+        { key: 'flashcards', icon: '🃏', label: 'Cards' },
+        { key: 'tricks',     icon: '💡', label: 'Tricks' },
+        { key: 'summary',    icon: '📝', label: 'Summary' },
+      ];
+
+      const tagsHTML = (doc.tags || []).slice(0, 3).map(function(tag, i) {
+        const c = LIB_TAG_COLORS[i % LIB_TAG_COLORS.length];
+        return '<span class="lib-tag" style="background:' + c.bg + ';border:1px solid ' + c.border + ';color:' + c.text + ';">#' + lib_escapeHTML(tag) + '</span>';
+      }).join('');
+
+      const toolsHTML = tools.map(function(t) {
+        const has = doc[t.key] && (Array.isArray(doc[t.key]) ? doc[t.key].length > 0 : (typeof doc[t.key] === 'object' && Object.keys(doc[t.key]).length > 0));
+        return '<span class="lib-tool-chip ' + (has ? 'lib-has-content' : '') + '" title="' + t.label + '">' + t.icon + ' <span style="' + (lib_state.view === 'list' ? '' : '') + '">' + t.label + '</span></span>';
+      }).join('');
+
+      const scoreSection = scores.length > 0 ? `
+        <div class="lib-score-wrap">
+          <div class="lib-score-row">
+            <span>Quiz Avg</span>
+            <span class="lib-score-val">${avgScore}%</span>
+          </div>
+          <div class="lib-score-bar">
+            <div class="lib-score-fill" data-w="${avgScore}" style="width:0%"></div>
+          </div>
+        </div>
+      ` : '';
+
+      return `
+        <div class="lib-card" data-color="${color}" data-id="${doc.id}" style="animation-delay:${index * 0.05}s">
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <div class="lib-card-icon">${icon}</div>
+            <div class="lib-card-body">
+              <div class="lib-card-name" title="${lib_escapeHTML(doc.name || 'Untitled')}">${lib_escapeHTML(doc.name || 'Untitled')}</div>
+              <div class="lib-card-meta">
+                <span>📅 ${lib_timeAgo(doc.savedAt)}</span>
+                <span>🔬 ${lib_timeAgo(doc.lastStudiedAt || doc.savedAt)}</span>
+                ${doc.studyStats && doc.studyStats.timesStudied ? '<span>📖 ' + doc.studyStats.timesStudied + 'x studied</span>' : ''}
+              </div>
+            </div>
+          </div>
+          <div class="lib-card-tools">${toolsHTML}</div>
+          ${scoreSection}
+          ${tagsHTML ? '<div class="lib-tags">' + tagsHTML + '</div>' : ''}
+          <div class="lib-card-actions">
+            <button class="lib-card-action-btn lib-fav-btn ${doc.favorite ? 'lib-favorited' : ''}" data-id="${doc.id}" title="${doc.favorite ? 'Unfavorite' : 'Favorite'}">
+              ${doc.favorite ? '💛' : '⭐'}
+            </button>
+            <button class="lib-card-action-btn lib-del-btn" data-id="${doc.id}" title="Delete">🗑️</button>
+            <button class="lib-open-btn" data-id="${doc.id}">🔍 Open</button>
+          </div>
+        </div>
+      `;
+    } catch(e) {
+      console.warn('[COGNIXAR Library] Build card error:', e);
+      return '';
+    }
+  }
+
+  /* ── Attach Card Events ─────────────────────────────────── */
+  function lib_attachCardEvents(grid) {
+    try {
+      /* open detail */
+      grid.querySelectorAll('.lib-open-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const id = btn.getAttribute('data-id');
+          if (id) lib_openDetail(id);
+        });
+      });
+
+      /* card click = open detail */
+      grid.querySelectorAll('.lib-card').forEach(function(card) {
+        card.addEventListener('click', function(e) {
+          /* don't open if clicking action buttons */
+          if (e.target.closest('.lib-card-action-btn, .lib-open-btn, .lib-fav-btn, .lib-del-btn')) return;
+          const id = card.getAttribute('data-id');
+          if (id) lib_openDetail(id);
+        });
+      });
+
+      /* favorite toggle */
+      grid.querySelectorAll('.lib-fav-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const id = btn.getAttribute('data-id');
+          lib_toggleFavorite(id);
+        });
+      });
+
+      /* delete */
+      grid.querySelectorAll('.lib-del-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const id = btn.getAttribute('data-id');
+          lib_confirmDelete(id);
+        });
+      });
+    } catch(e) { console.warn('[COGNIXAR Library] Card events error:', e); }
+  }
+
+  /* ── Toggle Favorite ────────────────────────────────────── */
+  function lib_toggleFavorite(id) {
+    try {
+      const doc = lib_state.docs.find(function(d) { return d.id === id; });
+      if (!doc) return;
+      doc.favorite = !doc.favorite;
+      lib_save(lib_state.docs);
+      lib_renderGrid();
+
+      /* if detail open, update button */
+      if (lib_state.detailId === id) {
+        const favBtn = document.getElementById('lib_detail_fav');
+        if (favBtn) favBtn.textContent = doc.favorite ? '💛 Favorited' : '⭐ Favorite';
+      }
+    } catch(e) {}
+  }
+
+  /* ── Confirm Delete ─────────────────────────────────────── */
+  function lib_confirmDelete(id) {
+    try {
+      const doc = lib_state.docs.find(function(d) { return d.id === id; });
+      if (!doc) return;
+      lib_state.confirmDeleteId = id;
+
+      const sub = document.getElementById('lib_confirm_sub');
+      if (sub) sub.textContent = '"' + (doc.name || 'This document') + '" will be permanently removed from your library.';
+
+      const confirmEl = document.getElementById('lib_confirm');
+      if (confirmEl) confirmEl.classList.add('lib-open');
+    } catch(e) {}
+  }
+
+  function lib_cancelDelete() {
+    try {
+      const confirmEl = document.getElementById('lib_confirm');
+      if (confirmEl) confirmEl.classList.remove('lib-open');
+      lib_state.confirmDeleteId = null;
+    } catch(e) {}
+  }
+
+  function lib_executeDelete() {
+    try {
+      const id = lib_state.confirmDeleteId;
+      if (!id) return;
+
+      lib_state.docs = lib_state.docs.filter(function(d) { return d.id !== id; });
+      lib_save(lib_state.docs);
+
+      lib_cancelDelete();
+
+      /* close detail if this doc was open */
+      if (lib_state.detailId === id) lib_closeDetail();
+
+      lib_renderGrid();
+
+      if (window.showToast) window.showToast('Document removed from library', 'info');
+    } catch(e) { console.warn('[COGNIXAR Library] Delete error:', e); }
+  }
+
+  /* ── Save Document to Library ───────────────────────────── */
+  function lib_saveDocument(data) {
+    try {
+      if (!data) return;
+
+      const docs = lib_load();
+
+      /* check if already exists (by fileId or name) */
+      const existingIdx = docs.findIndex(function(d) {
+        return (data.fileId && d.fileId === data.fileId) || (data.name && d.name === data.name);
+      });
+
+      const now = Date.now();
+      const todayKey = lib_today();
+
+      if (existingIdx !== -1) {
+        /* update existing */
+        const existing = docs[existingIdx];
+        /* merge new content */
+        if (data.quiz)       existing.quiz = data.quiz;
+        if (data.flashcards) existing.flashcards = data.flashcards;
+        if (data.tricks)     existing.tricks = data.tricks;
+        if (data.summary)    existing.summary = data.summary;
+        if (data.extractedText) existing.extractedText = data.extractedText;
+
+        existing.lastStudiedAt = now;
+        if (!existing.studyStats) existing.studyStats = { timesStudied: 0, quizScores: [], flashcardsReviewed: 0 };
+        existing.studyStats.timesStudied = (existing.studyStats.timesStudied || 0) + 1;
+
+        /* activity log */
+        if (!existing.activityLog) existing.activityLog = {};
+        existing.activityLog[todayKey] = (existing.activityLog[todayKey] || 0) + 1;
+
+        docs[existingIdx] = existing;
+        lib_state.docs = docs;
+        lib_save(docs);
+        lib_showSaveToast('✅ Library updated');
+      } else {
+        /* new document */
+        if (docs.length >= LIB_MAX_DOCS) {
+          /* remove oldest non-favorite */
+          const oldestIdx = docs.reduce(function(oldest, d, i) {
+            if (d.favorite) return oldest;
+            return (oldest === -1 || docs[oldest].savedAt > d.savedAt) ? i : oldest;
+          }, -1);
+          if (oldestIdx !== -1) docs.splice(oldestIdx, 1);
+        }
+
+        const newDoc = {
+          id:            lib_uuid(),
+          fileId:        data.fileId || null,
+          name:          data.name || 'Untitled Document',
+          fileName:      data.fileName || null,
+          uploadedAt:    data.uploadedAt || now,
+          savedAt:       now,
+          lastStudiedAt: now,
+          extractedText: data.extractedText || null,
+          quiz:          data.quiz || null,
+          flashcards:    data.flashcards || null,
+          tricks:        data.tricks || null,
+          summary:       data.summary || null,
+          tags:          data.tags || [],
+          favorite:      false,
+          notes:         '',
+          colorAccent:   lib_getColor(docs.length),
+          studyStats: {
+            timesStudied:      1,
+            quizScores:        [],
+            flashcardsReviewed: 0,
+          },
+          activityLog: { [todayKey]: 1 },
+        };
+
+        docs.push(newDoc);
+        lib_state.docs = docs;
+        lib_save(docs);
+        lib_showSaveToast('✅ Saved to Library');
+
+        /* badge pop animation */
+        const badge = document.getElementById('lib_nav_badge');
+        if (badge) {
+          badge.classList.add('lib-pop');
+          setTimeout(function() { if (badge) badge.classList.remove('lib-pop'); }, 500);
+        }
+      }
+
+      lib_updateStats();
+      return lib_state.docs[lib_state.docs.length - 1];
+    } catch(e) {
+      console.warn('[COGNIXAR Library] Save document error:', e);
+      return null;
+    }
+  }
+
+  /* ── Record Quiz Score ──────────────────────────────────── */
+  function lib_recordQuizScore(fileId, score) {
+    try {
+      const docs = lib_load();
+      const doc = docs.find(function(d) { return d.fileId === fileId; });
+      if (!doc) return;
+
+      if (!doc.studyStats) doc.studyStats = { timesStudied: 0, quizScores: [], flashcardsReviewed: 0 };
+      if (!doc.studyStats.quizScores) doc.studyStats.quizScores = [];
+
+      doc.studyStats.quizScores.push(Math.round(score));
+      /* keep last 20 scores */
+      if (doc.studyStats.quizScores.length > 20) {
+        doc.studyStats.quizScores = doc.studyStats.quizScores.slice(-20);
+      }
+
+      doc.lastStudiedAt = Date.now();
+      const todayKey = lib_today();
+      if (!doc.activityLog) doc.activityLog = {};
+      doc.activityLog[todayKey] = (doc.activityLog[todayKey] || 0) + 1;
+
+      lib_save(docs);
+      lib_state.docs = docs;
+    } catch(e) { console.warn('[COGNIXAR Library] Quiz score error:', e); }
+  }
+
+  /* ── Export Functions ───────────────────────────────────── */
+  function lib_closeExportDropdown() {
+    try {
+      const dropdown = document.getElementById('lib_export_dropdown');
+      if (dropdown) dropdown.style.display = 'none';
+      lib_state.exportDropdownOpen = false;
+    } catch(e) {}
+  }
+
+  function lib_exportJSON(doc) {
+    try {
+      const data = JSON.stringify(doc, null, 2);
+      const blob = new Blob([data], { type: 'application/json' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = (doc.name || 'document').replace(/[^a-z0-9]/gi, '_') + '_cognixar.json';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function() {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 100);
+      if (window.showToast) window.showToast('Exported as JSON ✓', 'success');
+    } catch(e) {
+      console.warn('[COGNIXAR Library] Export JSON error:', e);
+      if (window.showToast) window.showToast('Export failed', 'error');
+    }
+  }
+
+  function lib_exportText(doc) {
+    try {
+      let text = '=== COGNIXAR EXPORT: ' + (doc.name || 'Document') + ' ===\n\n';
+      text += 'Saved: ' + lib_formatDate(doc.savedAt) + '\n\n';
+
+      if (doc.summary) {
+        text += '--- SUMMARY ---\n';
+        text += (typeof doc.summary === 'string' ? doc.summary : JSON.stringify(doc.summary)) + '\n\n';
+      }
+
+      if (doc.extractedText) {
+        text += '--- EXTRACTED TEXT ---\n' + doc.extractedText.substring(0, 3000) + '\n\n';
+      }
+
+      if (doc.quiz && doc.quiz.length > 0) {
+        text += '--- QUIZ QUESTIONS ---\n';
+        doc.quiz.forEach(function(q, i) {
+          const qText = typeof q === 'string' ? q : (q.question || q.q || JSON.stringify(q));
+          text += (i+1) + '. ' + qText + '\n';
+        });
+        text += '\n';
+      }
+
+      if (doc.notes) {
+        text += '--- NOTES ---\n' + doc.notes + '\n\n';
+      }
+
+      const blob = new Blob([text], { type: 'text/plain' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = (doc.name || 'document').replace(/[^a-z0-9]/gi, '_') + '_cognixar.txt';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function() {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 100);
+      if (window.showToast) window.showToast('Exported as Text ✓', 'success');
+    } catch(e) {
+      console.warn('[COGNIXAR Library] Export text error:', e);
+      if (window.showToast) window.showToast('Export failed', 'error');
+    }
+  }
+
+  function lib_copySummary(doc) {
+    try {
+      const text = doc.summary
+        ? (typeof doc.summary === 'string' ? doc.summary : JSON.stringify(doc.summary))
+        : (doc.extractedText ? doc.extractedText.substring(0, 1000) : 'No summary available');
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() {
+          if (window.showToast) window.showToast('Summary copied to clipboard ✓', 'success');
+        });
+      } else {
+        /* fallback */
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (window.showToast) window.showToast('Summary copied ✓', 'success');
+      }
+    } catch(e) { console.warn('[COGNIXAR Library] Copy error:', e); }
+  }
+
+  /* ── Study Now ──────────────────────────────────────────── */
+  function lib_studyNow(id) {
+    try {
+      const doc = lib_state.docs.find(function(d) { return d.id === id; });
+      if (!doc) return;
+
+      /* track study */
+      doc.lastStudiedAt = Date.now();
+      if (!doc.studyStats) doc.studyStats = { timesStudied: 0, quizScores: [], flashcardsReviewed: 0 };
+      doc.studyStats.timesStudied = (doc.studyStats.timesStudied || 0) + 1;
+      const todayKey = lib_today();
+      if (!doc.activityLog) doc.activityLog = {};
+      doc.activityLog[todayKey] = (doc.activityLog[todayKey] || 0) + 1;
+      lib_save(lib_state.docs);
+
+      lib_closeDetail();
+      lib_close();
+
+      /* restore document to the app */
+      if (window.CognixarProgress) {
+        window.CognixarProgress.addXP(10, 'study_resume');
+      }
+
+      /* Try to restore the session if State global exists */
+      try {
+        if (typeof State !== 'undefined' && doc.fileId) {
+          State.fileId = doc.fileId;
+          State.fileName = doc.name;
+        }
+      } catch(e2) {}
+
+      if (window.showToast) window.showToast('Opening ' + (doc.name || 'document') + '…', 'info');
+    } catch(e) { console.warn('[COGNIXAR Library] Study now error:', e); }
+  }
+
+  /* ── Helper: safe set text ──────────────────────────────── */
+  function lib_safeSet(id, val) {
+    try {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    } catch(e) {}
+  }
+  /* ── Extract readable text from summary object ──────────── */
+  function lib_extractSummaryText(obj) {
+    try {
+      if (!obj || typeof obj !== 'object') return String(obj || '');
+      const textFields = [
+        'summary','text','content','description',
+        'overview','abstract','body','main'
+      ];
+      for (let i = 0; i < textFields.length; i++) {
+        if (obj[textFields[i]] && typeof obj[textFields[i]] === 'string') {
+          return obj[textFields[i]];
+        }
+      }
+      return Object.values(obj)
+        .filter(function(v) { return typeof v === 'string' && v.length > 10; })
+        .join(' ');
+    } catch(e) { return ''; }
+  }
+
+  /* ── Try parse JSON safely ──────────────────────────────── */
+  function lib_tryParseJSON(val) {
+    try {
+      if (typeof val === 'object') return val;
+      if (typeof val === 'string' &&
+          (val.trim().startsWith('{') || val.trim().startsWith('['))) {
+        return JSON.parse(val);
+      }
+      return null;
+    } catch(e) { return null; }
+  }
+  
+  /* ── Helper: escape HTML ────────────────────────────────── */
+  function lib_escapeHTML(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  /* ── Bind All Events ────────────────────────────────────── */
+  function lib_bindEvents() {
+    try {
+      /* nav button */
+      const navBtn = document.getElementById('lib_nav_btn');
+      if (navBtn) {
+        navBtn.addEventListener('click', lib_open);
+        navBtn.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); lib_open(); }
+        });
+      }
+
+      /* close overlay */
+      const closeBtn = document.getElementById('lib_close_btn');
+      if (closeBtn) closeBtn.addEventListener('click', lib_close);
+
+      /* click outside overlay content = close */
+      const overlay = document.getElementById('lib_overlay');
+      if (overlay) {
+        overlay.addEventListener('click', function(e) {
+          if (e.target === overlay) lib_close();
+        });
+      }
+
+      /* escape key */
+      document.addEventListener('keydown', function(e) {
+        if (e.key !== 'Escape') return;
+        const confirmEl = document.getElementById('lib_confirm');
+        const detailEl  = document.getElementById('lib_detail');
+        const overlayEl = document.getElementById('lib_overlay');
+        if (confirmEl && confirmEl.classList.contains('lib-open')) { lib_cancelDelete(); return; }
+        if (detailEl  && detailEl.classList.contains('lib-open'))  { lib_closeDetail(); return; }
+        if (overlayEl && overlayEl.classList.contains('lib-open'))  { lib_close(); }
+      });
+
+      /* search */
+      const searchEl = document.getElementById('lib_search');
+      if (searchEl) {
+        searchEl.addEventListener('input', function() {
+          clearTimeout(lib_searchTimeout);
+          lib_searchTimeout = setTimeout(function() {
+            lib_state.search = searchEl.value;
+            lib_renderGrid();
+          }, 220);
+        });
+      }
+
+      /* filter chips */
+      const filtersEl = document.getElementById('lib_filters');
+      if (filtersEl) {
+        filtersEl.addEventListener('click', function(e) {
+          const chip = e.target.closest('.lib-filter-chip');
+          if (!chip) return;
+          filtersEl.querySelectorAll('.lib-filter-chip').forEach(function(c) { c.classList.remove('lib-active'); });
+          chip.classList.add('lib-active');
+          lib_state.filter = chip.getAttribute('data-filter');
+          lib_renderGrid();
+        });
+      }
+
+      /* sort */
+      const sortEl = document.getElementById('lib_sort');
+      if (sortEl) {
+        sortEl.addEventListener('change', function() {
+          lib_state.sort = sortEl.value;
+          lib_renderGrid();
+        });
+      }
+
+      /* view toggle */
+      const viewGrid = document.getElementById('lib_view_grid');
+      const viewList = document.getElementById('lib_view_list');
+      if (viewGrid) viewGrid.addEventListener('click', function() {
+        lib_state.view = 'grid';
+        viewGrid.classList.add('lib-active');
+        if (viewList) viewList.classList.remove('lib-active');
+        lib_renderGrid();
+      });
+      if (viewList) viewList.addEventListener('click', function() {
+        lib_state.view = 'list';
+        viewList.classList.add('lib-active');
+        if (viewGrid) viewGrid.classList.remove('lib-active');
+        lib_renderGrid();
+      });
+
+      /* auto-save toggle */
+      const autoSaveBtn = document.getElementById('lib_autosave_toggle');
+      if (autoSaveBtn) {
+        autoSaveBtn.addEventListener('click', function() {
+          lib_state.autoSave = !lib_state.autoSave;
+          lib_saveSettings();
+          const icon  = document.getElementById('lib_autosave_icon');
+          const label = document.getElementById('lib_autosave_label');
+          if (icon)  icon.textContent  = lib_state.autoSave ? '🔄' : '⏸️';
+          if (label) label.textContent = lib_state.autoSave ? 'Auto-save ON' : 'Auto-save OFF';
+          if (window.showToast) window.showToast('Auto-save ' + (lib_state.autoSave ? 'enabled' : 'disabled'), 'info');
+        });
+      }
+
+      /* empty CTA */
+      const emptyCTA = document.getElementById('lib_empty_cta');
+      if (emptyCTA) emptyCTA.addEventListener('click', lib_close);
+
+      /* detail close */
+      const detailClose = document.getElementById('lib_detail_close');
+      if (detailClose) detailClose.addEventListener('click', lib_closeDetail);
+
+      /* detail click outside */
+      const detailEl = document.getElementById('lib_detail');
+      if (detailEl) {
+        detailEl.addEventListener('click', function(e) {
+          if (e.target === detailEl) lib_closeDetail();
+        });
+      }
+
+      /* detail tabs */
+      const tabsEl = document.getElementById('lib_detail_tabs');
+      if (tabsEl) {
+        tabsEl.addEventListener('click', function(e) {
+          const tab = e.target.closest('.lib-tab');
+          if (!tab) return;
+          lib_switchDetailTab(tab.getAttribute('data-tab'));
+        });
+      }
+
+      /* detail favorite */
+      const detailFav = document.getElementById('lib_detail_fav');
+      if (detailFav) {
+        detailFav.addEventListener('click', function() {
+          if (lib_state.detailId) lib_toggleFavorite(lib_state.detailId);
+        });
+      }
+
+      /* detail study now */
+      const studyBtn = document.getElementById('lib_detail_study');
+      if (studyBtn) {
+        studyBtn.addEventListener('click', function() {
+          const id = studyBtn.getAttribute('data-id') || lib_state.detailId;
+          if (id) lib_studyNow(id);
+        });
+      }
+
+      /* export button */
+      const exportBtn = document.getElementById('lib_export_btn');
+      const exportDrop = document.getElementById('lib_export_dropdown');
+      if (exportBtn && exportDrop) {
+        exportBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          lib_state.exportDropdownOpen = !lib_state.exportDropdownOpen;
+          exportDrop.style.display = lib_state.exportDropdownOpen ? 'block' : 'none';
+        });
+      }
+
+      /* export options */
+      const exportJSON = document.getElementById('lib_export_json');
+      const exportTxt  = document.getElementById('lib_export_txt');
+      const exportCopy = document.getElementById('lib_export_copy');
+      [exportJSON, exportTxt, exportCopy].forEach(function(el) {
+        if (el) {
+          el.addEventListener('click', function() {
+            const doc = lib_state.detailId && lib_state.docs.find(function(d) { return d.id === lib_state.detailId; });
+            if (!doc) return;
+            lib_closeExportDropdown();
+            if (el === exportJSON) lib_exportJSON(doc);
+            if (el === exportTxt)  lib_exportText(doc);
+            if (el === exportCopy) lib_copySummary(doc);
+          });
+        }
+      });
+
+      /* close export on outside click */
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.lib-export-wrap')) lib_closeExportDropdown();
+      });
+
+      /* save notes */
+      const saveNotesBtn = document.getElementById('lib_save_notes_btn');
+      if (saveNotesBtn) {
+        saveNotesBtn.addEventListener('click', function() {
+          try {
+            const doc = lib_state.docs.find(function(d) { return d.id === lib_state.detailId; });
+            if (!doc) return;
+            const notesEl = document.getElementById('lib_notes_area');
+            if (notesEl) doc.notes = notesEl.value;
+            lib_save(lib_state.docs);
+            if (window.showToast) window.showToast('Notes saved ✓', 'success');
+          } catch(e) { console.warn('[COGNIXAR Library] Save notes error:', e); }
+        });
+      }
+
+      /* add tag */
+      const addTagBtn = document.getElementById('lib_add_tag_btn');
+      if (addTagBtn) addTagBtn.addEventListener('click', lib_addTag);
+
+      const tagInput = document.getElementById('lib_tag_input');
+      if (tagInput) {
+        tagInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') { e.preventDefault(); lib_addTag(); }
+        });
+      }
+
+      /* confirm delete */
+      const cancelDel = document.getElementById('lib_confirm_cancel');
+      const execDel   = document.getElementById('lib_confirm_delete');
+      if (cancelDel) cancelDel.addEventListener('click', lib_cancelDelete);
+      if (execDel)   execDel.addEventListener('click', lib_executeDelete);
+
+      const confirmEl = document.getElementById('lib_confirm');
+      if (confirmEl) {
+        confirmEl.addEventListener('click', function(e) {
+          if (e.target === confirmEl) lib_cancelDelete();
+        });
+      }
+    } catch(e) { console.warn('[COGNIXAR Library] Bind events error:', e); }
+  }
+
+  /* ── Auto-Integration with Existing App ─────────────────── */
+  function lib_setupIntegration() {
+    try {
+      /*
+       * We intercept window.showToast to detect app events.
+       * Existing logic is preserved — we just listen for patterns.
+       */
+      const _origShowToast = window.showToast;
+      if (typeof _origShowToast === 'function') {
+        window.showToast = function(msg, type) {
+          try {
+            /* Detect generation complete */
+            if (
+              msg &&
+              (
+                msg.toLowerCase().includes('ready') ||
+                msg.toLowerCase().includes('generated') ||
+                msg.toLowerCase().includes('complete') ||
+                msg.toLowerCase().includes('processing complete') ||
+                msg.toLowerCase().includes('done')
+              ) &&
+              type !== 'error'
+            ) {
+              /* slight delay to let State populate */
+              setTimeout(function() { lib_tryAutoSave(); }, 800);
+            }
+          } catch(e2) {}
+          return _origShowToast.apply(this, arguments);
+        };
+      }
+
+      /*
+       * MutationObserver: watch for results panel appearing
+       * (when quiz/flashcards/summary sections are rendered)
+       */
+      const observerTarget = document.body;
+      if (observerTarget && typeof MutationObserver !== 'undefined') {
+        const lib_observer = new MutationObserver(function(mutations) {
+          try {
+            for (let i = 0; i < mutations.length; i++) {
+              const m = mutations[i];
+              if (m.type !== 'childList' || m.addedNodes.length === 0) continue;
+              for (let j = 0; j < m.addedNodes.length; j++) {
+                const node = m.addedNodes[j];
+                if (!node || node.nodeType !== 1) continue;
+                /* detect result sections */
+                const el = node;
+                if (
+                  el.id === 'results-section' ||
+                  el.id === 'quiz-section' ||
+                  el.id === 'flashcard-section' ||
+                  el.classList && (
+                    el.classList.contains('results-section') ||
+                    el.classList.contains('quiz-section')
+                  )
+                ) {
+                  setTimeout(function() { lib_tryAutoSave(); }, 1200);
+                }
+              }
+            }
+          } catch(e2) {}
+        });
+
+        lib_observer.observe(observerTarget, { childList: true, subtree: true });
+      }
+
+      /*
+       * Watch for quiz completion (answer all questions)
+       * Detect clicks on answer buttons and track score
+       */
+      document.addEventListener('click', function(e) {
+        try {
+          const answerBtn = e.target.closest('.option, .quiz-option, [data-answer]');
+          if (!answerBtn) return;
+          /* delayed check for score update */
+          setTimeout(function() {
+            try {
+              if (typeof State !== 'undefined' && State.quiz && State.fileId) {
+                const quiz = State.quiz;
+                if (quiz.answered > 0 && quiz.answered === quiz.total && quiz.total > 0) {
+                  const pct = Math.round((quiz.score / quiz.total) * 100);
+                  lib_recordQuizScore(State.fileId, pct);
+                }
+              }
+            } catch(e3) {}
+          }, 500);
+        } catch(e2) {}
+      }, true);
+
+    } catch(e) { console.warn('[COGNIXAR Library] Integration setup error:', e); }
+  }
+
+  /* ── Try Auto-Save Current Document ─────────────────────── */
+  function lib_tryAutoSave() {
+    try {
+      if (!lib_state.autoSave) return;
+
+      /* read from global State if available */
+      let fileId   = null;
+      let fileName = null;
+      let results  = {};
+
+      try {
+        if (typeof State !== 'undefined') {
+          fileId   = State.fileId;
+          fileName = State.fileName;
+          results  = State.results || {};
+        }
+      } catch(e2) {}
+
+      /* also try from localStorage fallback */
+      if (!fileId) {
+        try {
+          fileId   = localStorage.getItem('cognixar_last_file') || null;
+          fileName = localStorage.getItem('cognixar_last_doc')  || null;
+        } catch(e3) {}
+      }
+
+      if (!fileId && !fileName) return;
+
+      const docData = {
+        fileId:    fileId,
+        name:      fileName || fileId || 'Document',
+        fileName:  fileName,
+        uploadedAt: Date.now(),
+        quiz:        results.quiz        || lib_extractFromDOM('quiz'),
+        flashcards:  results.flashcards  || lib_extractFromDOM('flashcards'),
+        tricks:      results.tricks      || lib_extractFromDOM('tricks'),
+        summary:     results.summary     || lib_extractFromDOM('summary'),
+        extractedText: null,
+      };
+
+      /* only save if there's some real content */
+      const hasContent = docData.quiz || docData.flashcards || docData.tricks || docData.summary;
+      if (!hasContent) return;
+
+      lib_saveDocument(docData);
+    } catch(e) { console.warn('[COGNIXAR Library] Auto-save error:', e); }
+  }
+
+  /* ── Extract Content from DOM (fallback) ────────────────── */
+  function lib_extractFromDOM(type) {
+    try {
+      /* Try common selectors used in app.html */
+      const selectors = {
+        quiz:       ['#quiz-section', '#quiz_section', '[id*="quiz"]', '.quiz-section'],
+        flashcards: ['#flashcard-section', '#flashcards', '[id*="flashcard"]', '.flashcard-section'],
+        tricks:     ['#tricks-section', '#tricks', '[id*="tricks"]', '.tricks-section'],
+        summary:    ['#summary-section', '#summary', '[id*="summary"]', '.summary-section'],
+      };
+
+      const candidates = selectors[type] || [];
+      for (let i = 0; i < candidates.length; i++) {
+        const el = document.querySelector(candidates[i]);
+        if (el && el.textContent && el.textContent.trim().length > 20) {
+          return el.textContent.trim().substring(0, 5000);
+        }
+      }
+      return null;
+    } catch(e) { return null; }
+  }
+
+  /* ── Public API ─────────────────────────────────────────── */
+  window.CognixarLibrary = {
+    open:          lib_open,
+    close:         lib_close,
+    save:          lib_saveDocument,
+    getAll:        function() { return lib_load(); },
+    delete:        function(id) { lib_confirmDelete(id); },
+    recordScore:   lib_recordQuizScore,
+    manualSave:    lib_tryAutoSave,
+    reset: function() {
+      try {
+        if (confirm('Reset entire library? This cannot be undone.')) {
+          localStorage.removeItem(LIB_STORAGE_KEY);
+          lib_state.docs = [];
+          lib_renderGrid();
+          lib_updateStats();
+          if (window.showToast) window.showToast('Library reset', 'info');
+        }
+      } catch(e) {}
+    },
+  };
+
+  /* ── Initialize ─────────────────────────────────────────── */
+  function lib_init() {
+    if (lib_initialized) return;
+    lib_initialized = true;
+
+    try {
+      /* load settings */
+      const settings = lib_loadSettings();
+      lib_state.autoSave = settings.autoSave !== false;
+
+      /* load docs */
+      lib_state.docs = lib_load();
+
+      /* build DOM */
+      lib_buildDOM();
+
+      /* bind events */
+      lib_bindEvents();
+
+      /* update nav badge immediately */
+      lib_updateStats();
+
+      /* integration hooks */
+      lib_setupIntegration();
+
+      /* update autosave button label */
+      const icon  = document.getElementById('lib_autosave_icon');
+      const label = document.getElementById('lib_autosave_label');
+      if (icon)  icon.textContent  = lib_state.autoSave ? '🔄' : '⏸️';
+      if (label) label.textContent = lib_state.autoSave ? 'Auto-save ON' : 'Auto-save OFF';
+
+      console.log('%c[COGNIXAR Library] ✅ Stage 3 Ready — ' + lib_state.docs.length + ' docs loaded', 'color:#8338EC;font-weight:700;');
+    } catch(e) {
+      console.error('[COGNIXAR Library] Init error:', e);
+    }
+  }
+
+  /* Wait for DOM ready */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', lib_init);
+  } else {
+    /* Small defer to let existing scripts finish */
+    setTimeout(lib_init, 100);
+  }
+
+})();
+</script>
 </body>
 </html>

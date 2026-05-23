@@ -95,7 +95,8 @@ async def generate_content(request: GenerateRequest):
 async def get_generation_status():
     ai_engine = get_ai_engine()
     return {
-        "provider": ai_engine.current_provider,
+        "provider": "groq",
         "is_available": ai_engine.is_available(),
-        "model": ai_engine.get_model_name()
+        "model": ai_engine.model,
+        "fallback_model": ai_engine.fallback_model
     }

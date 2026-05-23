@@ -1,17 +1,19 @@
-# 📚 AI Learning Platform
+# 📚 COGNIXAR — AI Learning Platform
 
-A complete AI-powered learning platform that generates quizzes, flashcards, smart learning tricks, and summaries from uploaded documents (PDF, DOCX, TXT).
+> **Cognition. Amplified.**
+
+A full-stack AI-powered learning platform that transforms uploaded documents (PDF, DOCX, TXT) into a complete interactive study kit — quizzes, flashcards, memory tricks, summaries, comparisons, and a context-aware AI tutor chat. Powered by **Groq's** ultra-fast Llama 3.3 70B inference.
 
 ## ✨ Features
 
-- **File Upload**: Upload PDF, DOCX, or TXT files
-- **AI-Generated Content**:
-  - 📝 Multiple-choice quizzes (with answers & explanations)
-  - 🃏 Flashcards (flip-to-reveal format)
-  - 💡 Learning tricks (mnemonics, analogies, simplifications)
-  - 📋 Concise summaries with key points
-- **AI Abstraction Layer**: Switch between Gemini, OpenAI, or Local LLM by changing just ONE file
-- **Clean UI**: Simple, responsive frontend with no framework dependencies
+- **📁 File Upload** — PDF, DOCX, or TXT
+- **📝 AI Quiz Generator** — Multiple-choice questions with explanations + XP rewards
+- **🃏 3D Flashcards** — Flip-to-reveal cards with spaced repetition
+- **💡 Memory Tricks** — Mnemonics, acronyms, analogies, story methods
+- **📋 AI Summaries** — Structured summary with key points, concepts, and difficulty rating
+- **⚖️ Compare & Contrast** — Side-by-side concept analysis
+- **🤖 Neural Tutor Chat** — Streaming SSE chat that uses your document as context
+- **🎨 Cyberpunk UI** — Three.js background, GSAP animations, custom cursor, dark/light themes
 
 ---
 
@@ -21,25 +23,29 @@ A complete AI-powered learning platform that generates quizzes, flashcards, smar
 ai-learning-platform/
 ├── backend/
 │   ├── app/
-│   │   ├── main.py              # FastAPI entry point
+│   │   ├── main.py               # FastAPI entry point
+│   │   ├── storage.py            # In-memory file storage
 │   │   ├── routes/
-│   │   │   ├── upload.py        # File upload endpoints
-│   │   │   ├── generate.py      # Content generation endpoints
-│   │   │   └── content.py       # Content retrieval endpoints
+│   │   │   ├── upload.py         # File upload endpoints
+│   │   │   ├── generate.py       # Content generation endpoints
+│   │   │   └── chat.py           # Neural Tutor (streaming SSE)
 │   │   └── services/
-│   │       ├── ai_engine.py     # ⭐ CORE: AI abstraction layer
-│   │       ├── extractor.py     # Text extraction from files
-│   │       ├── chunker.py       # Text chunking for AI processing
+│   │       ├── ai_engine.py      # ⭐ Groq AI wrapper (singleton)
+│   │       ├── extractor.py      # Text extraction (PDF/DOCX/TXT)
+│   │       ├── chunker.py        # Text chunking with overlap
 │   │       ├── quiz_generator.py
 │   │       ├── flashcard_generator.py
 │   │       ├── tricks_generator.py
-│   │       └── summary_generator.py
+│   │       ├── summary_generator.py
+│   │       └── compare_generator.py
 │   ├── requirements.txt
-│   └── .env
+│   ├── nixpacks.toml             # Deployment config
+│   └── Procfile.txt
 ├── frontend/
-│   ├── index.html
-│   ├── style.css
-│   └── script.js
+│   ├── index.html                # Marketing landing page
+│   ├── app.html                  # Main app (upload + study UI + chat)
+│   ├── css/
+│   └── js/
 └── tests/
     └── sample.txt
 ```
@@ -48,52 +54,60 @@ ai-learning-platform/
 
 ## 🚀 Quick Start
 
-### Step 1: Install Dependencies
+### Step 1: Get a Groq API Key (FREE)
+
+1. Visit https://console.groq.com/keys
+2. Sign up / sign in
+3. Click **Create API Key**
+4. Copy the key (starts with `gsk_...`)
+
+> Groq's free tier offers very generous rate limits and is ~10× faster than GPT-4.
+
+### Step 2: Install Dependencies
 
 ```bash
 cd ai-learning-platform/backend
 
 # Create virtual environment (recommended)
 python -m venv venv
-venv\Scripts\activate    # Windows
-# or: source venv/bin/activate  # Mac/Linux
+venv\Scripts\activate          # Windows
+# or: source venv/bin/activate # Mac/Linux
 
 # Install packages
 pip install -r requirements.txt
 ```
 
-### Step 2: Configure AI Provider
+### Step 3: Configure Your API Key
 
-1. Copy the example environment file:
-   ```bash
-   copy .env.example .env
-   ```
+Create a `.env` file in the `backend/` directory:
 
-2. Edit `.env` and add your API key:
+```env
+GROQ_API_KEY=gsk_your_actual_key_here
+```
 
-   **For Gemini (FREE - Recommended):**
-   ```env
-   GEMINI_API_KEY=your_actual_api_key_here
-   GEMINI_ENABLED=true
-   OPENAI_ENABLED=false
-   LOCAL_LLM_ENABLED=false
-   ```
-
-   Get your FREE Gemini API key: https://makersuite.google.com/app/apikey
-
-### Step 3: Run the Server
+### Step 4: Run the Server
 
 ```bash
-# From backend directory
+# From backend/
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Step 4: Open the Frontend
+Expected output:
+```
+INFO:     Uvicorn running on http://0.0.0.0:8000
+✅ Loaded environment from: .../backend/.env
+✅ Groq AI initialized with model: llama-3.3-70b-versatile
+✅ AI Engine Status: healthy
+```
 
-Open `frontend/index.html` in your browser, or visit:
+### Step 5: Open the App
+
+Visit:
 ```
 http://localhost:8000
 ```
+
+You'll be redirected to `app.html` (the main study app). The landing page is at `/index.html`.
 
 ---
 
@@ -101,126 +115,100 @@ http://localhost:8000
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/api/health` | GET | Check server status |
-| `/api/providers` | GET | Get available AI providers |
-| `/api/upload` | POST | Upload a file (multipart/form-data) |
-| `/api/generate` | POST | Generate content from uploaded file |
-| `/api/content/{file_id}` | GET | Get generated content |
+| `/health` | GET | Server health check |
+| `/api` | GET | API info & feature list |
+| `/api/providers` | GET | AI provider status |
+| `/api/upload` | POST | Upload file (multipart/form-data) |
+| `/api/files/{file_id}` | GET | Get file metadata |
+| `/api/generate` | POST | Generate quiz/flashcards/tricks/summary/compare |
+| `/api/generate/status` | GET | AI engine status |
+| `/api/chat` | POST | Standard chat with Neural Tutor |
+| `/api/chat/stream` | POST | Streaming chat (Server-Sent Events) |
+| `/api/chat/health` | GET | Chat service health |
+
+Interactive docs available at `/docs` (Swagger) and `/redoc`.
 
 ---
 
-## 🧠 AI Provider Switching
+## 🧠 AI Engine
 
-This is the KEY feature! To switch AI providers:
+The platform uses **Groq** with the following models:
 
-### Option 1: Gemini (Default, Free)
-```env
-GEMINI_ENABLED=true
-OPENAI_ENABLED=false
-LOCAL_LLM_ENABLED=false
-```
+| Role | Model |
+|------|-------|
+| **Primary** | `llama-3.3-70b-versatile` |
+| **Fallback** | `llama-3.1-8b-instant` |
 
-### Option 2: OpenAI (Paid)
-```env
-GEMINI_ENABLED=false
-OPENAI_API_KEY=sk-your-key-here
-OPENAI_ENABLED=true
-LOCAL_LLM_ENABLED=false
-```
+The fallback kicks in automatically if the primary model is decommissioned, deprecated, or unavailable. All AI logic lives in [`backend/app/services/ai_engine.py`](backend/app/services/ai_engine.py) — a singleton `AIEngine` class plus standalone helper functions.
 
-### Option 3: Local LLM (Ollama - Free)
-```bash
-# First, install Ollama: https://ollama.ai
-ollama pull llama2
-```
-```env
-GEMINI_ENABLED=false
-OPENAI_ENABLED=false
-LOCAL_LLM_ENABLED=true
-LOCAL_LLM_MODEL=llama2
-```
-
-**That's it!** No other files need to change. The `ai_engine.py` handles everything.
+> **Want a different provider?** The codebase used to support multiple providers and could be extended again. The `AIEngine` class is the single integration point — swap the Groq client for another SDK and update `get_groq_client()` and `_generate()`.
 
 ---
 
 ## 📝 How It Works
 
 1. **Upload** → User uploads a PDF/DOCX/TXT file
-2. **Extract** → Text is extracted using appropriate library
-3. **Chunk** → Text is split into 300-800 word chunks (with overlap)
-4. **Process** → Each chunk is sent to AI for parallel processing
-5. **Generate** → AI creates quizzes, flashcards, tricks, summary
-6. **Merge** → Results from all chunks are combined and deduplicated
-7. **Display** → Frontend shows interactive results
+2. **Extract** → Text is extracted with `pdfplumber` / `python-docx` / plain read
+3. **Store** → File text is kept in an in-memory dict, keyed by a UUID `file_id`
+4. **Chunk** → Text is split into ~800-word chunks with overlap (currently capped at 2 chunks per request to stay friendly with rate limits)
+5. **Generate** → Each chunk is sent to Groq for quiz/flashcards/tricks; full text (truncated) is used for summary and compare
+6. **Merge** → Results from chunks are deduplicated and combined
+7. **Display** → Frontend renders interactive components
 
 ---
 
 ## 🧪 Testing
 
-### Test with Sample File
+Use the provided `tests/sample.txt` (educational content about photosynthesis):
 
-1. Use the provided `tests/sample.txt` file
-2. Upload it via the frontend
-3. Click "Generate All"
-4. Expected output:
-   - 5-10 quiz questions
-   - 10-15 flashcards
-   - 5-8 learning tricks
-   - 1 summary with key points
-
-### Sample Test File Content
-
-The `tests/sample.txt` contains educational content about photosynthesis - perfect for testing!
+1. Upload `tests/sample.txt` via the UI
+2. Click **Generate All**
+3. Expected output:
+   - 5–10 quiz questions
+   - 8+ flashcards
+   - 5 memory tricks
+   - 1 structured summary
+   - 1 compare/contrast analysis
 
 ---
 
 ## 🛠️ Troubleshooting
 
-### "No AI provider enabled"
-- Check `.env` file has `GEMINI_ENABLED=true` (or your chosen provider)
-- Verify API key is correct
-- Restart the server after changing `.env`
-
-### "Cannot connect to backend"
-- Ensure server is running: `uvicorn app.main:app --reload`
-- Check port 8000 is not blocked
-
-### "Failed to parse JSON"
-- This can happen if AI returns malformed responses
-- Try regenerating or using a different chunk size
-
-### File upload fails
-- Check file is PDF, DOCX, or TXT format
-- Ensure file is not password-protected
-- For PDFs, make sure text is selectable (not scanned images)
+| Problem | Solution |
+|---------|----------|
+| `GROQ_API_KEY not found` | Make sure `backend/.env` exists and contains `GROQ_API_KEY=gsk_...` |
+| `AI not configured` (503) | The Groq health check failed — verify your key and network |
+| `File not found` (404) | The upload dict is in-memory — restarting the server clears all uploads |
+| `Cannot connect to backend` | Ensure server is running on port 8000 (or update API base URL in frontend) |
+| Failed to parse JSON from AI | The `extract_json()` helper is robust, but try regenerating; very long documents are also truncated per generator |
 
 ---
 
 ## 🔒 Security Notes
 
-- API keys are stored in `.env` (never committed to git)
-- Keys are NEVER exposed to frontend
-- CORS is open for development - restrict in production
-- File uploads are validated for type
+- API keys live in `.env` (gitignored — never commit them)
+- Keys are NEVER exposed to the frontend
+- CORS is wide-open for development (`allow_origins=["*"]`) — restrict in production
+- File uploads are validated by extension (`.pdf`, `.docx`, `.txt`)
+- Uploaded text is held in memory only; nothing is persisted to disk or a database
 
 ---
 
 ## 📈 Future Enhancements
 
-- [ ] Database storage (SQLite → PostgreSQL)
+- [ ] Persistent storage (SQLite → PostgreSQL) — currently in-memory only
 - [ ] User authentication
-- [ ] Export quizzes to PDF
-- [ ] Spaced repetition for flashcards
-- [ ] Progress tracking
-- [ ] More AI providers (Anthropic, Cohere)
+- [ ] Export quizzes / flashcards to PDF
+- [ ] Refactor `app.html` (~11k lines) into modular files
+- [ ] Process all chunks (not just first 2) with smarter rate-limiting
+- [ ] Re-add multi-provider support (Gemini, OpenAI, local Ollama)
 
 ---
 
 ## 📄 License
 
-MIT License - Feel free to use, modify, and learn from this project!
+MIT License — Feel free to use, modify, and learn from this project!
 
 ---
 
-**Built with ❤️ using FastAPI + Vanilla JavaScript**
+**Built with ❤️ using FastAPI + Vanilla JavaScript + Groq AI**
